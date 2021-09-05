@@ -1,0 +1,25 @@
+const Product = require("../../../../Schema/Product/Product.model");
+const useGet = require("../../../../Redis/useGet/useGet");
+const useSet = require("../../../../Redis/useSet/useSet");
+const MongoFilter = require("../../../MongoFilter/MongoFilter");
+const { GraphQLError } = require("graphql");
+
+
+const productsCompany = async (company, {limit, offset}, _, info) => {
+  try {
+    //filter the query
+    const filter = MongoFilter(info);
+    
+    //get the products from mongodb if not cached
+    const products = await Product.find({ companyID: company._id }, filter).skip(offset).limit(limit);
+
+    //return product
+    return products;
+  } catch (e) {
+    console.log("error while fetching the productsCompany");
+    throw new GraphQLError(e.message);
+    return null;
+  }
+};
+
+module.exports = productsCompany;
