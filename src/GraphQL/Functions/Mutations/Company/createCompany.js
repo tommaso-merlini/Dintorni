@@ -13,7 +13,7 @@ const createCompany = async (_, { input }) => {
     });
 
     //create company and lightCompany in mongoDB
-    const company = await new Company({...input, favourites: 0});
+    const company = await new Company({...input, favourites: 0, likes: 0});
     const savedCompany = await company.save();
 
     //get the id of the just saved company

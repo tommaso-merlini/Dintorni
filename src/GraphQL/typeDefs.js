@@ -100,7 +100,6 @@ const typeDefs = gql`
     phone: String!
     location: locationInput!
     cashbackInfo: cashbackInfoInput!
-    likes: Int!
     firebaseID: String!
   }
 
@@ -166,32 +165,28 @@ const typeDefs = gql`
       category: String
       range: Int!
     ): [LightCompany!]!
-    companiesDistance(
-      companyCoords1: [Float]!
-      companyCoords2: [Float]!
-    ): Float
 
     #======user queries======
     login(firebaseToken: String!, id: ID!): String #jwt
   }
 
   type Mutation {
-    #======products mutation======
+    #======products======
     createProduct(input: productInput!): ID
     deleProduct(id: ID!, companyID: ID!): Boolean!
     updateProduct(id: ID!, input: updateProductInput!): Boolean!
+    addFavourite(id: ID!): Boolean!
+    removeFavourite(id: ID!): Boolean!
 
-    #======company mutation======
+    #======company======
     createCompany(input: companyInput!): String #returns the jwt
     activateCompany(id: ID!): Boolean!
     disactivateCompany(id: ID!): Boolean!
     updateCompany(id: ID!, input: updateCompanyInput!): Boolean!
 
-    #======user mutation======
-    createUser(email: String!, password: String!): Boolean!
-
-    #======order mutation======
-    createOrder(input: orderInput!): Boolean!
+    #======like======
+    addLike(id: ID!, type: String!): Boolean!
+    removeLike(id: ID!, type: String!): Boolean!
   }
 `;
 

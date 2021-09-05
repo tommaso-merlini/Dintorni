@@ -16,9 +16,13 @@ const activateCompany = require("./Functions/Mutations/Company/activateCompany")
 const disactivateCompany = require("./Functions/Mutations/Company/disactivateCompany");
 const closeProductsTitle = require("./Functions/Queries/Product/closeProductsTitle");
 const updateCompany = require("./Functions/Mutations/Company/updateCompany");
-const createUser = require("./Functions/Mutations/User/createUser");
 const updateProduct = require("./Functions/Mutations/Product/updateProduct");
 const companyByFirebaseID = require("./Functions/Queries/Company/companyByFirebaseID");
+const addLike = require("./Functions/Mutations/Like/addLike");
+const removeLike = require("./Functions/Mutations/Like/removeLike")
+const addFavourite = require("./Functions/Mutations/Company/addFavourite");
+const removeFavourite = require("./Functions/Mutations/Company/removeFavourite");
+
 
 require("dotenv").config();
 
@@ -30,14 +34,6 @@ const resolvers = {
     product: product,
     closeProductsTitle: closeProductsTitle,
     closeCompanies: closeCompanies,
-    companiesDistance: async (_, { companyCoords1, companyCoords2 }) => {
-      const x1 = companyCoords1[0];
-      const x2 = companyCoords2[0];
-      const y1 = companyCoords1[1];
-      const y2 = companyCoords2[1];
-
-      return Math.sqrt(Math.pow(x2 - x1) + Math.pow(y1 - y2));
-    },
     login: login
   },
 
@@ -49,17 +45,10 @@ const resolvers = {
     activateCompany: activateCompany,
     disactivateCompany: disactivateCompany,
     updateCompany: updateCompany,
-    createUser: createUser,
-    createOrder: async (_, { input }) => {
-      try {
-        const order = await new Order(input);
-        await order.save();
-        return true;
-      } catch (e) {
-        console.log(e);
-        return false;
-      }
-    },
+    addLike: addLike,
+    removeLike: removeLike,
+    addFavourite: addFavourite,
+    removeFavourite: removeFavourite
   },
 
   Company: {
