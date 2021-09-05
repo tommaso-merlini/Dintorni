@@ -95,6 +95,10 @@ async function startServer() {
       if (err.message.startsWith("Database Error: ")) {
         return new Error("Internal server error");
       }
+
+      if (err.extensions.code.startsWith("INTERNAL_SERVER_ERROR")) {
+        return new Error(err.message);
+      }
       // Otherwise return the original error
       return err;
     },
