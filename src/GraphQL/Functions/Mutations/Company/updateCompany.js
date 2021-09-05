@@ -1,6 +1,7 @@
 const Company = require("../../../../Schema/Company/Company.model");
 const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
+const { GraphQLError } = require("graphql");
 
 
 const updateCompany = async (_, {id, input}) => {
@@ -17,7 +18,8 @@ const updateCompany = async (_, {id, input}) => {
         }
         return true;
     } catch(e) {
-        console.log(e);
+        console.log("error while updating the company");
+        throw new GraphQLError(e.message);
         return false;
     }
 }

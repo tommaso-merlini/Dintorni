@@ -1,6 +1,7 @@
 const Company = require("../../../../Schema/Company/Company.model");
 const Product = require("../../../../Schema/Product/Product.model");
 const useDel = require("../../../../Redis/useDel/useDel");
+const { GraphQLError } = require("graphql");
 
 const disactivateCompany = async (_, {id}) => {
     try {
@@ -18,7 +19,7 @@ const disactivateCompany = async (_, {id}) => {
         return true;
     } catch(e) {
         console.log("error while disactivating the company");
-        console.log(e);
+        throw new GraphQLError(e.message);
         return false;
     }
 }

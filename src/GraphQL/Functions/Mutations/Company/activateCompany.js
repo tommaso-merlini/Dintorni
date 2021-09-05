@@ -1,3 +1,4 @@
+const { GraphQLError } = require("graphql");
 const Company = require("../../../../Schema/Company/Company.model");
 const Product = require("../../../../Schema/Product/Product.model");
 
@@ -8,7 +9,7 @@ const activateCompany = async (_, { id }) => {
         return true;
     } catch(e) {
         console.log("error while activating the company");
-        console.log(e);
+        throw new GraphQLError(e.message);
         return false;
     }
 }

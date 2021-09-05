@@ -2,6 +2,7 @@ const Product = require("../../../../Schema/Product/Product.model");
 const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
 const merge = require('merge');
+const { GraphQLError } = require("graphql");
 
 const updateProduct = async (_, {id, input}, {user}) => {
     try {
@@ -17,7 +18,8 @@ const updateProduct = async (_, {id, input}, {user}) => {
         }
         return true;
     } catch(e) {
-        console.log(e);
+        console.log("error while updating the product");
+        throw new GraphQLError(e.message);
         return false;
     }
 }

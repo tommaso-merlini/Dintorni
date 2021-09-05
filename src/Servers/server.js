@@ -99,6 +99,11 @@ async function startServer() {
       if (err.extensions.code.startsWith("INTERNAL_SERVER_ERROR")) {
         return new Error(err.message);
       }
+
+      if (err.extensions.code.startsWith("GRAPHQL_VALIDATION_FAILED")) {
+        return new Error("bad graphql fields");
+      }
+
       // Otherwise return the original error
       return err;
     },

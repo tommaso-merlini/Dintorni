@@ -1,6 +1,7 @@
 const Product = require("../../../../Schema/Product/Product.model");
 const Company = require("../../../../Schema/Company/Company.model");
 const authenticateToken = require("../../../../JWT/AuthenticateToken");
+const { GraphQLError } = require("graphql");
 
 const createProduct = async (_, { input }, {user}) => {
   try {
@@ -13,7 +14,7 @@ const createProduct = async (_, { input }, {user}) => {
     return savedProduct._id;
   } catch(e) {
     console.log("error while creating the product");
-    console.log(e);
+    throw new GraphQLError(e.message)
     return null
   }
 };

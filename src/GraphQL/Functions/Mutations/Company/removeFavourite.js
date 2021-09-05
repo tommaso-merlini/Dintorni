@@ -11,7 +11,6 @@ const removeFavourite = async (_, { id }) => {
         if(companyRedis && companyRedis.favourites >= 1) {
             companyRedis.favourites = companyRedis.favourites - 1;
             useSet(`company/${id}`, companyRedis);
-            console.log(companyRedis);
         }
         return true;
     } catch(e) {

@@ -3,6 +3,7 @@ const Company = require("../../../../Schema/Company/Company.model");
 const useDel = require("../../../../Redis/useDel/useDel");
 
 const authenticateToken = require("../../../../JWT/AuthenticateToken");
+const { GraphQLError } = require("graphql");
 
 const deleteProduct = async (_, { id, companyID }, {user}) => {
   try {
@@ -13,7 +14,7 @@ const deleteProduct = async (_, { id, companyID }, {user}) => {
     return true;
   } catch(e) {
     console.log("error while trying to delete the product");
-    console.log(e);
+    throw new GraphQLError(e.message);
     return false;
   }
 };

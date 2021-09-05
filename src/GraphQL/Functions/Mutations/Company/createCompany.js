@@ -1,6 +1,7 @@
 const Company = require("../../../../Schema/Company/Company.model");
 const { admin, firebase } = require("../../../../firebase/firebase");
 const jwt = require('jsonwebtoken');
+const { GraphQLError } = require("graphql");
 require("dotenv").config();
 
 
@@ -26,7 +27,7 @@ const createCompany = async (_, { input }) => {
     return accessToken;
   } catch(e) {
     console.log("error while creating the company");
-    console.log(e);
+    throw new GraphQLError(e.message);
     return null;
   }
 };
