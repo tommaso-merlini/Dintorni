@@ -165,7 +165,7 @@ const typeDefs = gql`
       category: String
       range: Int!
     ): [LightCompany!]
-    favouritesCompanies(ids: [ID!]!, userID: String!): [LightCompany!]
+    favouritesCompanies(ids: [ID!]!): [LightCompany!]
 
     #======user queries======
     login(firebaseToken: String!, id: ID!): String #jwt

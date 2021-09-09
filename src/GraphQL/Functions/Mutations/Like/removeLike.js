@@ -1,5 +1,6 @@
 const { GraphQLError } = require("graphql");
 const Company = require("../../../../Schema/Company/Company.model");
+const Product = require("../../../../Schema/Product/Product.model");
 const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
 

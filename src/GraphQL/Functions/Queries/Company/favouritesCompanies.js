@@ -1,14 +1,16 @@
 const { GraphQLError } = require("graphql");
-const useSet = require("../../../../Redis/useSet/useSet");
-const useGet = require("../../../../Redis/useGet/useGet");
+const MongoFilter = require("../../../MongoFilter/MongoFilter");
 const Company = require("../../../../Schema/Company/Company.model");
 
-const favouritesCompanies = async (_, {ids, userID}) => {
+const favouritesCompanies = async (_, {ids}, __, info) => {
     try {
-        var favouritesCompanies = await Company.find({_id: ids, isActive: true});
+        //get the requested fields and store them in a filter const
+        const filter = MongoFilter(info);
+
+        var favouritesCompanies = await Company.find({_id: ids, isActive: true}, filter);
 
         favouritesCompanies.map(company => {
-            if(!company.isActive || !company) {
+            if(!company) {
                 favouritesCompanies.splice(favouritesCompanies.indexOf(company), 1);
             }
         })
