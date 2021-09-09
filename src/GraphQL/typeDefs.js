@@ -164,7 +164,8 @@ const typeDefs = gql`
       location: locationInput!
       category: String
       range: Int!
-    ): [LightCompany!]!
+    ): [LightCompany!]
+    favouritesCompanies(ids: [ID!]!, userID: String!): [LightCompany!]
 
     #======user queries======
     login(firebaseToken: String!, id: ID!): String #jwt

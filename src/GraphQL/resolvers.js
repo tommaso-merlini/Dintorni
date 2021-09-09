@@ -22,6 +22,7 @@ const addLike = require("./Functions/Mutations/Like/addLike");
 const removeLike = require("./Functions/Mutations/Like/removeLike")
 const addFavourite = require("./Functions/Mutations/Company/addFavourite");
 const removeFavourite = require("./Functions/Mutations/Company/removeFavourite");
+const favouritesCompanies = require("./Functions/Queries/Company/favouritesCompanies");
 
 
 require("dotenv").config();
@@ -34,6 +35,7 @@ const resolvers = {
     product: product,
     closeProductsTitle: closeProductsTitle,
     closeCompanies: closeCompanies,
+    favouritesCompanies: favouritesCompanies,
     login: login
   },
 
