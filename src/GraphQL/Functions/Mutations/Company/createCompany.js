@@ -17,11 +17,8 @@ const createCompany = async (_, { input }) => {
     const company = await new Company({...input, favourites: 0, likes: 0});
     const savedCompany = await company.save();
 
-    //get the id of the just saved company
-    const id = savedCompany._id;
-
     //create the jwt
-    const companyToken = { id: id, isCompany: true };
+    const companyToken = { id: savedCompany.firebaseID, isCompany: true };
     const accessToken = jwt.sign(companyToken, process.env.SECRET_ACCESS_TOKEN);
 
     return accessToken;
