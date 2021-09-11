@@ -15,7 +15,7 @@ const companyProduct = async ({ companyID }) => {
 
         const company = await Company.findById(companyID);
 
-        if(!company.isACtive) throw new Error("company is not active")
+        if(!company.isActive) throw new Error("company is not active")
 
         await useSet(
             redisQuery,

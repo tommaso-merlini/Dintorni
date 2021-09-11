@@ -2,37 +2,73 @@ const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
 const Product = require("../../../../Schema/Product/Product.model");
 const { GraphQLError } = require("graphql");
+const MongoFilter = require("../../../MongoFilter/MongoFilter")
 
-const closeProductsTitle = async (_, { name, location, range }) => {
+const closeProductsTitle = async (_, { name, location, range }, __, info) => {
   try{
-    const redisQuery = `closeProducts/latitude:${location.coordinates[0]}/longitude:${location.coordinates[1]}/name:${name}/range:${range}`;
-    
-    // check if the companies are cached
-    const redisCloseProducts = await useGet(redisQuery);
+
+    var filter = MongoFilter(info);
   
-    //if the company is cached return it
-    if (redisCloseProducts) return redisCloseProducts;
-  
-    const closeProducts = await Product.find({
-      location: {
-        $near: {
-          $geometry: {
-            type: "Point",
-            coordinates: [location.coordinates[0], location.coordinates[1]],
-          },
-          $minDistance: 0,
-          $maxDistance: range,
+    // const closeProducts = await Product.find({
+      // location: {
+      //   $near: {
+      //     $geometry: {
+      //       type: "Point",
+      //       coordinates: [location.coordinates[0], location.coordinates[1]],
+      //     },
+      //     $minDistance: 0,
+      //     $maxDistance: range,
+      //   },
+      // },
+    //   name: {$regex: name},
+    //   isActive: true
+    // });
+
+    const closeProducts = await Product.aggregate([
+      {
+        $search: {
+          index: "search",
+          compound: {
+            must: [
+              {
+                "text": {
+                  "query": name,
+                  "path": "name",
+                  "fuzzy": {
+                    "maxEdits": 2,
+                    "prefixLength": 4
+                  }
+                }
+              },
+              {
+                "geoWithin": {
+                  "path": "location",
+                  "circle": {
+                    "center": {
+                      "type": "Point",
+                      "coordinates": [location.coordinates[0], location.coordinates[1]]
+                    },
+                    "radius": range
+                  },
+                }
+              }
+            ]
+          }
         },
       },
-      name: {$regex: name},
-      isActive: true
-    });
+      {
+        "$project": {
+          ...filter,
+          companyID: 1,
+          "score": {
+            "$meta": "searchScore",
+          }
+        }
+      },
+    ]);
+
+    console.log(closeProducts);
   
-    await useSet(
-      redisQuery,
-      closeProducts,
-    );
-    
     return closeProducts;
   } catch(e) {
     console.log("error while fetching the close products by title");
