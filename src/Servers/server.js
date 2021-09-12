@@ -4,6 +4,7 @@
 const cron = require("node-cron");
 const express = require("express");
 const app = express();
+const rateLimit = require("express-rate-limit");
 
 //=====apollo=====
 const { ApolloServer } = require("apollo-server-express");
@@ -50,15 +51,24 @@ app.use('*', (req, res, next) => {
   next();
 });
 
+//limit the amount of requests
+app.set('trust proxy', 1);
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // every 15 minutes
+  max: 75, // limit each IP to 50 requests per windowMs
+  message: "Too many requests to the server, try again later"
+});
+
+//  apply to all requests
+app.use(limiter);
 
 //!======server instance======
 
 async function startServer() {
-  //test
-  // app.get('/', cors(corsOptions), (req, res, next) => {
-  //   res.json({ message: 'This route is CORS-enabled for an allowed origin.' });
-  // })
+  app.get('/', (req, res) => {
+    res.json({ status: 'ok' });
+  })
 
   //=========apollo server=========
   const context = ({req}) => {
