@@ -9,7 +9,7 @@ const useSet = async (key, value, expireTime) => {
       const expireTime = 86400; //one day
       await client.setexAsync(key, expireTime, JSON.stringify(value));
     }
-    console.log(`SET cache | ${key}`);
+    // console.log(`SET cache | ${key}`);
     return "OK";
   } catch (e) {
     //throw new Error("something went wrong by setting the redis cache");
