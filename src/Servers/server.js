@@ -17,6 +17,8 @@ require("../helpers/initMongoDB");
 const checkAuth = require("../firebase/checkAuth");
 const {firebase} = require("../firebase/firebase");
 
+//=========stripe=========
+const stripe = require("stripe")("sk_test_9W1R4v0cz6AtC9PVwHFzywti");
 
 //=========jsonwebtoken=========
 const expressJwt = require("express-jwt");
@@ -67,12 +69,12 @@ app.use(limiter);
 
 async function startServer() {
   app.get('/', (req, res) => {
-    res.json({ status: 'ok' });
+    res.json({ serverstatus: 'ok' });
   })
 
   //=========apollo server=========
   const context = ({req}) => {
-    return {user: req.user}
+    return {user: req.user, stripe}
   };
   
   const apolloserver = new ApolloServer({

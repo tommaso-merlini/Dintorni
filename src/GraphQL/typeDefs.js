@@ -188,6 +188,9 @@ const typeDefs = gql`
     #======like======
     addLike(id: ID!, type: String!): Boolean!
     removeLike(id: ID!, type: String!): Boolean!
+
+    #======stripe======
+    stripePayment(productIDs: [ID!]!): String
   }
 `;
 
