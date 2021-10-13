@@ -7,6 +7,12 @@ const { GraphQLError } = require("graphql");
 
 const productsCompany = async (company, {limit, offset}, _, info) => {
   try {
+
+    if(limit < 0 || offset < 0) {
+      throw new Error("limit and offset cannot be negative");
+    }
+
+
     //filter the query
     const filter = MongoFilter(info);
     

@@ -5,8 +5,13 @@ const MongoFilter = require("../../../MongoFilter/MongoFilter");
 const { GraphQLError } = require("graphql");
 
 
-const closeCompanies = async (_, { location, category, range }, __, info) => {
+const closeCompanies = async (_, { location, category, range, limit, offset }, __, info) => {
   try{
+
+    if(limit < 0 || offset < 0) {
+      throw new Error("limit and offset cannot be negative");
+    }
+
     const redisQuery = `closecompanies/latitude:${location.coordinates[0]}/longitude:${location.coordinates[1]}/category:${category}/range:${range}`;
     
     // check if the companies are cached
@@ -32,7 +37,7 @@ const closeCompanies = async (_, { location, category, range }, __, info) => {
         },
         categories: category,
         isActive: true
-      }, filter);
+      }, filter).skip(offset).limit(limit);
     } else { //if the category is not specified search for all categories
       var closeCompanies = await Company.find({
         location: {
@@ -44,8 +49,9 @@ const closeCompanies = async (_, { location, category, range }, __, info) => {
             $minDistance: 0,
             $maxDistance: range,
           },
-        }
-      }, filter);
+        },
+        isActive: true
+      }, filter).skip(offset).limit(limit);
     }
 
     if(!closeCompanies) throw new Error("error while fetching the close companies");

@@ -164,6 +164,8 @@ const typeDefs = gql`
       location: locationInput!
       category: String
       range: Int!
+      limit: Int!
+      offset: Int!
     ): [LightCompany!]
     favouritesCompanies(ids: [ID!]!): [LightCompany!]
 
