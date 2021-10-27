@@ -15,7 +15,8 @@ require("../helpers/initMongoDB");
 
 //=========firebase=========
 const checkAuth = require("../firebase/checkAuth");
-const {firebase} = require("../firebase/firebase");
+const {firebase, db} = require("../firebase/firebase");
+
 
 //=========stripe=========
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
@@ -80,7 +81,7 @@ async function startServer() {
 
   //=========apollo server=========
   const context = ({req}) => {
-    return {user: req.user, stripe}
+    return {user: req.user, stripe, firebase, db, resolvers}
   };
   
   const apolloserver = new ApolloServer({

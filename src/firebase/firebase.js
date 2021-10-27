@@ -11,6 +11,7 @@ require("firebase/auth");
 require("firebase/firestore");
 
 const admin = require('firebase-admin');
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
 
 // TODO: Replace the following with your app's Firebase project configuration
 // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
@@ -32,5 +33,7 @@ admin.initializeApp({
     databaseURL: 'https://fir-demo-7884d.firebaseio.com'
 });
 
+const db = getFirestore();
+
 firebase.initializeApp(firebaseConfig);
-module.exports = {admin, firebase};
+module.exports = {admin, firebase, db};

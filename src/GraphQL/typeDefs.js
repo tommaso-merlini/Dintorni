@@ -193,6 +193,7 @@ const typeDefs = gql`
 
     #======stripe======
     stripePayment(productIDs: [ID!]!): String
+    createOrder(userId: ID!, companyId: ID!, dateLimit: Int!, pickUpHour: String!): Boolean! #all firebase vars
   }
 `;
 
