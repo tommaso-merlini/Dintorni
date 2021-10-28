@@ -12,14 +12,6 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
       throw new Error("limit and offset cannot be negative");
     }
 
-    const redisQuery = `closecompanies/latitude:${location.coordinates[0]}/longitude:${location.coordinates[1]}/category:${category}/range:${range}`;
-    
-    // check if the companies are cached
-    const redisCloseCompanies = await useGet(redisQuery);
-  
-    //if the company is cached return it
-    if (redisCloseCompanies) return redisCloseCompanies;
-
     //get the requested fields and store them in a filter const
     const filter = MongoFilter(info);
   
@@ -53,13 +45,6 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
         isActive: true
       }, filter).skip(offset).limit(limit);
     }
-
-    if(!closeCompanies) throw new Error("error while fetching the close companies");
-  
-    await useSet(
-      redisQuery,
-      closeCompanies,
-    );
     
     return closeCompanies;
   } catch(e) {
