@@ -155,6 +155,8 @@ const typeDefs = gql`
       name: String!
       location: locationInput!
       range: Int!
+      limit: Int!
+      offset: Int!
     ): [Product]
 
     #======company queries======

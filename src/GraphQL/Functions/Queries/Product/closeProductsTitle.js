@@ -4,8 +4,12 @@ const Product = require("../../../../Schema/Product/Product.model");
 const { GraphQLError } = require("graphql");
 const MongoFilter = require("../../../MongoFilter/MongoFilter")
 
-const closeProductsTitle = async (_, { name, location, range }, __, info) => {
+const closeProductsTitle = async (_, { name, location, range, limit, offset }, __, info) => {
   try{
+
+    if(limit < 0 || offset < 0) {
+      throw new Error("limit and offset cannot be negative");
+    }
 
     var filter = MongoFilter(info);
   
@@ -65,9 +69,7 @@ const closeProductsTitle = async (_, { name, location, range }, __, info) => {
           }
         }
       },
-    ]);
-
-    console.log(closeProducts);
+    ]).skip(offset).limit(limit);
   
     return closeProducts;
   } catch(e) {
