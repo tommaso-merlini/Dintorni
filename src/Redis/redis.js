@@ -1,13 +1,31 @@
 const redis = require("redis");
 const bluebird = require("bluebird");
+const chalk = require("chalk"); //console.log colors
+
+
+const retry_strategy = function(options) {
+  if (options.error && (options.error.code === 'ECONNREFUSED' || options.error.code === 'NR_CLOSED')) {
+      // Try reconnecting after 5 seconds
+      console.error('The redis server refused the connection. Retrying connection...');
+      return 5000;
+  }
+  if (options.total_retry_time > 1000 * 60 * 60) {
+      // End reconnecting after a specific timeout and flush all commands with an individual error
+      return new Error('Redis Retry time exhausted');
+  }
+  if (options.attempt > 50) {
+      // End reconnecting with built in error
+      return undefined;
+  }
+  // reconnect after
+  return Math.min(options.attempt * 100, 3000);
+}
 
 const client = redis.createClient({
   port      : 6379,
   host      : 'redis',
   //if the client crashes let the app knows => direct connection to mongodb
-  retry_strategy: function (options) {
-    return undefined;
-  }
+  retry_strategy: retry_strategy
 });
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
@@ -19,6 +37,14 @@ client.on("error", (err) => {
 
 process.on("SIGINT", () => {
     client.quit();
+});
+
+client.on("connect", () => {
+  console.log(
+    chalk.bgGreen.black(
+      `redis server is up and running :D`
+    )
+  );
 });
 
 module.exports = client;

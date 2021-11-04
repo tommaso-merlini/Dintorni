@@ -1,7 +1,13 @@
 const { GraphQLError } = require("graphql");
+const authenticateToken = require("../../../../JWT/AuthenticateToken");
 
-const createOrder = async(_,{userId, companyId, dateLimit, pickUpHour}, {db, resolvers}) =>{
+const createOrder = async(_,{userId, companyId, dateLimit, pickUpHour}, {resolvers, user}) =>{
     try {
+
+        console.log(userId);
+        console.log(user);
+
+        authenticateToken(user.id, userId);
 
         //get the cart
         const cart = [];

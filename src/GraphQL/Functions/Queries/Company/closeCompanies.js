@@ -15,37 +15,59 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
     //get the requested fields and store them in a filter const
     const filter = MongoFilter(info);
   
-    if(category) { //if the category not specified search for the category
-      var closeCompanies = await Company.find({
-        location: {
-          $near: {
-            $geometry: {
-              type: "Point",
-              coordinates: [location.coordinates[0], location.coordinates[1]],
-            },
-            $minDistance: 0,
-            $maxDistance: range,
-          },
-        },
-        categories: category,
-        isActive: true
-      }, filter).skip(offset).limit(limit);
-    } else { //if the category is not specified search for all categories
-      var closeCompanies = await Company.find({
-        location: {
-          $near: {
-            $geometry: {
-              type: "Point",
-              coordinates: [location.coordinates[0], location.coordinates[1]],
-            },
-            $minDistance: 0,
-            $maxDistance: range,
-          },
-        },
-        isActive: true
-      }, filter).skip(offset).limit(limit);
-    }
-    
+    // if(category) { //if the category not specified search for the category
+    //   var closeCompanies = await Company.find({
+    //     location: {
+    //       $near: {
+    //         $geometry: {
+    //           type: "Point",
+    //           coordinates: [location.coordinates[0], location.coordinates[1]],
+    //         },
+    //         query: { category: "Parks" },
+    //         $minDistance: 0,
+    //         $maxDistance: range,
+    //       },
+    //     },
+    //       $match : {
+    //         categories: category,
+    //         isActive: false,
+    //         name: "la fortuna pasticceria"
+    //     },
+    //   }, filter).skip(offset).limit(limit);
+    // } else { //if the category is not specified search for all categories
+    //   var closeCompanies = await Company.find({
+    //     location: {
+    //       $near: {
+    //         $geometry: {
+    //           type: "Point",
+    //           coordinates: [location.coordinates[0], location.coordinates[1]],
+    //         },
+    //         $minDistance: 0,
+    //         $maxDistance: range,
+    //       },
+    //     },
+    //     isActive: true
+    //   }, filter).skip(offset).limit(limit);
+    // }
+
+
+    var closeCompanies = await Company.aggregate( [
+      {
+        $geoNear: {
+            near: { type: "Point", coordinates: [ location.coordinates[0], location.coordinates[1] ] },
+            spherical: false,
+            query: { category: category },
+            distanceField: "location.coordinates",
+            minDistance: 0,
+            maxDistance: range,
+        }
+      },
+      {
+        $skip: offset
+      },
+      { $limit: limit },
+      { $project: filter }
+    ]);    
     return closeCompanies;
   } catch(e) {
     console.log("error while fetching the close companies");

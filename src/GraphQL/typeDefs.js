@@ -151,6 +151,7 @@ const typeDefs = gql`
   type Query {
     #======products queries======
     product(id: ID!): Product
+    products(ids: [ID!]!): [Product!]
     closeProductsTitle(
       name: String!
       location: locationInput!
@@ -161,6 +162,7 @@ const typeDefs = gql`
 
     #======company queries======
     company(id: ID!): Company
+    companies(ids: [ID!]!): [Company!]
     companyByFirebaseID(firebaseID: String!): Company
     closeCompanies(
       location: locationInput!

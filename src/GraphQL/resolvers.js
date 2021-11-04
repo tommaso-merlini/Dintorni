@@ -8,8 +8,10 @@ const createProduct = require("./Functions/Mutations/Product/createProduct");
 const deleteProduct = require("./Functions/Mutations/Product/deleteProduct");
 const closeCompanies = require("./Functions/Queries/Company/closeCompanies");
 const company = require("./Functions/Queries/Company/company");
+const companies = require("./Functions/Queries/Company/companies");
 const productsCompany = require("./Functions/Queries/Company/productsCompany");
 const product = require("./Functions/Queries/Product/product");
+const products = require("./Functions/Queries/Product/products");
 const login = require("./Functions/Queries/login/login");
 const companyProduct = require("./Functions/Queries/Product/companyProduct");
 const activateCompany = require("./Functions/Mutations/Company/activateCompany");
@@ -32,9 +34,11 @@ require("dotenv").config();
 const resolvers = {
   Query: {
     company: company,
+    companies: companies,
     companyByFirebaseID: companyByFirebaseID,
     // companyProducts: companyProducts,
     product: product,
+    products: products,
     closeProductsTitle: closeProductsTitle,
     closeCompanies: closeCompanies,
     favouritesCompanies: favouritesCompanies,
