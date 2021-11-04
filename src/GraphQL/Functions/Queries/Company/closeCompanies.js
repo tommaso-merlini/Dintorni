@@ -14,8 +14,6 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
 
     //get the requested fields and store them in a filter const
     const filter = MongoFilter(info);
-
-    console.log(category);
   
     // if(category) { //if the category not specified search for the category
     //   var closeCompanies = await Company.find({
@@ -52,14 +50,21 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
     //   }, filter).skip(offset).limit(limit);
     // }
 
+    const setCategories = () => {
+      if(category === null) {
+        return { $exists: true };
+      } 
+      return category;
+    }
+
 
     var closeCompanies = await Company.aggregate( [
       {
         $geoNear: {
-            near: { type: "Point", coordinates: [ location.coordinates[0], location.coordinates[1] ] },
-            spherical: false,
-            query: { categories: category },
-            distanceField: "location.coordinates",
+            near: { type: "Point", coordinates: [location.coordinates[0], location.coordinates[1]] },
+            spherical: true,
+            query: { categories: setCategories() },
+            distanceField: "coordinates",
             minDistance: 0,
             maxDistance: range,
         }
@@ -70,6 +75,9 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
       { $limit: limit },
       { $project: filter }
     ]);    
+
+    console.log(closeCompanies);
+
     return closeCompanies;
   } catch(e) {
     console.log("error while fetching the close companies");

@@ -166,7 +166,7 @@ const typeDefs = gql`
     companyByFirebaseID(firebaseID: String!): Company
     closeCompanies(
       location: locationInput!
-      category: String!
+      category: String
       range: Int!
       limit: Int!
       offset: Int!
