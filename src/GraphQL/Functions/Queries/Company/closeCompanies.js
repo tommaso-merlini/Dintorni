@@ -14,6 +14,8 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
 
     //get the requested fields and store them in a filter const
     const filter = MongoFilter(info);
+
+    console.log(category);
   
     // if(category) { //if the category not specified search for the category
     //   var closeCompanies = await Company.find({
@@ -56,7 +58,7 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
         $geoNear: {
             near: { type: "Point", coordinates: [ location.coordinates[0], location.coordinates[1] ] },
             spherical: false,
-            query: { category: category },
+            query: { categories: category },
             distanceField: "location.coordinates",
             minDistance: 0,
             maxDistance: range,
