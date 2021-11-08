@@ -167,6 +167,7 @@ const typeDefs = gql`
     closeCompanies(
       location: locationInput!
       category: String
+      cashBack: Int
       range: Int!
       limit: Int!
       offset: Int!

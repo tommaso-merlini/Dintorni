@@ -5,7 +5,7 @@ const MongoFilter = require("../../../MongoFilter/MongoFilter");
 const { GraphQLError } = require("graphql");
 
 
-const closeCompanies = async (_, { location, category, range, limit, offset }, __, info) => {
+const closeCompanies = async (_, { location, category, cashBack, range, limit, offset }, __, info) => {
   try{
 
     if(limit < 0 || offset < 0) {
@@ -52,9 +52,16 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
 
     const setCategories = () => {
       if(category === null) {
-        return { $exists: true };
+        return { $exists: true }; //all categories
       } 
       return category;
+    }
+
+    const setCashBack = () => {
+      if(cashBack === null) {
+        return 0; //all types of cashback
+      } 
+      return cashBack;
     }
 
 
@@ -73,7 +80,13 @@ const closeCompanies = async (_, { location, category, range, limit, offset }, _
         $skip: offset
       },
       { $limit: limit },
-      { $project: filter }
+      {
+        $match :{ // Filter documents that don't have balance > 0
+          "cashbackInfo.cashBack": { $gte: setCashBack() },
+          isActive: true
+        }
+      },
+      { $project: filter },
     ]);    
 
     console.log(closeCompanies);
