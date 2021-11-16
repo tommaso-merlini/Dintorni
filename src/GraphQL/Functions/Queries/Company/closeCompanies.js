@@ -14,41 +14,6 @@ const closeCompanies = async (_, { location, category, cashBack, range, limit, o
 
     //get the requested fields and store them in a filter const
     const filter = MongoFilter(info);
-  
-    // if(category) { //if the category not specified search for the category
-    //   var closeCompanies = await Company.find({
-    //     location: {
-    //       $near: {
-    //         $geometry: {
-    //           type: "Point",
-    //           coordinates: [location.coordinates[0], location.coordinates[1]],
-    //         },
-    //         query: { category: "Parks" },
-    //         $minDistance: 0,
-    //         $maxDistance: range,
-    //       },
-    //     },
-    //       $match : {
-    //         categories: category,
-    //         isActive: false,
-    //         name: "la fortuna pasticceria"
-    //     },
-    //   }, filter).skip(offset).limit(limit);
-    // } else { //if the category is not specified search for all categories
-    //   var closeCompanies = await Company.find({
-    //     location: {
-    //       $near: {
-    //         $geometry: {
-    //           type: "Point",
-    //           coordinates: [location.coordinates[0], location.coordinates[1]],
-    //         },
-    //         $minDistance: 0,
-    //         $maxDistance: range,
-    //       },
-    //     },
-    //     isActive: true
-    //   }, filter).skip(offset).limit(limit);
-    // }
 
     const setCategories = () => {
       if(category === null) {
