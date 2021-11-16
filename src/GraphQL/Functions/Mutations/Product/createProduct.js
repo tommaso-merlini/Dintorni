@@ -5,14 +5,15 @@ const { GraphQLError } = require("graphql");
 
 const createProduct = async (_, { input }, {user}) => {
   try {
+
     //get the company location
     const company = await Company.findById(input.companyID);
     authenticateToken(user.id, company.firebaseID);
+
     //if the user is logged in and the ids match
     const product = await new Product({...input, location: company.location, companyName: company.name, likes: 0, isActive: company.isActive});
     const savedProduct = await product.save();
 
-    // const redisCompany 
     return savedProduct._id;
   } catch(e) {
     console.log("error while creating the product");
