@@ -211,6 +211,7 @@ const typeDefs = gql`
     createOrder(userId: ID!, companyId: ID!, dateLimit: Int!, pickUpHour: String!): Boolean! #all firebase vars
     createStripeAccount(email: String!): StripeUser
     accountLink(accountId: ID!): String
+    paymentIntent: String
   }
 `;
 

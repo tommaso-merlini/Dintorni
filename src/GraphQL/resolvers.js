@@ -30,6 +30,7 @@ const createOrder = require("./Functions/Mutations/Stripe/createOrder");
 const createStripeAccount = require("./Functions/Mutations/Stripe/createStripeAccount");
 const accountLink = require("./Functions/Mutations/Stripe/accountLink");
 const account = require("./Functions/Queries/Stripe/account");
+const paymentIntent = require("./Functions/Mutations/Stripe/paymentIntent");
 
 
 require("dotenv").config();
@@ -65,6 +66,7 @@ const resolvers = {
     createOrder: createOrder,
     createStripeAccount: createStripeAccount,
     accountLink: accountLink,
+    paymentIntent: paymentIntent
   },
 
   Company: {

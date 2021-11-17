@@ -8,14 +8,12 @@ const { GraphQLError } = require("graphql");
             email: email,
         });
     
-        const user = {
+        return {
             id: account.id,
             details_submitted: account.details_submitted,
             payouts_enabled: account.payouts_enabled,
             charges_enabled: account.charges_enabled
-        }
-    
-        return user;
+        } ;
     } catch(e) {
         console.log(`error while creating the stripe account`);
         throw new GraphQLError(e.message);
