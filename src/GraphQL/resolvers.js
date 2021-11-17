@@ -27,6 +27,7 @@ const removeFavourite = require("./Functions/Mutations/Company/removeFavourite")
 const favouritesCompanies = require("./Functions/Queries/Company/favouritesCompanies");
 const stripePayment = require("./Functions/Mutations/Stripe/stripePayment");
 const createOrder = require("./Functions/Mutations/Stripe/createOrder");
+const createStripeAccount = require("./Functions/Mutations/Stripe/createStripeAccount")
 
 
 require("dotenv").config();
@@ -58,7 +59,8 @@ const resolvers = {
     addFavourite: addFavourite,
     removeFavourite: removeFavourite,
     stripePayment: stripePayment,
-    createOrder: createOrder
+    createOrder: createOrder,
+    createStripeAccount: createStripeAccount
   },
 
   Company: {

@@ -74,6 +74,13 @@ const typeDefs = gql`
     minPayment: Int!
   }
 
+  type StripeUser {
+    id: ID!
+    details_submitted: Boolean!
+    payouts_enabled: Boolean!
+    charges_enabled: Boolean!
+  }
+
 
   ########### inputs ###########
 
@@ -199,6 +206,7 @@ const typeDefs = gql`
     #======stripe======
     stripePayment(productIDs: [ID!]!): String
     createOrder(userId: ID!, companyId: ID!, dateLimit: Int!, pickUpHour: String!): Boolean! #all firebase vars
+    createStripeAccount(email: String!): StripeUser
   }
 `;
 
