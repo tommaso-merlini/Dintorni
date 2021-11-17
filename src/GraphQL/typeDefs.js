@@ -183,6 +183,9 @@ const typeDefs = gql`
 
     #======user queries======
     login(firebaseToken: String!, id: ID!): String #jwt
+
+    #======stripe queries======
+    account(id: ID!): StripeUser
   }
 
   type Mutation {
