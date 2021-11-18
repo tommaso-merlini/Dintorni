@@ -4,5 +4,5 @@
 `.env_sample` needs the real enviroment variables
 
 ```
-when teh source code gets pushed in production the enviroment variables will have be switched via terminal ssh
+when teh source code gets pushed in production the enviroment variables will have to be switched via terminal ssh
 ```
