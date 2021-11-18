@@ -6,7 +6,7 @@
 ### instruction for production
 ```
 1. clone repo into server
-2. paste in the .env_sample file teh real env variables
-3. change the neame from .env_sample to .env
+2. paste in the .env_sample file the real enviroment variables
+3. change the name from .env_sample to .env
 4. run docker
 ```
