@@ -81,7 +81,6 @@ const typeDefs = gql`
     charges_enabled: Boolean!
   }
 
-
   ########### inputs ###########
 
   input productInput {
@@ -135,7 +134,6 @@ const typeDefs = gql`
     likes: Int
   }
 
-
   input locationInput {
     type: String!
     coordinates: [Float]!
@@ -152,7 +150,6 @@ const typeDefs = gql`
     userId: ID!
     products: [ID!]!
   }
-  
 
   ########### mutations and queries ###########
   type Query {
@@ -183,7 +180,6 @@ const typeDefs = gql`
 
     #======user queries======
     login(firebaseToken: String!, id: ID!): String #jwt
-
     #======stripe queries======
     account(id: ID!): StripeUser
   }
@@ -208,8 +204,13 @@ const typeDefs = gql`
 
     #======stripe======
     stripePayment(productIDs: [ID!]!): String
-    createOrder(userId: ID!, companyId: ID!, dateLimit: Int!, pickUpHour: String!): Boolean! #all firebase vars
-    createStripeAccount(email: String!): StripeUser
+    createOrder(
+      userId: ID!
+      companyId: ID!
+      dateLimit: Int!
+      pickUpHour: String!
+    ): Boolean! #all firebase vars
+    createStripeAccount(email: String!): ID
     accountLink(accountId: ID!): String
     paymentIntent: String
   }
