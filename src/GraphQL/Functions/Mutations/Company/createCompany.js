@@ -26,8 +26,6 @@ const createCompany = async (_, { input }, { resolvers, stripe, db }) => {
       { stripe: stripe }
     );
 
-    console.log(savedCompany._id);
-
     //create company in firebase
     await db.collection("Impresa").doc(input.firebaseID).set(
       {
@@ -37,12 +35,6 @@ const createCompany = async (_, { input }, { resolvers, stripe, db }) => {
       },
       { merge: true }
     );
-
-    // await db.document(`Impresa/${input.firebaseID}`).set({
-    //   email: input.email,
-    //   stripeId: stripeId,
-    //   mongoId: savedCompany._id,
-    // });
 
     //create the jwt
     const companyToken = { id: savedCompany.firebaseID, isCompany: true };
