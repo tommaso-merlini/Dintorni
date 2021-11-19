@@ -40,8 +40,8 @@ const createCompany = async (_, { input }, { resolvers, stripe, db }) => {
     const companyToken = { id: savedCompany.firebaseID, isCompany: true };
     const accessToken = jwt.sign(companyToken, process.env.SECRET_ACCESS_TOKEN);
 
-    //!TODO
-    return accessToken; // * and stripeAccountId
+    //!TODO: it must return the accestoken and the stripeACcountId
+    return accessToken; //and stripeAccountId
   } catch (e) {
     console.log("error while creating the company");
     throw new GraphQLError(e.message);

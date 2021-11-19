@@ -193,7 +193,7 @@ const typeDefs = gql`
     removeFavourite(id: ID!): Boolean!
 
     #======company======
-    createCompany(input: companyInput!): String #returns the jwt
+    createCompany(input: companyInput!): String #returns the jwt and the stripeAccountId
     activateCompany(id: ID!): Boolean!
     disactivateCompany(id: ID!): Boolean!
     updateCompany(id: ID!, input: updateCompanyInput!): Boolean!
