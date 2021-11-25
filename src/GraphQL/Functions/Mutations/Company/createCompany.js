@@ -41,7 +41,7 @@ const createCompany = async (_, { input }, { resolvers, stripe, db }) => {
     const accessToken = jwt.sign(companyToken, process.env.SECRET_ACCESS_TOKEN);
 
     //!TODO: it must return the accestoken and the stripeACcountId
-    return accessToken; //and stripeAccountId
+    return { jwt: accessToken, stripeAccountId: stripeId };
   } catch (e) {
     console.log("error while creating the company");
     throw new GraphQLError(e.message);

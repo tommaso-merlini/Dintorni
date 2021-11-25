@@ -81,6 +81,11 @@ const typeDefs = gql`
     charges_enabled: Boolean!
   }
 
+  type StripeAuth {
+    jwt: String!
+    stripeAccountId: String!
+  }
+
   ########### inputs ###########
 
   input productInput {
@@ -193,7 +198,7 @@ const typeDefs = gql`
     removeFavourite(id: ID!): Boolean!
 
     #======company======
-    createCompany(input: companyInput!): String #returns the jwt and the stripeAccountId
+    createCompany(input: companyInput!): StripeAuth
     activateCompany(id: ID!): Boolean!
     disactivateCompany(id: ID!): Boolean!
     updateCompany(id: ID!, input: updateCompanyInput!): Boolean!

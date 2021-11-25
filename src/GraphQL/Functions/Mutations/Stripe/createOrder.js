@@ -25,7 +25,7 @@ const createOrder = async (
       cart.push(doc.data());
     });
 
-    if (cart.length === 0) throw new Error("cart must haveat least one item");
+    if (cart.length === 0) throw new Error("cart must have at least one item");
 
     //get the cashback of the user
     const cashbackDoc = await db.doc(`Cashback/${userId}`).get();
@@ -75,7 +75,7 @@ const createOrder = async (
     let code = codeProvaalph + codeNumProva;
 
     db.doc(`Cashback/${userId}`).set({
-      cashback: newCashback,
+      cb: newCashback,
     });
 
     return true;
