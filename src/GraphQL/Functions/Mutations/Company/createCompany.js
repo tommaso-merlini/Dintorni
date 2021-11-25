@@ -8,10 +8,10 @@ require("dotenv").config();
 const createCompany = async (_, { input }, { resolvers, stripe, db }) => {
   try {
     //customize companyToken
-    await admin.auth().updateUser(input.firebaseID, { displayName: "company" });
-    const prova = await admin.auth().setCustomUserClaims(input.firebaseID, {
-      company: true,
-    });
+    // await admin.auth().updateUser(input.firebaseID, { displayName: "company" });
+    // await admin.auth().setCustomUserClaims(input.firebaseID, {
+    //   company: true,
+    // });
 
     //create company in mongoDB
     const company = await new Company({ ...input, favourites: 0, likes: 0 });
@@ -39,6 +39,8 @@ const createCompany = async (_, { input }, { resolvers, stripe, db }) => {
     //create the jwt
     const companyToken = { id: savedCompany.firebaseID, isCompany: true };
     const accessToken = jwt.sign(companyToken, process.env.SECRET_ACCESS_TOKEN);
+
+    console.log(accessToken);
 
     //!TODO: it must return the accestoken and the stripeACcountId
     return { jwt: accessToken, stripeAccountId: stripeId };

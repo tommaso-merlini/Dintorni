@@ -1,7 +1,32 @@
 const { GraphQLError } = require("graphql");
 
-const paymentIntent = async (_, {}, { stripe }) => {
+const paymentIntent = async (
+  _,
+  { accountId, firebaseUserId, companyId },
+  { stripe, db }
+) => {
   try {
+    //getting the right payment details from firebse
+    const cart = [];
+
+    const cartCollection = await db
+      .collection(`Cart/${firebaseUserId}/${companyId}`)
+      .get();
+    cartCollection.forEach((doc) => {
+      cart.push(doc.data());
+    });
+
+    console.log(`cart =>`, cart);
+
+    //get the payment infos (amount, cashback)
+    var total = 0;
+    cart.map((item) => {
+      total += item.price * item.quantity;
+    });
+
+    console.log(`total: ${total}`);
+
+    //creating the payment intent
     const paymentIntent = await stripe.paymentIntents.create(
       {
         payment_method_types: ["card"],
@@ -10,7 +35,7 @@ const paymentIntent = async (_, {}, { stripe }) => {
         application_fee_amount: 10,
       },
       {
-        stripeAccount: "acct_1JaOy12e2xMzVpTZ",
+        stripeAccount: accountId,
       }
     );
 

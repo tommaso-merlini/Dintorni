@@ -86,6 +86,17 @@ const typeDefs = gql`
     stripeAccountId: String!
   }
 
+  type PaymentIntent {
+    clientSecret: String!
+    total: Float!
+    totalToPay: Float!
+    accumulatedCashback: Float!
+    usedCb: Float!
+    JWTCb: String!
+    accumulatedCb: Float!
+    orderCode: String!
+  }
+
   ########### inputs ###########
 
   input productInput {
@@ -111,7 +122,7 @@ const typeDefs = gql`
     phone: String!
     location: locationInput!
     cashbackInfo: cashbackInfoInput!
-    firebaseID: String!
+    firebaseID: ID!
   }
 
   input updateProductInput {
@@ -191,7 +202,7 @@ const typeDefs = gql`
 
   type Mutation {
     #======products======
-    createProduct(input: productInput!): ID
+    createProduct(input: productInput!, firebaseCompanyId: String!): ID
     deleProduct(id: ID!, companyID: ID!): Boolean!
     updateProduct(id: ID!, input: updateProductInput!): Boolean!
     addFavourite(id: ID!): Boolean!
@@ -217,7 +228,11 @@ const typeDefs = gql`
     ): Boolean! #all firebase vars
     createStripeAccount(email: String!): ID
     accountLink(accountId: ID!): String
-    paymentIntent: String
+    paymentIntent(
+      accountId: ID!
+      firebaseUserId: ID!
+      companyId: ID!
+    ): PaymentIntent
   }
 `;
 

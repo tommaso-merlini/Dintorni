@@ -15,7 +15,7 @@ require("../helpers/initMongoDB");
 
 //=========firebase=========
 const checkAuth = require("../firebase/checkAuth");
-const { firebase, db } = require("../firebase/firebase");
+const { firebase, db, admin } = require("../firebase/firebase");
 
 //=========stripe=========
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
@@ -23,12 +23,12 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 //=========jsonwebtoken=========
 const expressJwt = require("express-jwt");
 app.use(
-  express.json(),
-  expressJwt({
-    secret: process.env.SECRET_ACCESS_TOKEN,
-    credentialsRequired: false,
-    algorithms: ["HS256"],
-  })
+  express.json()
+  // expressJwt({
+  //   secret: process.env.SECRET_ACCESS_TOKEN,
+  //   credentialsRequired: false,
+  //   algorithms: ["HS256"],
+  // })
 );
 
 //=====misc=====
@@ -83,7 +83,14 @@ async function startServer() {
 
   //=========apollo server=========
   const context = ({ req }) => {
-    return { user: req.user, stripe, firebase, db, resolvers }; //* context variables for apollo
+    return {
+      header: req.headers.authorization,
+      stripe,
+      firebase,
+      db,
+      resolvers,
+      admin,
+    }; //* context variables for apollo
   };
 
   const apolloserver = new ApolloServer({

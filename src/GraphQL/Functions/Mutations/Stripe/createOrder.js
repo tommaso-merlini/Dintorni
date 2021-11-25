@@ -7,9 +7,6 @@ const createOrder = async (
   { resolvers, user }
 ) => {
   try {
-    console.log(userId);
-    console.log(user);
-
     authenticateToken(user.id, userId);
 
     //get the cart
