@@ -2,6 +2,7 @@
 > ip: 165.22.87.127
 > 
 `.env_sample` is not the real .env file, just a sample :D
+
 `token: ` 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
 
 ### instruction for production
