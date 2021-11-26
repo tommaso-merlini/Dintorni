@@ -2,7 +2,7 @@ const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const useDel = require("../../../../Redis/useDel/useDel");
 const { GraphQLError } = require("graphql");
 
-const updateCompany = async (_, { id, input }) => {
+const updateShop = async (_, { id, input }) => {
   try {
     await Shop.updateOne({ _id: id }, input);
     //delete the shop from redis
@@ -25,4 +25,4 @@ const updateCompany = async (_, { id, input }) => {
   }
 };
 
-module.exports = updateCompany;
+module.exports = updateShop;

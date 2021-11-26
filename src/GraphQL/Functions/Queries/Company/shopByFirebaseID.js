@@ -1,7 +1,7 @@
 const { GraphQLError } = require("graphql");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 
-const companyByFirebaseID = async (_, { firebaseID }) => {
+const shopByFirebaseID = async (_, { firebaseID }) => {
   try {
     //get the shop from mongodb if not cached
     const shop = await Shop.findOne({ firebaseID: firebaseID });
@@ -21,4 +21,4 @@ const companyByFirebaseID = async (_, { firebaseID }) => {
   }
 };
 
-module.exports = companyByFirebaseID;
+module.exports = shopByFirebaseID;

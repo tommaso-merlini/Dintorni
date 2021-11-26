@@ -3,7 +3,7 @@ const Product = require("../../../../Schema/Product/Product.model");
 const useDel = require("../../../../Redis/useDel/useDel");
 const { GraphQLError } = require("graphql");
 
-const disactivateCompany = async (_, { id }) => {
+const disactivateShop = async (_, { id }) => {
   try {
     await Shop.updateOne({ _id: id }, { isActive: false }, { upsert: true });
     await Product.updateMany(
@@ -28,4 +28,4 @@ const disactivateCompany = async (_, { id }) => {
   }
 };
 
-module.exports = disactivateCompany;
+module.exports = disactivateShop;

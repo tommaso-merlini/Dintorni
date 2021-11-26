@@ -2,7 +2,7 @@ const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const MongoFilter = require("../../../MongoFilter/MongoFilter");
 const { GraphQLError } = require("graphql");
 
-const closeCompanies = async (
+const closeShops = async (
   _,
   { location, category, cashBack, range, limit, offset },
   __,
@@ -68,4 +68,4 @@ const closeCompanies = async (
   }
 };
 
-module.exports = closeCompanies;
+module.exports = closeShops;

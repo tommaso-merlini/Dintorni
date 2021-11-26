@@ -2,7 +2,7 @@ const { GraphQLError } = require("graphql");
 const MongoFilter = require("../../../MongoFilter/MongoFilter");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 
-const favouritesCompanies = async (_, { ids }, __, info) => {
+const favouriteShops = async (_, { ids }, __, info) => {
   try {
     //get the requested fields and store them in a filter const
     const filter = MongoFilter(info);
@@ -28,4 +28,4 @@ const favouritesCompanies = async (_, { ids }, __, info) => {
   }
 };
 
-module.exports = favouritesCompanies;
+module.exports = favouriteShops;

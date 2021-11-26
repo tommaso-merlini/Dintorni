@@ -2,7 +2,7 @@ const { GraphQLError } = require("graphql");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const Product = require("../../../../Schema/Product/Product.model");
 
-const activateCompany = async (_, { id }) => {
+const activateShop = async (_, { id }) => {
   try {
     await Shop.updateOne({ _id: id }, { isActive: true }, { upsert: true });
     await Product.updateMany(
@@ -18,4 +18,4 @@ const activateCompany = async (_, { id }) => {
   }
 };
 
-module.exports = activateCompany;
+module.exports = activateShop;

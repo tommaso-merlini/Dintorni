@@ -3,7 +3,7 @@ const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
 const { GraphQLError } = require("graphql");
 
-const company = async (_, { id }) => {
+const shop = async (_, { id }) => {
   try {
     //check if the shop is cached
     const redisShop = await useGet(`shop/${id}`);
@@ -30,4 +30,4 @@ const company = async (_, { id }) => {
   }
 };
 
-module.exports = company;
+module.exports = shop;

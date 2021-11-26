@@ -3,7 +3,7 @@ const { GraphQLError } = require("graphql");
 
 const MongoFilter = require("../../../MongoFilter/MongoFilter");
 
-const companies = async (_, { ids }, __, info) => {
+const shops = async (_, { ids }, __, info) => {
   try {
     const filter = MongoFilter(info);
     const shops = await Shop.find({ _id: { $in: ids } }, filter);
@@ -15,4 +15,4 @@ const companies = async (_, { ids }, __, info) => {
   }
 };
 
-module.exports = companies;
+module.exports = shops;

@@ -3,7 +3,7 @@ const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
 const { GraphQLError } = require("graphql");
 
-const companyProduct = async ({ shopID }) => {
+const shopProduct = async ({ shopID }) => {
   try {
     const redisQuery = `shop/${shopID}`;
 
@@ -26,4 +26,4 @@ const companyProduct = async ({ shopID }) => {
   }
 };
 
-module.exports = companyProduct;
+module.exports = shopProduct;
