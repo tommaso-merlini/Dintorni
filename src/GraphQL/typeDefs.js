@@ -177,10 +177,10 @@ const typeDefs = gql`
     ): [Product]
 
     #======shop queries======
-    company(id: ID!): Shop
-    companies(ids: [ID!]!): [Shop!]
-    companyByFirebaseID(firebaseID: String!): Shop
-    closeCompanies(
+    shop(id: ID!): Shop
+    shops(ids: [ID!]!): [Shop!]
+    shopByFirebaseID(firebaseID: String!): Shop
+    closeShops(
       location: locationInput!
       category: String
       cashBack: Int
@@ -188,8 +188,7 @@ const typeDefs = gql`
       limit: Int!
       offset: Int!
     ): [LightShop!]
-    favouritesCompanies(ids: [ID!]!): [LightShop!]
-
+    favouriteShops(ids: [ID!]!): [LightShop!] #//TODO: change the function name in the client (favouritesShops => favouriteShops)
     #======user queries======
     login(firebaseToken: String!, id: ID!): String #jwt
     #======stripe queries======
@@ -206,9 +205,9 @@ const typeDefs = gql`
 
     #======shop======
     createShop(input: shopInput!): Boolean!
-    activateCompany(id: ID!): Boolean!
-    disactivateCompany(id: ID!): Boolean!
-    updateCompany(id: ID!, input: updateShopInput!): Boolean!
+    activateShop(id: ID!): Boolean!
+    disactivateShop(id: ID!): Boolean!
+    updateShop(id: ID!, input: updateShopInput!): Boolean!
 
     #======like======
     addLike(id: ID!, type: String!): Boolean!
@@ -223,7 +222,7 @@ const typeDefs = gql`
       pickUpHour: String!
     ): Boolean! #all firebase vars
     createStripeAccount(email: String!): ID
-    accountLink(accountId: ID!): String
+    accountLink(accountID: ID!): String #//TODO: change the input variables in the client (accountId => accountID)
     paymentIntent( #//TODO: change the input variables in the client (accountId => accountID)
       accountID: ID!
       firebaseUserID: ID!
