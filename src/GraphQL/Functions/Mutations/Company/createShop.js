@@ -2,10 +2,9 @@ const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const { admin, firebase } = require("../../../../firebase/firebase");
 const jwt = require("jsonwebtoken");
 const { GraphQLError } = require("graphql");
-const { db } = require("../../../../Schema/Company/Company.model");
 require("dotenv").config();
 
-const createShop = async (_, { input }, { resolvers, stripe, db }) => {
+const createShop = async (_, { input }, { resolvers, stripe }) => {
   try {
     //customize companyToken
     // await admin.auth().updateUser(input.firebaseID, { displayName: "company" });

@@ -1,4 +1,4 @@
-const Company = require("../../../../Schema/Company/Company.model");
+const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
 const { GraphQLError } = require("graphql");
@@ -14,10 +14,10 @@ const company = async (_, { id }) => {
     //get the company from mongodb if not cached
     const company = await Company.findById(id);
 
-    if(!company)throw new Error("this company does not exist");
+    if (!company) throw new Error("this company does not exist");
 
     //if the company is not active throw an error
-    if(!company.isActive) throw new Error("company is not active");
+    if (!company.isActive) throw new Error("company is not active");
 
     //set company in the cache
     await useSet(`company/${id}`, company);
@@ -27,7 +27,7 @@ const company = async (_, { id }) => {
   } catch (e) {
     console.log("error while fetching the company");
     throw new GraphQLError(e.message);
-    return null
+    return null;
   }
 };
 

@@ -1,5 +1,5 @@
 const Product = require("../../../../Schema/Product/Product.model");
-const Company = require("../../../../Schema/Company/Company.model");
+const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const authenticateToken = require("../../../../JWT/AuthenticateToken");
 const { GraphQLError } = require("graphql");
 

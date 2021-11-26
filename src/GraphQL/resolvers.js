@@ -1,4 +1,4 @@
-const createShop = require("./Functions/Mutations/Company/Shop/createShop");
+const createShop = require("./Functions/Mutations/Company/createShop");
 const createProduct = require("./Functions/Mutations/Product/createProduct");
 const deleteProduct = require("./Functions/Mutations/Product/deleteProduct");
 const closeCompanies = require("./Functions/Queries/Company/closeCompanies");
