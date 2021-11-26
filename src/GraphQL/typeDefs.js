@@ -81,11 +81,6 @@ const typeDefs = gql`
     charges_enabled: Boolean!
   }
 
-  type StripeAuth {
-    jwt: String!
-    stripeAccountId: String!
-  }
-
   type PaymentIntent {
     clientSecret: String!
     total: Float!
@@ -108,11 +103,11 @@ const typeDefs = gql`
     companyID: ID!
   }
 
-  input companyInput {
+  input shopInput {
     name: String!
     address: String!
     categories: [String!]!
-    email: String!
+    jwt: String! #contains the email and other things
     openDays: String!
     image: String!
     openHours: String!
@@ -209,7 +204,7 @@ const typeDefs = gql`
     removeFavourite(id: ID!): Boolean!
 
     #======company======
-    createCompany(input: companyInput!): StripeAuth
+    createShop(input: shopInput!): Boolean!
     activateCompany(id: ID!): Boolean!
     disactivateCompany(id: ID!): Boolean!
     updateCompany(id: ID!, input: updateCompanyInput!): Boolean!

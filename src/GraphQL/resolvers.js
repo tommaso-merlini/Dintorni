@@ -1,9 +1,4 @@
-const Company = require("../Schema/Company/Company.model");
-const Product = require("../Schema/Product/Product.model");
-const User = require("../Schema/User.model");
-const Order = require("../Schema/Order.model");
-
-const createCompany = require("./Functions/Mutations/Company/createCompany");
+const createShop = require("./Functions/Mutations/Company/Shop/createShop");
 const createProduct = require("./Functions/Mutations/Product/createProduct");
 const deleteProduct = require("./Functions/Mutations/Product/deleteProduct");
 const closeCompanies = require("./Functions/Queries/Company/closeCompanies");
@@ -21,7 +16,7 @@ const updateCompany = require("./Functions/Mutations/Company/updateCompany");
 const updateProduct = require("./Functions/Mutations/Product/updateProduct");
 const companyByFirebaseID = require("./Functions/Queries/Company/companyByFirebaseID");
 const addLike = require("./Functions/Mutations/Like/addLike");
-const removeLike = require("./Functions/Mutations/Like/removeLike")
+const removeLike = require("./Functions/Mutations/Like/removeLike");
 const addFavourite = require("./Functions/Mutations/Company/addFavourite");
 const removeFavourite = require("./Functions/Mutations/Company/removeFavourite");
 const favouritesCompanies = require("./Functions/Queries/Company/favouritesCompanies");
@@ -31,7 +26,6 @@ const createStripeAccount = require("./Functions/Mutations/Stripe/createStripeAc
 const accountLink = require("./Functions/Mutations/Stripe/accountLink");
 const account = require("./Functions/Queries/Stripe/account");
 const paymentIntent = require("./Functions/Mutations/Stripe/paymentIntent");
-
 
 require("dotenv").config();
 
@@ -47,14 +41,14 @@ const resolvers = {
     closeCompanies: closeCompanies,
     favouritesCompanies: favouritesCompanies,
     login: login,
-    account: account
+    account: account,
   },
 
   Mutation: {
     createProduct: createProduct,
     deleProduct: deleteProduct,
     updateProduct: updateProduct,
-    createCompany: createCompany,
+    createShop: createShop,
     activateCompany: activateCompany,
     disactivateCompany: disactivateCompany,
     updateCompany: updateCompany,
@@ -66,7 +60,7 @@ const resolvers = {
     createOrder: createOrder,
     createStripeAccount: createStripeAccount,
     accountLink: accountLink,
-    paymentIntent: paymentIntent
+    paymentIntent: paymentIntent,
   },
 
   Company: {
