@@ -7,18 +7,18 @@ const Product = require("../../../../Schema/Product/Product.model");
 const addLike = async (_, { id, type }) => {
   try {
     switch (type) {
-      case "company":
+      case "shop":
         //like on mongodb
-        await Company.updateOne({ _id: id }, { $inc: { likes: 1 } });
+        await Shop.updateOne({ _id: id }, { $inc: { likes: 1 } });
 
         /*
-                check if the company is stored in redis,
+                check if the shop is stored in redis,
                 if it is then update it with like + 1 
                 */
-        var companyRedis = await useGet(`company/${id}`);
-        if (companyRedis) {
-          companyRedis.likes = companyRedis.likes + 1;
-          useSet(`company/${id}`, companyRedis);
+        var redisShop = await useGet(`shop/${id}`);
+        if (redisShop) {
+          redisShop.likes = redisShop.likes + 1;
+          useSet(`shop/${id}`, redisShop);
         }
         break;
 
@@ -39,7 +39,7 @@ const addLike = async (_, { id, type }) => {
         break;
       default:
         throw new Error(
-          `type ${type} does not exists, try with company or product`
+          `type ${type} does not exists, try with shop or product`
         );
     }
     return true;

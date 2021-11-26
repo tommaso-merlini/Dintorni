@@ -1,5 +1,3 @@
-const useGet = require("../../../../Redis/useGet/useGet");
-const useSet = require("../../../../Redis/useSet/useSet");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const MongoFilter = require("../../../MongoFilter/MongoFilter");
 const { GraphQLError } = require("graphql");
@@ -32,7 +30,7 @@ const closeCompanies = async (
       return cashBack;
     };
 
-    var closeCompanies = await Company.aggregate([
+    var closeShops = await Shop.aggregate([
       {
         $geoNear: {
           near: {
@@ -60,11 +58,11 @@ const closeCompanies = async (
       { $project: filter },
     ]);
 
-    console.log(closeCompanies);
+    console.log(closeShops);
 
-    return closeCompanies;
+    return closeShops;
   } catch (e) {
-    console.log("error while fetching the close companies");
+    console.log("error while fetching the close shops");
     throw new GraphQLError(e.message);
     return null;
   }

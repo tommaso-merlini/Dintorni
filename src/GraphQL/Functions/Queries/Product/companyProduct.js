@@ -3,24 +3,24 @@ const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
 const { GraphQLError } = require("graphql");
 
-const companyProduct = async ({ companyID }) => {
+const companyProduct = async ({ shopID }) => {
   try {
-    const redisQuery = `company/${companyID}`;
+    const redisQuery = `shop/${shopID}`;
 
-    // check if the companies are cached
-    const redisCompany = await useGet(redisQuery);
+    // check if the shop are cached
+    const redisShop = await useGet(redisQuery);
 
-    //if the company is cached return it
-    if (redisCompany) return redisCompany;
+    //if the shop is cached return it
+    if (redisShop) return redisShop;
 
-    const company = await Company.findById(companyID);
+    const shop = await Shop.findById(shopID);
 
-    if (!company.isActive) throw new Error("company is not active");
+    if (!shop.isActive) throw new Error("shop is not active");
 
-    await useSet(redisQuery, company);
-    return company;
+    await useSet(redisQuery, shop);
+    return shop;
   } catch (e) {
-    console.log("error while fetching the company product");
+    console.log("error while fetching the shop product");
     throw new GraphQLError(e.message);
     return null;
   }

@@ -5,14 +5,14 @@ const useSet = require("../../../../Redis/useSet/useSet");
 
 const removeFavourite = async (_, { id }) => {
   try {
-    await Company.updateOne(
+    await Shop.updateOne(
       { _id: id, favourites: { $gte: 1 } }, //favourites can't go negative
       { $inc: { favourites: -1 } }
     );
-    var companyRedis = await useGet(`company/${id}`);
-    if (companyRedis && companyRedis.favourites >= 1) {
-      companyRedis.favourites = companyRedis.favourites - 1;
-      useSet(`company/${id}`, companyRedis);
+    var redisShop = await useGet(`shop/${id}`);
+    if (redisShop && redisShop.favourites >= 1) {
+      redisShop.favourites = redisShop.favourites - 1;
+      useSet(`shop/${id}`, redisShop);
     }
     return true;
   } catch (e) {

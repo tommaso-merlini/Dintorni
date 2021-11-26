@@ -6,10 +6,10 @@ const MongoFilter = require("../../../MongoFilter/MongoFilter");
 const companies = async (_, { ids }, __, info) => {
   try {
     const filter = MongoFilter(info);
-    const companies = await Company.find({ _id: { $in: ids } }, filter);
-    return companies;
+    const shops = await Shop.find({ _id: { $in: ids } }, filter);
+    return shops;
   } catch (e) {
-    console.log("something went wrong while searching for the companies");
+    console.log("something went wrong while searching for the shops");
     throw new GraphQLError(e.message);
     return null;
   }

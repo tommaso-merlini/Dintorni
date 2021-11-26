@@ -5,10 +5,10 @@ const useDel = require("../../../../Redis/useDel/useDel");
 const authenticateToken = require("../../../../JWT/AuthenticateToken");
 const { GraphQLError } = require("graphql");
 
-const deleteProduct = async (_, { id, companyID }, { user }) => {
+const deleteProduct = async (_, { id, shopID }, { user }) => {
   try {
-    const company = await Company.findById(companyID);
-    authenticateToken(user.id, company.firebaseID);
+    const shop = await Shop.findById(shopID);
+    authenticateToken(user.id, shop.firebaseID);
     await Product.findByIdAndDelete(id);
     await useDel(`product/${id}`);
     return true;

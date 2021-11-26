@@ -7,15 +7,15 @@ const useSet = require("../../../../Redis/useSet/useSet");
 const removeLike = async (_, { id, type }) => {
   try {
     switch (type) {
-      case "company":
-        await Company.updateOne(
+      case "shop":
+        await Shop.updateOne(
           { _id: id, likes: { $gte: 1 } }, //likes can't go negative
           { $inc: { likes: -1 } }
         );
-        var companyRedis = await useGet(`company/${id}`);
-        if (companyRedis && companyRedis.likes >= 1) {
-          companyRedis.likes = companyRedis.likes - 1;
-          useSet(`company/${id}`, companyRedis);
+        var redisShop = await useGet(`shop/${id}`);
+        if (redisShop && redisShop.likes >= 1) {
+          redisShop.likes = redisShop.likes - 1;
+          useSet(`shop/${id}`, redisShop);
         }
         break;
       case "product":
@@ -31,7 +31,7 @@ const removeLike = async (_, { id, type }) => {
         break;
       default:
         throw new Error(
-          `type ${type} does not exists, try with company or product`
+          `type ${type} does not exists, try with shop or product`
         );
     }
     return true;

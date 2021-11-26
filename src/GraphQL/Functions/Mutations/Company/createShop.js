@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const createShop = async (_, { input }, { resolvers, stripe }) => {
   try {
+    //TODO: check this commented code
     //customize companyToken
     // await admin.auth().updateUser(input.firebaseID, { displayName: "company" });
     // await admin.auth().setCustomUserClaims(input.firebaseID, {
@@ -27,7 +28,7 @@ const createShop = async (_, { input }, { resolvers, stripe }) => {
 
     //create shop in firebase
     await db.collection("Impresa").doc(input.firebaseID).set(
-      //TODO: create the shop db
+      //TODO: create the shop db on firebase
       {
         email: input.email,
         stripeId: stripeId,

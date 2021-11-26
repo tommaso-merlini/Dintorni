@@ -5,12 +5,12 @@ const useSet = require("../../../../Redis/useSet/useSet");
 
 const addFavourite = async (_, { id }) => {
   try {
-    await Company.updateOne({ _id: id }, { $inc: { favourites: 1 } });
-    var companyRedis = await useGet(`company/${id}`);
-    if (companyRedis) {
-      companyRedis.favourites = companyRedis.favourites + 1;
-      useSet(`company/${id}`, companyRedis);
-      console.log(companyRedis);
+    await Shop.updateOne({ _id: id }, { $inc: { favourites: 1 } });
+    var redisShop = await useGet(`shop/${id}`);
+    if (redisShop) {
+      redisShop.favourites = redisShop.favourites + 1;
+      useSet(`shop/${id}`, redisShop);
+      console.log(redisShop);
     }
     return true;
   } catch (e) {

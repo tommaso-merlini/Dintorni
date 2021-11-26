@@ -5,7 +5,7 @@ const { GraphQLError } = require("graphql");
 
 const createProduct = async (
   _,
-  { input, firebaseCompanyId },
+  { input, firebaseShopId },
   { header, admin }
 ) => {
   try {
@@ -20,18 +20,19 @@ const createProduct = async (
     //if the user authenticates
     // authenticateToken(token.uid, firebaseCompanyId);
 
-    authenticateToken(token.uid, firebaseCompanyId);
+    authenticateToken(token.uid, firebaseShopId);
 
-    //get the company location
-    const company = await Company.findById(input.companyID);
+    //get the shop => it will be reusable for some details
+    //TODO: add a filter to this request
+    const shop = await Shop.findById(input.shopID);
 
     //if the user is logged in and the ids match
     const product = await new Product({
       ...input,
-      location: company.location,
-      companyName: company.name,
+      location: shop.location,
+      ShopName: shop.name,
       likes: 0,
-      isActive: company.isActive,
+      isActive: shop.isActive,
     });
     const savedProduct = await product.save();
 

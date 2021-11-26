@@ -4,15 +4,15 @@ const Product = require("../../../../Schema/Product/Product.model");
 
 const activateCompany = async (_, { id }) => {
   try {
-    await Company.updateOne({ _id: id }, { isActive: true }, { upsert: true });
+    await Shop.updateOne({ _id: id }, { isActive: true }, { upsert: true });
     await Product.updateMany(
-      { companyID: id },
+      { shopID: id },
       { isActive: true },
       { upsert: true }
     );
     return true;
   } catch (e) {
-    console.log("error while activating the company");
+    console.log("error while activating the shop");
     throw new GraphQLError(e.message);
     return false;
   }

@@ -7,26 +7,23 @@ const favouritesCompanies = async (_, { ids }, __, info) => {
     //get the requested fields and store them in a filter const
     const filter = MongoFilter(info);
 
-    var favouritesCompanies = await Company.find(
-      { _id: ids, isActive: true },
-      filter
-    );
+    var favouriteShops = await Shop.find({ _id: ids, isActive: true }, filter);
 
-    favouritesCompanies.map((company) => {
-      if (!company) {
-        favouritesCompanies.splice(favouritesCompanies.indexOf(company), 1);
+    favouriteShops.map((shop) => {
+      if (!shop) {
+        favouriteShops.splice(favouriteShops.indexOf(company), 1);
       }
     });
 
-    if (favouritesCompanies.length === 0) {
+    if (favouriteShops.length === 0) {
       throw new Error(
-        "all the favorites companies are either not active or non-existing"
+        "all the favorite shops are either not active or non-existing"
       );
     }
 
-    return favouritesCompanies;
+    return favouriteShops;
   } catch (e) {
-    console.log("error while fetching the favourites companies");
+    console.log("error while fetching the favourite shops");
     throw new GraphQLError(e.message);
   }
 };

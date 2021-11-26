@@ -5,24 +5,24 @@ const { GraphQLError } = require("graphql");
 
 const disactivateCompany = async (_, { id }) => {
   try {
-    await Company.updateOne({ _id: id }, { isActive: false }, { upsert: true });
+    await Shop.updateOne({ _id: id }, { isActive: false }, { upsert: true });
     await Product.updateMany(
-      { companyID: id },
+      { shopID: id },
       { isActive: false },
       { upsert: true }
     );
 
-    const products = await Product.find({ companyID: id });
+    const products = await Product.find({ shopID: id });
 
-    //delete all the products form the cache where the companyID is equal to the id
+    //delete all the products form the cache where the shopID is equal to the id
     for (i = 0; i < products.length; i++) {
       useDel(`product/${products[i]._id}`);
     }
-    //delete the company form the cache
-    useDel(`company/${id}`);
+    //delete the shop form the cache
+    useDel(`shop/${id}`);
     return true;
   } catch (e) {
-    console.log("error while disactivating the company");
+    console.log("error while disactivating the shop");
     throw new GraphQLError(e.message);
     return false;
   }
