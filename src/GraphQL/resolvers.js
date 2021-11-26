@@ -63,12 +63,12 @@ const resolvers = {
     paymentIntent: paymentIntent,
   },
 
-  Company: {
+  Shop: {
     products: productsCompany,
   },
 
   Product: {
-    company: companyProduct,
+    shop: companyProduct,
   },
 };
 

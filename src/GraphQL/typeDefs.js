@@ -10,9 +10,9 @@ const typeDefs = gql`
     images: [String!]!
     location: Location!
     description: String!
-    companyID: ID!
-    companyName: String!
-    company: Company!
+    shopID: ID!
+    shopName: String!
+    shop: Shop!
     likes: Int!
     isActive: Boolean!
   }
@@ -22,14 +22,14 @@ const typeDefs = gql`
     name: String!
     price: Float!
     weight: Float!
-    companyID: ID!
+    shopID: ID!
     productID: ID!
-    company: Company!
+    shop: Shop!
     isActive: Boolean!
-    companyName: String!
+    shopName: String!
   }
 
-  type Company {
+  type Shop {
     _id: ID!
     name: String!
     address: String!
@@ -50,7 +50,7 @@ const typeDefs = gql`
     products(limit: Int!, offset: Int!): [Product!]!
   }
 
-  type LightCompany {
+  type LightShop {
     _id: ID!
     name: String!
     categories: [String!]!
@@ -59,7 +59,7 @@ const typeDefs = gql`
     isActive: Boolean!
     location: Location!
     cashbackInfo: CashbackInfo!
-    companyID: ID!
+    shopID: ID!
     likes: Int!
   }
 
@@ -100,7 +100,7 @@ const typeDefs = gql`
     weight: Float!
     images: [String!]!
     description: String
-    companyID: ID!
+    shopID: ID!
   }
 
   input shopInput {
@@ -126,10 +126,10 @@ const typeDefs = gql`
     weight: Float
     images: [String!]
     description: String
-    companyID: ID
+    shopID: ID
   }
 
-  input updateCompanyInput {
+  input updateShopInput {
     name: String
     address: String
     categories: [String!]
@@ -156,9 +156,10 @@ const typeDefs = gql`
     minPayment: Int!
   }
 
+  #//TODO: change the input variables in the client (shopId => shopID)
   input orderInput {
-    companyId: ID!
-    userId: ID!
+    shopID: ID!
+    userID: ID!
     products: [ID!]!
   }
 
@@ -175,10 +176,10 @@ const typeDefs = gql`
       offset: Int!
     ): [Product]
 
-    #======company queries======
-    company(id: ID!): Company
-    companies(ids: [ID!]!): [Company!]
-    companyByFirebaseID(firebaseID: String!): Company
+    #======shop queries======
+    company(id: ID!): Shop
+    companies(ids: [ID!]!): [Shop!]
+    companyByFirebaseID(firebaseID: String!): Shop
     closeCompanies(
       location: locationInput!
       category: String
@@ -186,8 +187,8 @@ const typeDefs = gql`
       range: Int!
       limit: Int!
       offset: Int!
-    ): [LightCompany!]
-    favouritesCompanies(ids: [ID!]!): [LightCompany!]
+    ): [LightShop!]
+    favouritesCompanies(ids: [ID!]!): [LightShop!]
 
     #======user queries======
     login(firebaseToken: String!, id: ID!): String #jwt
@@ -197,17 +198,17 @@ const typeDefs = gql`
 
   type Mutation {
     #======products======
-    createProduct(input: productInput!, firebaseCompanyId: String!): ID
-    deleProduct(id: ID!, companyID: ID!): Boolean!
+    createProduct(input: productInput!, firebaseShopId: String!): ID
+    deleProduct(id: ID!, shopID: ID!): Boolean!
     updateProduct(id: ID!, input: updateProductInput!): Boolean!
     addFavourite(id: ID!): Boolean!
     removeFavourite(id: ID!): Boolean!
 
-    #======company======
+    #======shop======
     createShop(input: shopInput!): Boolean!
     activateCompany(id: ID!): Boolean!
     disactivateCompany(id: ID!): Boolean!
-    updateCompany(id: ID!, input: updateCompanyInput!): Boolean!
+    updateCompany(id: ID!, input: updateShopInput!): Boolean!
 
     #======like======
     addLike(id: ID!, type: String!): Boolean!
@@ -215,18 +216,18 @@ const typeDefs = gql`
 
     #======stripe======
     stripePayment(productIDs: [ID!]!): String
-    createOrder(
-      userId: ID!
-      companyId: ID!
+    createOrder( #//TODO: change the input variables in the client (userId => userID)
+      userID: ID!
+      shopID: ID!
       dateLimit: Int!
       pickUpHour: String!
     ): Boolean! #all firebase vars
     createStripeAccount(email: String!): ID
     accountLink(accountId: ID!): String
-    paymentIntent(
-      accountId: ID!
-      firebaseUserId: ID!
-      companyId: ID!
+    paymentIntent( #//TODO: change the input variables in the client (accountId => accountID)
+      accountID: ID!
+      firebaseUserID: ID!
+      shopID: ID!
     ): PaymentIntent
   }
 `;
