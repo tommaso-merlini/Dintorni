@@ -1,6 +1,4 @@
 const Product = require("../../../../Schema/Product/Product.model");
-const useGet = require("../../../../Redis/useGet/useGet");
-const useSet = require("../../../../Redis/useSet/useSet");
 const MongoFilter = require("../../../MongoFilter/MongoFilter");
 const { GraphQLError } = require("graphql");
 

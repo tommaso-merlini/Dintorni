@@ -1,8 +1,5 @@
-//const client = require("../redis");
-
-const useGet = async (key) => {
+const useGet = async (key, client) => {
   try {
-    if (!client) throw new Error("redis client is not activated ");
     //check if the request is cached
     const request = await client.getAsync(key);
     //if the request is already cached return it

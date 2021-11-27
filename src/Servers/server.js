@@ -74,8 +74,8 @@ const limiter = rateLimit({
 //  apply to all requests
 app.use(limiter);
 
-//redis
-//const redis = require("../Redis/redis");
+//redis functions
+const client = require("../Redis/redis");
 
 //!======server instance======
 
@@ -93,6 +93,7 @@ async function startServer() {
       db,
       resolvers,
       admin,
+      client,
     }; //* context variables for apollo
   };
 

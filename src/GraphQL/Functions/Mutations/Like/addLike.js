@@ -4,7 +4,7 @@ const useSet = require("../../../../Redis/useSet/useSet");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const Product = require("../../../../Schema/Product/Product.model");
 
-const addLike = async (_, { id, type }) => {
+const addLike = async (_, { id, type }, { client }) => {
   try {
     switch (type) {
       case "shop":
@@ -15,10 +15,10 @@ const addLike = async (_, { id, type }) => {
                 check if the shop is stored in redis,
                 if it is then update it with like + 1 
                 */
-        var redisShop = await useGet(`shop/${id}`);
+        var redisShop = await useGet(`shop/${id}`, client);
         if (redisShop) {
           redisShop.likes = redisShop.likes + 1;
-          useSet(`shop/${id}`, redisShop);
+          useSet(`shop/${id}`, redisShop, client);
         }
         break;
 
@@ -30,10 +30,10 @@ const addLike = async (_, { id, type }) => {
                 check if the product is stored in redis,
                 if it is then update it with like + 1 
                 */
-        var productRedis = await useGet(`product/${id}`);
+        var productRedis = await useGet(`product/${id}`, client);
         if (productRedis) {
           productRedis.likes = productRedis.likes + 1;
-          useSet(`product/${id}`, productRedis);
+          useSet(`product/${id}`, productRedis, client);
         }
 
         break;

@@ -4,7 +4,7 @@ const Product = require("../../../../Schema/Product/Product.model");
 const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
 
-const removeLike = async (_, { id, type }) => {
+const removeLike = async (_, { id, type }, { client }) => {
   try {
     switch (type) {
       case "shop":
@@ -12,10 +12,10 @@ const removeLike = async (_, { id, type }) => {
           { _id: id, likes: { $gte: 1 } }, //likes can't go negative
           { $inc: { likes: -1 } }
         );
-        var redisShop = await useGet(`shop/${id}`);
+        var redisShop = await useGet(`shop/${id}`, client);
         if (redisShop && redisShop.likes >= 1) {
           redisShop.likes = redisShop.likes - 1;
-          useSet(`shop/${id}`, redisShop);
+          useSet(`shop/${id}`, redisShop, client);
         }
         break;
       case "product":
@@ -23,10 +23,10 @@ const removeLike = async (_, { id, type }) => {
           { _id: id, likes: { $gte: 1 } }, //likes can't go negative
           { $inc: { likes: -1 } }
         );
-        var productRedis = await useGet(`product/${id}`);
+        var productRedis = await useGet(`product/${id}`, client);
         if (productRedis && productRedis.likes >= 1) {
           productRedis.likes = productRedis.likes - 1;
-          useSet(`product/${id}`, productRedis);
+          useSet(`product/${id}`, productRedis, client);
         }
         break;
       default:

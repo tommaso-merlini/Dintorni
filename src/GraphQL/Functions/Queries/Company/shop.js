@@ -3,10 +3,10 @@ const useGet = require("../../../../Redis/useGet/useGet");
 const useSet = require("../../../../Redis/useSet/useSet");
 const { GraphQLError } = require("graphql");
 
-const shop = async (_, { id }) => {
+const shop = async (_, { id }, { client }) => {
   try {
     //check if the shop is cached
-    const redisShop = await useGet(`shop/${id}`);
+    const redisShop = await useGet(`shop/${id}`, client);
 
     //if the shop is cached return it
     if (redisShop) return redisShop;
@@ -20,7 +20,7 @@ const shop = async (_, { id }) => {
     if (!shop.isActive) throw new Error("v is not active");
 
     //set shop in the cache
-    await useSet(`shop/${id}`, shop);
+    await useSet(`shop/${id}`, shop, client);
 
     return shop;
   } catch (e) {

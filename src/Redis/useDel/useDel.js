@@ -1,6 +1,4 @@
-//const client = require("../redis");
-
-const useDel = async (key) => {
+const useDel = async (key, client) => {
   try {
     if (!client) throw new Error("redis client is not activated ");
     await client.delAsync(key);

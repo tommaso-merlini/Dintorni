@@ -1,6 +1,6 @@
-const createStripeAccount = async (_, { email }, { stripe }) => {
-  const { GraphQLError } = require("graphql");
+const { GraphQLError } = require("graphql");
 
+const createStripeAccount = async (_, { email }, { stripe }) => {
   try {
     const account = await stripe.accounts.create({
       type: "standard",
