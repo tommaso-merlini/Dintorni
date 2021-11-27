@@ -8,6 +8,9 @@
     "dev": "nodemon -L src/Servers/server.js",
     "dev2": "nodemon src/Servers/authServer.js"
   },
+  "jest": {
+    "resolver": "jest-node-exports-resolver"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -37,6 +40,7 @@
   },
   "devDependencies": {
     "jest": "^27.0.6",
+    "jest-node-exports-resolver": "^1.1.2",
     "nodemon": "^2.0.12"
   }
 }

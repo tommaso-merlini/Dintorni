@@ -2,7 +2,7 @@ const client = require("../redis");
 
 const useSet = async (key, value, expireTime) => {
   try {
-    if(!client) throw new Error("redis client is not activated ");
+    if (!client) throw new Error("redis client is not activated ");
     if (expireTime === "permanent") {
       await client.setAsync(key, JSON.stringify(value));
     } else {
@@ -13,7 +13,7 @@ const useSet = async (key, value, expireTime) => {
     return "OK";
   } catch (e) {
     //throw new Error("something went wrong by setting the redis cache");
-    return null
+    return null;
   }
 };
 

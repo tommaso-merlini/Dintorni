@@ -74,6 +74,9 @@ const limiter = rateLimit({
 //  apply to all requests
 app.use(limiter);
 
+//redis
+//const redis = require("../Redis/redis");
+
 //!======server instance======
 
 async function startServer() {
@@ -128,25 +131,25 @@ async function startServer() {
   });
 
   //=========server start on port 5000=========
-  if (cluster.isMaster) {
-    for (let i = 0; i < numCpus; i++) {
-      cluster.fork();
-    }
-  } else {
-    app.listen(PORT, () => {
-      console.log(
-        chalk.bgGreen.black(
-          `server ${process.pid} running on http://localhost:${PORT} :D \n`
-        )
-      );
-    });
-  }
-  // app.listen(PORT, () => {
-  //   console.log(
-  //     chalk.bgGreen.black(
-  //       `server ${process.pid} running on http://localhost:${PORT} :D`
-  //     )
-  //   );
-  // });
+  // if (cluster.isMaster) {
+  //   for (let i = 0; i < numCpus; i++) {
+  //     cluster.fork();
+  //   }
+  // } else {
+  //   app.listen(PORT, () => {
+  //     console.log(
+  //       chalk.bgGreen.black(
+  //         `server ${process.pid} running on http://localhost:${PORT} :D \n`
+  //       )
+  //     );
+  //   });
+  // }
+  app.listen(PORT, () => {
+    console.log(
+      chalk.bgGreen.black(
+        `server ${process.pid} running on http://localhost:${PORT} :D`
+      )
+    );
+  });
 }
 startServer();
