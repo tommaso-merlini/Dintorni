@@ -17,7 +17,7 @@ const shop = async (_, { id }, { client }) => {
     if (!shop) throw new Error("this shop does not exist");
 
     //if the shop is not active throw an error
-    if (!shop.isActive) throw new Error("v is not active");
+    if (!shop.isActive) throw new Error("shop is not active");
 
     //set shop in the cache
     await useSet(`shop/${id}`, shop, client);
@@ -25,6 +25,7 @@ const shop = async (_, { id }, { client }) => {
     return shop;
   } catch (e) {
     console.log("error while fetching the shop");
+    console.log(e.message);
     throw new GraphQLError(e.message);
     return null;
   }

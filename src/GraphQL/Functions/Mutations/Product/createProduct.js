@@ -3,13 +3,9 @@ const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const authenticateToken = require("../../../../JWT/AuthenticateToken");
 const { GraphQLError } = require("graphql");
 
-const createProduct = async (
-  _,
-  { input, firebaseShopId },
-  { header, admin }
-) => {
+const createProduct = async (_, { input, firebaseShopId }, { req, admin }) => {
   try {
-    const token = await admin.auth().verifyIdToken(header);
+    const token = await admin.auth().verifyIdToken(req.headers.authorization);
 
     // const tokenID = token.uid;
     // let isCompany = token.company;

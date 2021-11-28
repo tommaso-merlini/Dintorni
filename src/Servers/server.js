@@ -87,7 +87,7 @@ async function startServer() {
   //=========apollo server=========
   const context = ({ req }) => {
     return {
-      header: req.headers.authorization,
+      req,
       stripe,
       firebase,
       db,

@@ -107,7 +107,6 @@ const typeDefs = gql`
     name: String!
     address: String!
     categories: [String!]!
-    jwt: String! #contains the email and other things
     openDays: String!
     image: String!
     openHours: String!
