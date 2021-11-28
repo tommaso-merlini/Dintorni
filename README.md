@@ -5,7 +5,7 @@
 > 
 `.env_sample` is not the real .env file, just a sample :D
 
-### instruction for production
+### instructions for production
 ```
 1. clone repo into server
 2. paste in the .env_sample file the real enviroment variables

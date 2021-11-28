@@ -1,30 +1,25 @@
-const Company = require("../Schema/Company/Company.model");
-const Product = require("../Schema/Product/Product.model");
-const User = require("../Schema/User.model");
-const Order = require("../Schema/Order.model");
-
-const createCompany = require("./Functions/Mutations/Company/createCompany");
+const createShop = require("./Functions/Mutations/Company/createShop");
 const createProduct = require("./Functions/Mutations/Product/createProduct");
 const deleteProduct = require("./Functions/Mutations/Product/deleteProduct");
-const closeCompanies = require("./Functions/Queries/Company/closeCompanies");
-const company = require("./Functions/Queries/Company/company");
-const companies = require("./Functions/Queries/Company/companies");
-const productsCompany = require("./Functions/Queries/Company/productsCompany");
+const closeShops = require("./Functions/Queries/Company/closeShops");
+const shop = require("./Functions/Queries/Company/shop");
+const shops = require("./Functions/Queries/Company/shops");
+const productsShop = require("./Functions/Queries/Company/productsShop");
 const product = require("./Functions/Queries/Product/product");
 const products = require("./Functions/Queries/Product/products");
 const login = require("./Functions/Queries/login/login");
-const companyProduct = require("./Functions/Queries/Product/companyProduct");
-const activateCompany = require("./Functions/Mutations/Company/activateCompany");
-const disactivateCompany = require("./Functions/Mutations/Company/disactivateCompany");
+const shopProduct = require("./Functions/Queries/Product/shopProduct");
+const activateShop = require("./Functions/Mutations/Company/activateShop");
+const disactivateShop = require("./Functions/Mutations/Company/disactivateShop");
 const closeProductsTitle = require("./Functions/Queries/Product/closeProductsTitle");
-const updateCompany = require("./Functions/Mutations/Company/updateCompany");
+const updateShop = require("./Functions/Mutations/Company/updateShop");
 const updateProduct = require("./Functions/Mutations/Product/updateProduct");
-const companyByFirebaseID = require("./Functions/Queries/Company/companyByFirebaseID");
+const shopByFirebaseID = require("./Functions/Queries/Company/shopByFirebaseID");
 const addLike = require("./Functions/Mutations/Like/addLike");
-const removeLike = require("./Functions/Mutations/Like/removeLike")
+const removeLike = require("./Functions/Mutations/Like/removeLike");
 const addFavourite = require("./Functions/Mutations/Company/addFavourite");
 const removeFavourite = require("./Functions/Mutations/Company/removeFavourite");
-const favouritesCompanies = require("./Functions/Queries/Company/favouritesCompanies");
+const favouriteShops = require("./Functions/Queries/Company/favouriteShops");
 const stripePayment = require("./Functions/Mutations/Stripe/stripePayment");
 const createOrder = require("./Functions/Mutations/Stripe/createOrder");
 const createStripeAccount = require("./Functions/Mutations/Stripe/createStripeAccount");
@@ -32,32 +27,31 @@ const accountLink = require("./Functions/Mutations/Stripe/accountLink");
 const account = require("./Functions/Queries/Stripe/account");
 const paymentIntent = require("./Functions/Mutations/Stripe/paymentIntent");
 
-
 require("dotenv").config();
 
 const resolvers = {
   Query: {
-    company: company,
-    companies: companies,
-    companyByFirebaseID: companyByFirebaseID,
+    shop: shop,
+    shops: shops,
+    shopByFirebaseID: shopByFirebaseID,
     // companyProducts: companyProducts,
     product: product,
     products: products,
     closeProductsTitle: closeProductsTitle,
-    closeCompanies: closeCompanies,
-    favouritesCompanies: favouritesCompanies,
+    closeShops: closeShops,
+    favouriteShops: favouriteShops,
     login: login,
-    account: account
+    account: account,
   },
 
   Mutation: {
     createProduct: createProduct,
     deleProduct: deleteProduct,
     updateProduct: updateProduct,
-    createCompany: createCompany,
-    activateCompany: activateCompany,
-    disactivateCompany: disactivateCompany,
-    updateCompany: updateCompany,
+    createShop: createShop,
+    activateShop: activateShop,
+    disactivateShop: disactivateShop,
+    updateShop: updateShop,
     addLike: addLike,
     removeLike: removeLike,
     addFavourite: addFavourite,
@@ -66,15 +60,15 @@ const resolvers = {
     createOrder: createOrder,
     createStripeAccount: createStripeAccount,
     accountLink: accountLink,
-    paymentIntent: paymentIntent
+    paymentIntent: paymentIntent,
   },
 
-  Company: {
-    products: productsCompany,
+  Shop: {
+    products: productsShop,
   },
 
   Product: {
-    company: companyProduct,
+    shop: shopProduct,
   },
 };
 

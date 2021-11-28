@@ -47,7 +47,11 @@ process.on("SIGINT", () => {
 });
 
 client.on("connect", () => {
-  console.log(chalk.bgGreen.black(`redis server is up and running :D`));
+  console.log(chalk.bgGreen.black(`client connected to redis :D`));
+});
+
+process.on("exit", () => {
+  client.quit();
 });
 
 module.exports = client;

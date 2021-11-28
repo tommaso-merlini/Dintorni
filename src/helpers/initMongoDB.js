@@ -5,6 +5,7 @@ mongoose
   .connect(process.env.MONGODB_ATLAS_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
+    useCreateIndex: true,
   })
   .catch((err) => {
     console.log(err.message);
@@ -18,4 +19,3 @@ process.on("SIGINT", async () => {
   await mongoose.connection.close();
   process.exit(0);
 });
-

@@ -1,15 +1,11 @@
 const Product = require("../../../../Schema/Product/Product.model");
-const Company = require("../../../../Schema/Company/Company.model");
+const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const authenticateToken = require("../../../../JWT/AuthenticateToken");
 const { GraphQLError } = require("graphql");
 
-const createProduct = async (
-  _,
-  { input, firebaseCompanyId },
-  { header, admin }
-) => {
+const createProduct = async (_, { input, firebaseShopId }, { req, admin }) => {
   try {
-    const token = await admin.auth().verifyIdToken(header);
+    const token = await admin.auth().verifyIdToken(req.headers.authorization);
 
     // const tokenID = token.uid;
     // let isCompany = token.company;
@@ -20,18 +16,19 @@ const createProduct = async (
     //if the user authenticates
     // authenticateToken(token.uid, firebaseCompanyId);
 
-    authenticateToken(token.uid, firebaseCompanyId);
+    authenticateToken(token.uid, firebaseShopId);
 
-    //get the company location
-    const company = await Company.findById(input.companyID);
+    //get the shop => it will be reusable for some details
+    //TODO: add a filter to this request
+    const shop = await Shop.findById(input.shopID);
 
     //if the user is logged in and the ids match
     const product = await new Product({
       ...input,
-      location: company.location,
-      companyName: company.name,
+      location: shop.location,
+      ShopName: shop.name,
       likes: 0,
-      isActive: company.isActive,
+      isActive: shop.isActive,
     });
     const savedProduct = await product.save();
 

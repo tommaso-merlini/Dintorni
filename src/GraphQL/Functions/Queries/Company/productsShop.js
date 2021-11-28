@@ -1,23 +1,20 @@
 const Product = require("../../../../Schema/Product/Product.model");
-const useGet = require("../../../../Redis/useGet/useGet");
-const useSet = require("../../../../Redis/useSet/useSet");
 const MongoFilter = require("../../../MongoFilter/MongoFilter");
 const { GraphQLError } = require("graphql");
 
-
-const productsCompany = async (company, {limit, offset}, _, info) => {
+const productsShop = async (company, { limit, offset }, _, info) => {
   try {
-
-    if(limit < 0 || offset < 0) {
+    if (limit < 0 || offset < 0) {
       throw new Error("limit and offset cannot be negative");
     }
 
-
     //filter the query
     const filter = MongoFilter(info);
-    
+
     //get the products from mongodb if not cached
-    const products = await Product.find({ companyID: company._id }, filter).skip(offset).limit(limit);
+    const products = await Product.find({ companyID: company._id }, filter)
+      .skip(offset)
+      .limit(limit);
 
     //return product
     return products;
@@ -28,4 +25,4 @@ const productsCompany = async (company, {limit, offset}, _, info) => {
   }
 };
 
-module.exports = productsCompany;
+module.exports = productsShop;
