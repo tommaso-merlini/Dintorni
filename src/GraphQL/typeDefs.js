@@ -203,7 +203,7 @@ const typeDefs = gql`
     removeFavourite(id: ID!): Boolean!
 
     #======shop======
-    createShop(input: shopInput!): Boolean!
+    createShop(input: shopInput!): ID
     activateShop(id: ID!): Boolean!
     disactivateShop(id: ID!): Boolean!
     updateShop(id: ID!, input: updateShopInput!): Boolean!
