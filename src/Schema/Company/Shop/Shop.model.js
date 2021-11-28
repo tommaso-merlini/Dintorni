@@ -33,8 +33,10 @@ const ShopSchema = new mongoose.Schema({
     fee: { type: Number, required: true },
     minPayment: { type: Number, required: true },
   },
-  firebaseID: { type: String, required: true },
+  firebaseID: { type: String, required: true, index: true },
 });
+
+ShopSchema.index({ location: "2dsphere" });
 
 const Shop = mongoose.model("shop", ShopSchema);
 module.exports = Shop;
