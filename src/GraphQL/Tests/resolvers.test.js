@@ -88,7 +88,7 @@ describe("graphql resolvers", () => {
 
   it("get a single shop", async () => {
     const GET_SHOP = gql`
-      query shop($id: ID!) {
+      query shop($id: ID!, $limit: Int!, $offset: Int!) {
         shop(id: $id) {
           _id
           categories
@@ -109,6 +109,9 @@ describe("graphql resolvers", () => {
           favourites
           likes
           email
+          products(limit: $limit, offset: $offset) {
+            _id
+          }
         }
       }
     `;
@@ -116,6 +119,8 @@ describe("graphql resolvers", () => {
       mutation: GET_SHOP,
       variables: {
         id: shopID,
+        limit: 5,
+        offset: 0,
       },
     });
 
