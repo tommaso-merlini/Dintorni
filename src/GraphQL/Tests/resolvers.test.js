@@ -181,6 +181,42 @@ describe("graphql resolvers", () => {
     // });
   });
 
+  it("get an array of shops", async () => {
+    const GET_SHOPS = gql`
+      query shops($ids: [ID!]!) {
+        shops(ids: $ids) {
+          _id
+          categories
+          name
+          address
+          openDays
+          image
+          openHours
+          orderHours
+          pickUpHours
+          isActive
+          phone
+          location {
+            type
+            coordinates
+          }
+          firebaseID
+          favourites
+          likes
+          email
+        }
+      }
+    `;
+    const { data } = await query({
+      mutation: GET_SHOPS,
+      variables: {
+        ids: [shopID],
+      },
+    });
+
+    expect(data).not.toBeNull();
+  });
+
   // it("create a product", async () => {
   //   const CREATE_PRODUCT = gql`
   //     mutation createProduct($input: shopInput!) {
