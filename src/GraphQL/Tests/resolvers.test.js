@@ -48,7 +48,7 @@ describe("graphql resolvers", () => {
           openHours: "08.00_20.00",
           orderHours: "08.00_20.00",
           pickUpHours: "08.00_20.00",
-          isActive: true,
+          isActive: false,
           phone: "3711959427",
           location: {
             type: "Point",
@@ -67,6 +67,23 @@ describe("graphql resolvers", () => {
     shopID = data.createShop;
 
     expect(data.createShop).not.toBeNull();
+  });
+
+  it("activate a shop", async () => {
+    const ACTIVATE_SHOP = gql`
+      mutation activateShop($id: ID!) {
+        activateShop(id: $id)
+      }
+    `;
+
+    const { data } = await mutate({
+      mutation: ACTIVATE_SHOP,
+      variables: {
+        id: shopID,
+      },
+    });
+
+    expect(data.activateShop).toBe(true);
   });
 
   it("get a single shop", async () => {
@@ -256,6 +273,23 @@ describe("graphql resolvers", () => {
     });
 
     expect(data.shopByFirebaseID).not.toBeNull();
+  });
+
+  it("disactivate a shop", async () => {
+    const DISACTIVATE_SHOP = gql`
+      mutation disactivateShop($id: ID!) {
+        disactivateShop(id: $id)
+      }
+    `;
+
+    const { data } = await mutate({
+      mutation: DISACTIVATE_SHOP,
+      variables: {
+        id: shopID,
+      },
+    });
+
+    expect(data.disactivateShop).toBe(true);
   });
 
   // it("create a product", async () => {
