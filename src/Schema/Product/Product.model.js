@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+mongoose.set("useCreateIndex", true);
+
 const ProductSchema = new mongoose.Schema({
   name: {
     type: String,

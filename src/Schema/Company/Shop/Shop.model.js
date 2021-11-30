@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
+mongoose.set("useCreateIndex", true);
+
 const ShopSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -36,7 +38,10 @@ const ShopSchema = new mongoose.Schema({
   firebaseID: { type: String, required: true, index: true },
 });
 
+// ShopSchema.index({ firebaseID: 1 });
 ShopSchema.index({ location: "2dsphere" });
+
+// ShopSchema.createIndexes([{ firebaseID: 1 }]);
 
 const Shop = mongoose.model("shop", ShopSchema);
 module.exports = Shop;

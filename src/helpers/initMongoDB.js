@@ -5,7 +5,6 @@ mongoose
   .connect(process.env.MONGODB_ATLAS_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    useCreateIndex: true,
   })
   .catch((err) => {
     console.log(err.message);
