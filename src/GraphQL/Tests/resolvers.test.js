@@ -28,6 +28,7 @@ jest.useRealTimers();
 describe("graphql resolvers", () => {
   var shopID = "";
   var firebaseShopID = "";
+  var shop;
 
   it("create a shop", async () => {
     const CREATE_SHOP = gql`
@@ -124,6 +125,8 @@ describe("graphql resolvers", () => {
       },
     });
 
+    shop = data.shop;
+
     firebaseShopID = data.shop.firebaseID;
 
     expect(data.shop).not.toBeNull();
@@ -209,7 +212,7 @@ describe("graphql resolvers", () => {
 
   it("get an array of shops", async () => {
     const GET_SHOPS = gql`
-      query shops($ids: [ID!]!) {
+      query shops($ids: [ID!]!, $limit: Int!, $offset: Int!) {
         shops(ids: $ids) {
           _id
           categories
@@ -230,6 +233,9 @@ describe("graphql resolvers", () => {
           favourites
           likes
           email
+          products(limit: $limit, offset: $offset) {
+            _id
+          }
         }
       }
     `;
@@ -237,15 +243,21 @@ describe("graphql resolvers", () => {
       mutation: GET_SHOPS,
       variables: {
         ids: [shopID],
+        limit: 5,
+        offset: 0,
       },
     });
 
-    expect(data.shops).not.toBeNull();
+    expect(data.shops).toEqual([shop]);
   });
 
   it("get a single shop by the shop firebase id", async () => {
     const GET_SHOP_BY_FIREBASE_ID = gql`
-      query shopByFirebaseID($firebaseID: String!) {
+      query shopByFirebaseID(
+        $firebaseID: String!
+        $limit: Int!
+        $offset: Int!
+      ) {
         shopByFirebaseID(firebaseID: $firebaseID) {
           _id
           categories
@@ -266,6 +278,9 @@ describe("graphql resolvers", () => {
           favourites
           likes
           email
+          products(limit: $limit, offset: $offset) {
+            _id
+          }
         }
       }
     `;
@@ -274,10 +289,12 @@ describe("graphql resolvers", () => {
       mutation: GET_SHOP_BY_FIREBASE_ID,
       variables: {
         firebaseID: firebaseShopID,
+        limit: 5,
+        offset: 0,
       },
     });
 
-    expect(data.shopByFirebaseID).not.toBeNull();
+    expect(data.shopByFirebaseID).toEqual(shop);
   });
 
   it("disactivate a shop", async () => {
