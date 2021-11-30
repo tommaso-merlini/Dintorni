@@ -6,6 +6,7 @@ const {
   closeDbConnection,
 } = require("./init");
 const { ObjectId } = require("mongodb");
+const shopByFirebaseID = require("../Functions/Queries/Company/shopByFirebaseID");
 
 const firebaseCompanyJwt =
   "eyJhbGciOiJSUzI1NiIsImtpZCI6IjgwNTg1Zjk5MjExMmZmODgxMTEzOTlhMzY5NzU2MTc1YWExYjRjZjkiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiY29tcGFueSIsImNvbXBhbnkiOnRydWUsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9maXItZGVtby03ODg0ZCIsImF1ZCI6ImZpci1kZW1vLTc4ODRkIiwiYXV0aF90aW1lIjoxNjM3ODc3MDM4LCJ1c2VyX2lkIjoiY2E4MzRJQUptQWN6eWN1azBHeEliOWcyZkg2MyIsInN1YiI6ImNhODM0SUFKbUFjenljdWswR3hJYjlnMmZINjMiLCJpYXQiOjE2MzgxMDI2ODUsImV4cCI6MTYzODEwNjI4NSwiZW1haWwiOiJuaWNvbG8ubWVybGluaUBzdHVkZW50aS51bmlwci5pdCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJuaWNvbG8ubWVybGluaUBzdHVkZW50aS51bmlwci5pdCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.BvyyUfG8adHmGmOPCywJtBPJzldCwwCUTmcV3NT7X-B6ZQZzFNQN2deOLxiHeSwIqKSjfpeQmhG6k8SYv8ligiH5ux0ZNe09Kia44xnWWQkcS5rfNNoQiqtp3jgcNT1jYJKOfz2LogGsg2XYTWKlJjugUh3yOTg_9ahIWqoSJcKZz9SPHhwTtEqk9L9h17YST4PguoidSjHpe1HIUgF7hWNOubLJ87YaWJkOSE199nTFnlSlLFrdyM4dqgTyUeYvXkeK2GA__LgtB_aCAxRCgTom9GJ4PdEWLVGo85mV7p8gEZllz8pgKlGnaFcn8U2jCIQvqCskoYopig5JjWQ63w";
@@ -26,6 +27,7 @@ jest.useRealTimers();
 
 describe("graphql resolvers", () => {
   var shopID = "";
+  var firebaseShopID = "";
 
   it("create a shop", async () => {
     const CREATE_SHOP = gql`
@@ -100,7 +102,9 @@ describe("graphql resolvers", () => {
       },
     });
 
-    expect(data).not.toBeNull();
+    firebaseShopID = data.shop.firebaseID;
+
+    expect(data.shop).not.toBeNull();
   });
 
   it("get close shops", async () => {
@@ -214,7 +218,44 @@ describe("graphql resolvers", () => {
       },
     });
 
-    expect(data).not.toBeNull();
+    expect(data.shops).not.toBeNull();
+  });
+
+  it("get a single shop by the shop firebase id", async () => {
+    const GET_SHOP_BY_FIREBASE_ID = gql`
+      query shopByFirebaseID($firebaseID: String!) {
+        shopByFirebaseID(firebaseID: $firebaseID) {
+          _id
+          categories
+          name
+          address
+          openDays
+          image
+          openHours
+          orderHours
+          pickUpHours
+          isActive
+          phone
+          location {
+            type
+            coordinates
+          }
+          firebaseID
+          favourites
+          likes
+          email
+        }
+      }
+    `;
+
+    const { data } = await query({
+      mutation: GET_SHOP_BY_FIREBASE_ID,
+      variables: {
+        firebaseID: firebaseShopID,
+      },
+    });
+
+    expect(data.shopByFirebaseID).not.toBeNull();
   });
 
   // it("create a product", async () => {
