@@ -58,8 +58,6 @@ const closeShops = async (
       { $project: filter },
     ]);
 
-    console.log(closeShops);
-
     return closeShops;
   } catch (e) {
     console.log("error while fetching the close shops");

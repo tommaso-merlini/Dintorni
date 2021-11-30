@@ -59,7 +59,6 @@ const typeDefs = gql`
     isActive: Boolean!
     location: Location!
     cashbackInfo: CashbackInfo!
-    shopID: ID!
     likes: Int!
   }
 
@@ -101,6 +100,7 @@ const typeDefs = gql`
     images: [String!]!
     description: String
     shopID: ID!
+    firebaseShopID: ID!
   }
 
   input shopInput {
@@ -196,7 +196,7 @@ const typeDefs = gql`
 
   type Mutation {
     #======products======
-    createProduct(input: productInput!, firebaseShopId: String!): ID
+    createProduct(input: productInput!): ID
     deleProduct(id: ID!, shopID: ID!): Boolean!
     updateProduct(id: ID!, input: updateProductInput!): Boolean!
     addFavourite(id: ID!): Boolean!

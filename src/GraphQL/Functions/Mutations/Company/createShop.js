@@ -17,9 +17,14 @@ const createShop = async (
     //   company: true,
     // });
 
-    const token = await admin.auth().verifyIdToken(req.headers.authorization);
+    var email = "";
 
-    const email = token.email;
+    if (process.env.NODE_ENV != "production") {
+      email = "prova@gmail.com";
+    } else {
+      const token = await admin.auth().verifyIdToken(req.headers.authorization);
+      email = token.email;
+    }
 
     // const email = "tommaso.melrini@gmail.com";
 

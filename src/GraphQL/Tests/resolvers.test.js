@@ -25,32 +25,7 @@ afterAll(async () => {
 jest.useRealTimers();
 
 describe("graphql resolvers", () => {
-  const shopID = "612fd2dfc52d2e002bf6d5e2";
-  var shop = {};
-
-  it("get a single shop", async () => {
-    const GET_SHOP = gql`
-      query shop($id: ID!) {
-        shop(id: $id) {
-          _id
-        }
-      }
-    `;
-    const { data } = await query({
-      mutation: GET_SHOP,
-      variables: {
-        id: shopID,
-      },
-    });
-
-    //console.log(data);
-
-    shop = data.shop;
-
-    expect(data).toEqual({
-      shop,
-    });
-  });
+  var shopID = "";
 
   it("create a shop", async () => {
     const CREATE_SHOP = gql`
@@ -87,6 +62,162 @@ describe("graphql resolvers", () => {
       },
     });
 
+    shopID = data.createShop;
+
+    expect(data.createShop).not.toBeNull();
+  });
+
+  it("get a single shop", async () => {
+    const GET_SHOP = gql`
+      query shop($id: ID!) {
+        shop(id: $id) {
+          _id
+          categories
+          name
+          address
+          openDays
+          image
+          openHours
+          orderHours
+          pickUpHours
+          isActive
+          phone
+          location {
+            type
+            coordinates
+          }
+          firebaseID
+          favourites
+          likes
+          email
+        }
+      }
+    `;
+    const { data } = await query({
+      mutation: GET_SHOP,
+      variables: {
+        id: shopID,
+      },
+    });
+
     expect(data).not.toBeNull();
   });
+
+  it("get close shops", async () => {
+    const GET_SHOP_CLOSE_SHOPS = gql`
+      query closeShops(
+        $location: locationInput!
+        $category: String
+        $cashBack: Int
+        $range: Int!
+        $limit: Int!
+        $offset: Int!
+      ) {
+        closeShops(
+          location: $location
+          category: $category
+          cashBack: $cashBack
+          range: $range
+          limit: $limit
+          offset: $offset
+        ) {
+          _id
+          name
+          categories
+          openDays
+          openHours
+          isActive
+          location {
+            type
+            coordinates
+          }
+          cashbackInfo {
+            cashBack
+            fee
+            minPayment
+          }
+          likes
+        }
+      }
+    `;
+    const { data } = await query({
+      mutation: GET_SHOP_CLOSE_SHOPS,
+      variables: {
+        location: {
+          type: "Point",
+          coordinates: [42.561576, 12.6470763],
+        },
+        category: null,
+        cashBack: 0,
+        range: 10000,
+        limit: 5,
+        offset: 0,
+      },
+    });
+
+    expect(data.closeShops).not.toBeNull();
+
+    // expect(data).toEqual({
+    //   closeShops: [
+    //     {
+    //       _id: shop._id,
+    //       name: shop.name,
+    //       categories: shop.categories,
+    //       openDays: shop.openDays,
+    //       openHours: shop.openHours,
+    //       isActive: shop.isActive,
+    //       location: {
+    //         type: shop.type,
+    //         coordinates: shop.coordinates,
+    //       },
+    //       cashbackInfo: {
+    //         cashBack: shop.cashBack,
+    //         fee: shop.fee,
+    //         minPayment: shop.minPayment,
+    //       },
+    //       likes: shop.likes,
+    //     },
+    //   ],
+    // });
+  });
+
+  // it("create a product", async () => {
+  //   const CREATE_PRODUCT = gql`
+  //     mutation createProduct($input: shopInput!) {
+  //       createShop(input: $input)
+  //     }
+  //   `;
+
+  //   const { data } = await mutate({
+  //     mutation: CREATE_SHOP,
+  //     variables: {
+  //       input: {
+  //         name: "macelleria pucci 10",
+  //         address: "via cavour 41",
+  //         categories: ["panetteria"],
+  //         openDays: "1_2_3_4_5_6_7",
+  //         image: "https://immagineprova",
+  //         openHours: "08.00_20.00",
+  //         orderHours: "08.00_20.00",
+  //         pickUpHours: "08.00_20.00",
+  //         isActive: true,
+  //         phone: "3711959427",
+  //         location: {
+  //           type: "Point",
+  //           coordinates: [42.562309, 12.64576],
+  //         },
+  //         cashbackInfo: {
+  //           cashBack: 10,
+  //           fee: 5,
+  //           minPayment: 3,
+  //         },
+  //         firebaseID: "YQx1P1181rQN69w7HIgHRyB0mkl2",
+  //       },
+  //     },
+  //   });
+
+  //   shopID = data.createShop;
+
+  //   expect(data.createShop).not.toBeNull();
+  // });
 });
