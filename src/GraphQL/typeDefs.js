@@ -101,6 +101,8 @@ const typeDefs = gql`
     description: String
     shopID: ID!
     firebaseShopID: ID!
+    shopName: String!
+    firebaseCompanyID: String!
   }
 
   input shopInput {

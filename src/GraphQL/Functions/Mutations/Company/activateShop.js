@@ -4,11 +4,11 @@ const Product = require("../../../../Schema/Product/Product.model");
 
 const activateShop = async (_, { id }) => {
   try {
-    await Shop.updateOne({ _id: id }, { isActive: true }, { upsert: true });
+    await Shop.updateOne({ _id: id }, { isActive: true }, { upsert: false });
     await Product.updateMany(
       { shopID: id },
       { isActive: true },
-      { upsert: true }
+      { upsert: false }
     );
     return true;
   } catch (e) {

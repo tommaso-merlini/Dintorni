@@ -5,11 +5,11 @@ const { GraphQLError } = require("graphql");
 
 const disactivateShop = async (_, { id }) => {
   try {
-    await Shop.updateOne({ _id: id }, { isActive: false }, { upsert: true });
+    await Shop.updateOne({ _id: id }, { isActive: false }, { upsert: false });
     await Product.updateMany(
       { shopID: id },
       { isActive: false },
-      { upsert: true }
+      { upsert: false }
     );
 
     const products = await Product.find({ shopID: id });

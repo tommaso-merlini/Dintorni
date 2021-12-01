@@ -29,6 +29,7 @@ describe("graphql resolvers", () => {
   var shopID = "";
   var firebaseShopID = "";
   var shop;
+  var product;
 
   it("create a shop", async () => {
     const CREATE_SHOP = gql`
@@ -130,6 +131,57 @@ describe("graphql resolvers", () => {
     firebaseShopID = data.shop.firebaseID;
 
     expect(data.shop).not.toBeNull();
+  });
+
+  it("update a shop", async () => {
+    const UPDATE_SHOP = gql`
+      mutation updateShop($id: ID!, $input: updateShopInput!) {
+        updateShop(id: $id, input: $input)
+      }
+    `;
+
+    const { data } = await mutate({
+      mutation: UPDATE_SHOP,
+      variables: {
+        id: shopID,
+        input: {
+          name: "prova",
+        },
+      },
+    });
+
+    shop.name = "prova";
+
+    expect(data.updateShop).toEqual(true);
+  });
+
+  it("create a product", async () => {
+    const CREATE_PRODUCT = gql`
+      mutation createProduct($input: productInput!) {
+        createProduct(input: $input)
+      }
+    `;
+
+    const { data } = await mutate({
+      mutation: CREATE_PRODUCT,
+      variables: {
+        input: {
+          name: "prova prodotto",
+          price: 13,
+          weight: 2,
+          images: ["provaimmagine"],
+          description: "descrizioe",
+          shopID: shopID,
+          firebaseShopID: firebaseShopID,
+          shopName: shop.name,
+          firebaseCompanyID: "prova", //TODO: GET THE REAL FIREBASE COMPANY ID
+        },
+      },
+    });
+
+    shop.products = [{ _id: data.createProduct }];
+
+    expect(data.createProduct).not.toBeNull();
   });
 
   it("get close shops", async () => {
@@ -313,44 +365,4 @@ describe("graphql resolvers", () => {
 
     expect(data.disactivateShop).toBe(true);
   });
-
-  // it("create a product", async () => {
-  //   const CREATE_PRODUCT = gql`
-  //     mutation createProduct($input: shopInput!) {
-  //       createShop(input: $input)
-  //     }
-  //   `;
-
-  //   const { data } = await mutate({
-  //     mutation: CREATE_SHOP,
-  //     variables: {
-  //       input: {
-  //         name: "macelleria pucci 10",
-  //         address: "via cavour 41",
-  //         categories: ["panetteria"],
-  //         openDays: "1_2_3_4_5_6_7",
-  //         image: "https://immagineprova",
-  //         openHours: "08.00_20.00",
-  //         orderHours: "08.00_20.00",
-  //         pickUpHours: "08.00_20.00",
-  //         isActive: true,
-  //         phone: "3711959427",
-  //         location: {
-  //           type: "Point",
-  //           coordinates: [42.562309, 12.64576],
-  //         },
-  //         cashbackInfo: {
-  //           cashBack: 10,
-  //           fee: 5,
-  //           minPayment: 3,
-  //         },
-  //         firebaseID: "YQx1P1181rQN69w7HIgHRyB0mkl2",
-  //       },
-  //     },
-  //   });
-
-  //   shopID = data.createShop;
-
-  //   expect(data.createShop).not.toBeNull();
-  // });
 });

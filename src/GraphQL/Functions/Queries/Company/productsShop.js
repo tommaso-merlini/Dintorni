@@ -12,7 +12,7 @@ const productsShop = async (company, { limit, offset }, _, info) => {
     const filter = MongoFilter(info);
 
     //get the products from mongodb if not cached
-    const products = await Product.find({ companyID: company._id }, filter)
+    const products = await Product.find({ shopID: company._id }, filter)
       .skip(offset)
       .limit(limit);
 

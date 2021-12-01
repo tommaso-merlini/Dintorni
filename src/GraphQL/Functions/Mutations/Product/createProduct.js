@@ -2,10 +2,14 @@ const Product = require("../../../../Schema/Product/Product.model");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const authenticateToken = require("../../../../JWT/AuthenticateToken");
 const { GraphQLError } = require("graphql");
+require("dotenv").config();
 
 const createProduct = async (_, { input, firebaseShopId }, { req, admin }) => {
   try {
-    const token = await admin.auth().verifyIdToken(req.headers.authorization);
+    if (process.env.NODE_ENV === "production") {
+      const token = await admin.auth().verifyIdToken(req.headers.authorization);
+      authenticateToken(token.uid, firebaseShopId);
+    }
 
     // const tokenID = token.uid;
     // let isCompany = token.company;
@@ -15,8 +19,6 @@ const createProduct = async (_, { input, firebaseShopId }, { req, admin }) => {
 
     //if the user authenticates
     // authenticateToken(token.uid, firebaseCompanyId);
-
-    authenticateToken(token.uid, firebaseShopId);
 
     //get the shop => it will be reusable for some details
     //TODO: add a filter to this request
@@ -35,6 +37,7 @@ const createProduct = async (_, { input, firebaseShopId }, { req, admin }) => {
     return savedProduct._id;
   } catch (e) {
     console.log("error while creating the product");
+    console.log(e.message);
     throw new GraphQLError(e.message);
     return null;
   }
