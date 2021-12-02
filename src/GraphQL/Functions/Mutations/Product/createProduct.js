@@ -24,6 +24,9 @@ const createProduct = async (_, { input, firebaseShopId }, { req, admin }) => {
     //TODO: add a filter to this request
     const shop = await Shop.findById(input.shopID);
 
+    if (!shop)
+      throw new Error(`the shop with id ${input.shopID} does not exist`);
+
     //if the user is logged in and the ids match
     const product = await new Product({
       ...input,
