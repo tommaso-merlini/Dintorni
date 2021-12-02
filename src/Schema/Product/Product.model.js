@@ -28,7 +28,6 @@ const ProductSchema = new mongoose.Schema({
   },
   isActive: { type: Boolean, required: true },
   shopID: { type: mongoose.Types.ObjectId, required: true },
-  firebaseCompanyID: { type: String, required: true },
 });
 
 const Product = mongoose.model("product", ProductSchema);

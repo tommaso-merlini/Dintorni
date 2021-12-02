@@ -27,8 +27,8 @@ jest.useRealTimers();
 
 describe("graphql resolvers", () => {
   var shopID = "";
-  var firebaseShopID = "";
-  var productID = "";
+  var firebaseCompanyID = "";
+  var productID = "61a92bcd8a52f89e279162e0";
   var shop;
   var product;
 
@@ -62,7 +62,7 @@ describe("graphql resolvers", () => {
             fee: 5,
             minPayment: 3,
           },
-          firebaseID: "YQx1P1181rQN69w7HIgHRyB0mkl2",
+          firebaseCompanyID: "YQx1P1181rQN69w7HIgHRyB0mkl2",
         },
       },
     });
@@ -108,7 +108,7 @@ describe("graphql resolvers", () => {
             type
             coordinates
           }
-          firebaseID
+          firebaseCompanyID
           favourites
           likes
           email
@@ -129,7 +129,7 @@ describe("graphql resolvers", () => {
 
     shop = data.shop;
 
-    firebaseShopID = data.shop.firebaseID;
+    firebaseCompanyID = data.shop.firebaseCompanyID;
 
     expect(data.shop).not.toBeNull();
   });
@@ -173,9 +173,7 @@ describe("graphql resolvers", () => {
           images: ["provaimmagine"],
           description: "descrizioe",
           shopID: shopID,
-          firebaseShopID: firebaseShopID,
           shopName: shop.name,
-          firebaseCompanyID: "prova", //TODO: GET THE REAL FIREBASE COMPANY ID
         },
       },
     });
@@ -196,7 +194,6 @@ describe("graphql resolvers", () => {
           price
           weight
           images
-          location
           description
           shopID
           shopName
@@ -212,10 +209,6 @@ describe("graphql resolvers", () => {
         id: productID,
       },
     });
-
-    console.log(data);
-
-    console.log(productID);
 
     product = data.product;
 
@@ -319,7 +312,7 @@ describe("graphql resolvers", () => {
             type
             coordinates
           }
-          firebaseID
+          firebaseCompanyID
           favourites
           likes
           email
@@ -341,51 +334,51 @@ describe("graphql resolvers", () => {
     expect(data.shops).toEqual([shop]);
   });
 
-  it("get a single shop by the shop firebase id", async () => {
-    const GET_SHOP_BY_FIREBASE_ID = gql`
-      query shopByFirebaseID(
-        $firebaseID: String!
-        $limit: Int!
-        $offset: Int!
-      ) {
-        shopByFirebaseID(firebaseID: $firebaseID) {
-          _id
-          categories
-          name
-          address
-          openDays
-          image
-          openHours
-          orderHours
-          pickUpHours
-          isActive
-          phone
-          location {
-            type
-            coordinates
-          }
-          firebaseID
-          favourites
-          likes
-          email
-          products(limit: $limit, offset: $offset) {
-            _id
-          }
-        }
-      }
-    `;
+  // it("get a single shop by the shop firebase id", async () => {
+  //   const GET_SHOP_BY_FIREBASE_ID = gql`
+  //     query shopByFirebaseID(
+  //       $firebaseID: String!
+  //       $limit: Int!
+  //       $offset: Int!
+  //     ) {
+  //       shopByFirebaseID(firebaseID: $firebaseID) {
+  //         _id
+  //         categories
+  //         name
+  //         address
+  //         openDays
+  //         image
+  //         openHours
+  //         orderHours
+  //         pickUpHours
+  //         isActive
+  //         phone
+  //         location {
+  //           type
+  //           coordinates
+  //         }
+  //         firebaseID
+  //         favourites
+  //         likes
+  //         email
+  //         products(limit: $limit, offset: $offset) {
+  //           _id
+  //         }
+  //       }
+  //     }
+  //   `;
 
-    const { data } = await query({
-      mutation: GET_SHOP_BY_FIREBASE_ID,
-      variables: {
-        firebaseID: firebaseShopID,
-        limit: 5,
-        offset: 0,
-      },
-    });
+  //   const { data } = await query({
+  //     mutation: GET_SHOP_BY_FIREBASE_ID,
+  //     variables: {
+  //       firebaseID: firebaseShopID,
+  //       limit: 5,
+  //       offset: 0,
+  //     },
+  //   });
 
-    expect(data.shopByFirebaseID).toEqual(shop);
-  });
+  //   expect(data.shopByFirebaseID).toEqual(shop);
+  // });
 
   it("disactivate a shop", async () => {
     const DISACTIVATE_SHOP = gql`

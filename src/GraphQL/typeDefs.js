@@ -43,7 +43,7 @@ const typeDefs = gql`
     isActive: Boolean!
     phone: String!
     location: Location!
-    firebaseID: String!
+    firebaseCompanyID: String!
     cashbackInfo: CashbackInfo!
     likes: Int!
     favourites: Int!
@@ -100,9 +100,7 @@ const typeDefs = gql`
     images: [String!]!
     description: String
     shopID: ID!
-    firebaseShopID: ID!
     shopName: String!
-    firebaseCompanyID: String!
   }
 
   input shopInput {
@@ -118,7 +116,7 @@ const typeDefs = gql`
     phone: String!
     location: locationInput!
     cashbackInfo: cashbackInfoInput!
-    firebaseID: ID!
+    firebaseCompanyID: ID!
   }
 
   input updateProductInput {

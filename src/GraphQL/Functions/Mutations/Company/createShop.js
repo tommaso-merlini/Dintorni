@@ -59,6 +59,7 @@ const createShop = async (
     return savedShop._id;
   } catch (e) {
     console.log("error while creating the shop");
+    console.log(e.message);
     throw new GraphQLError(e.message);
     return null;
   }

@@ -35,7 +35,7 @@ const ShopSchema = new mongoose.Schema({
     fee: { type: Number, required: true },
     minPayment: { type: Number, required: true },
   },
-  firebaseID: { type: String, required: true, index: true },
+  firebaseCompanyID: { type: String, required: true, index: true },
 });
 
 // ShopSchema.index({ firebaseID: 1 });
