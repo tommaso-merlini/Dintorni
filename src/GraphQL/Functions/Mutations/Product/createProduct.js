@@ -37,7 +37,7 @@ const createProduct = async (_, { input, firebaseShopId }, { req, admin }) => {
     });
     const savedProduct = await product.save();
 
-    return savedProduct._id;
+    return savedProduct;
   } catch (e) {
     console.log("error while creating the product");
     console.log(e.message);

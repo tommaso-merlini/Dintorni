@@ -196,7 +196,7 @@ const typeDefs = gql`
 
   type Mutation {
     #======products======
-    createProduct(input: productInput!): ID
+    createProduct(input: productInput!): Product
     deleProduct(id: ID!, shopID: ID!): Boolean!
     updateProduct(id: ID!, input: updateProductInput!): Boolean!
     addFavourite(id: ID!): Boolean!
