@@ -28,6 +28,7 @@ jest.useRealTimers();
 describe("graphql resolvers", () => {
   var shopID = "";
   var firebaseShopID = "";
+  var productID = "";
   var shop;
   var product;
 
@@ -181,7 +182,44 @@ describe("graphql resolvers", () => {
 
     shop.products = [{ _id: data.createProduct }];
 
+    productID = data.createProduct;
+
     expect(data.createProduct).not.toBeNull();
+  });
+
+  it("get a single product", async () => {
+    const GET_PRODUCT = gql`
+      query product($id: ID!) {
+        product(id: $id) {
+          _id
+          name
+          price
+          weight
+          images
+          location
+          description
+          shopID
+          shopName
+          # shop
+          likes
+          isActive
+        }
+      }
+    `;
+    const { data } = await query({
+      mutation: GET_PRODUCT,
+      variables: {
+        id: productID,
+      },
+    });
+
+    console.log(data);
+
+    console.log(productID);
+
+    product = data.product;
+
+    expect(data.product).not.toBeNull();
   });
 
   it("get close shops", async () => {
