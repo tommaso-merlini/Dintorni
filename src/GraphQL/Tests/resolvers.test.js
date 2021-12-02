@@ -159,7 +159,13 @@ describe("graphql resolvers", () => {
   it("create a product", async () => {
     const CREATE_PRODUCT = gql`
       mutation createProduct($input: productInput!) {
-        createProduct(input: $input)
+        createProduct(input: $input) {
+          _id
+          name
+          price
+          weight
+          images
+        }
       }
     `;
 
@@ -178,9 +184,11 @@ describe("graphql resolvers", () => {
       },
     });
 
-    shop.products = [{ _id: data.createProduct }];
+    shop.products = [{ _id: data.createProduct._id }];
 
-    productID = data.createProduct;
+    productID = data.createProduct._id;
+
+    product = data.createProduct;
 
     expect(data.createProduct).not.toBeNull();
   });
@@ -194,12 +202,6 @@ describe("graphql resolvers", () => {
           price
           weight
           images
-          description
-          shopID
-          shopName
-          # shop
-          likes
-          isActive
         }
       }
     `;
@@ -212,7 +214,7 @@ describe("graphql resolvers", () => {
 
     product = data.product;
 
-    expect(data.product).not.toBeNull();
+    expect(data.product).toEqual(product);
   });
 
   it("get close shops", async () => {
