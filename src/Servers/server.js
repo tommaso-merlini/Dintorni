@@ -106,19 +106,26 @@ async function startServer() {
     formatError: (err) => {
       // Don't give the specific errors to the client
       if (err.message.startsWith("Database Error: ")) {
-        return new Error("Internal server error");
+        return new Error("Internal database error");
       }
 
-      if (err.extensions.code.startsWith("INTERNAL_SERVER_ERROR")) {
+      if (
+        err.extensions.code.startsWith("INTERNAL_SERVER_ERROR") &&
+        process.env.NODE_ENV === "production"
+      ) {
+        return new Error("Internal server error");
+      } else {
         return new Error(err.message);
       }
 
-      if (err.extensions.code.startsWith("GRAPHQL_VALIDATION_FAILED")) {
+      if (
+        err.extensions.code.startsWith("GRAPHQL_VALIDATION_FAILED") &&
+        process.env.NODE_ENV === "production"
+      ) {
         return new Error("bad graphql fields");
+      } else {
+        return new Error(err.message);
       }
-
-      // Otherwise return the original error
-      return err;
     },
   });
   apolloserver.start();

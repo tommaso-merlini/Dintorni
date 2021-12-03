@@ -9,15 +9,17 @@ const shop = async (_, { id }, { client }) => {
     const redisShop = await useGet(`shop/${id}`, client);
 
     //if the shop is cached return it
-    if (redisShop) return redisShop;
+    if (redisShop) {
+      if (!redisShop) throw new Error(`shop with id ${id} does not exists`);
+      if (!redisShop.isActive) throw new Error(`shop is not active`);
+      return redisShop;
+    }
 
     //get the shop from mongodb if not cached
-    const shop = await Shop.findById(id);
+    const shop = await Shop.findById(id).lean();
 
-    if (!shop) throw new Error("this shop does not exist");
-
-    //if the shop is not active throw an error
-    if (!shop.isActive) throw new Error("shop is not active");
+    if (!shop) throw new Error(`shop with id ${id} does not exists`);
+    if (!shop.isActive) throw new Error(`shop is not active`);
 
     //set shop in the cache
     await useSet(`shop/${id}`, shop, client);
