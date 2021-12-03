@@ -9,11 +9,17 @@ const product = async (_, { id }, { client }) => {
     const redisProducts = await useGet(`product/${id}`, client);
 
     //if the product is cached return it
-    if (redisProducts) return redisProducts;
+    if (redisProducts) {
+      if (!redisProducts)
+        throw new Error(`product with id ${id} does not exist`);
+      if (!redisProducts.isActive) throw new Error("product is not active");
+      return redisProducts;
+    }
 
     //get the product from mongodb if not cached
     const product = await Product.findById(id);
 
+    if (!product) throw new Error(`product with id ${id} does not exist`);
     if (!product.isActive) throw new Error("product is not active");
 
     if (product) {

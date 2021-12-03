@@ -11,13 +11,19 @@ const shopProduct = async ({ shopID }, { client }) => {
     const redisShop = await useGet(redisQuery, client);
 
     //if the shop is cached return it
-    if (redisShop) return redisShop;
+    if (redisShop) {
+      if (!redisShop) throw new Error(`shop with id ${shopID} does not exist`);
+      if (!redisShop.isActive) throw new Error("shop is not active");
+      return redisShop;
+    }
 
     const shop = await Shop.findById(shopID);
 
+    if (!shop) throw new Error(`shop with id ${shopID} does not exist`);
     if (!shop.isActive) throw new Error("shop is not active");
 
-    await useSet(redisQuery, shop, client);
+    //TODO: check if this this function can be used (all the elements are being used)
+    //await useSet(redisQuery, shop, client);
     return shop;
   } catch (e) {
     console.log("error while fetching the shop product");
