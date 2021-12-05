@@ -5,19 +5,15 @@ const { GraphQLError } = require("graphql");
 
 const shop = async (_, { id }, { client }) => {
   try {
-    //check if the shop is cached
+    //check if the shop is cached than return it
     const redisShop = await useGet(`shop/${id}`, client);
-
-    //if the shop is cached return it
     if (redisShop) {
-      if (!redisShop) throw new Error(`shop with id ${id} does not exists`);
       if (!redisShop.isActive) throw new Error(`shop is not active`);
       return redisShop;
     }
 
-    //get the shop from mongodb if not cached
+    //get the shop from mongodb
     const shop = await Shop.findById(id).lean();
-
     if (!shop) throw new Error(`shop with id ${id} does not exists`);
     if (!shop.isActive) throw new Error(`shop is not active`);
 
@@ -27,7 +23,6 @@ const shop = async (_, { id }, { client }) => {
     return shop;
   } catch (e) {
     console.log("error while fetching the shop");
-    console.log(e.message);
     throw new GraphQLError(e.message);
     return null;
   }

@@ -5,6 +5,7 @@ const MongoFilter = require("../../../MongoFilter/MongoFilter");
 
 const shops = async (_, { ids }, __, info) => {
   try {
+    //filter the query
     const filter = MongoFilter(info);
     const shops = await Shop.find({ _id: { $in: ids } }, filter);
     return shops;

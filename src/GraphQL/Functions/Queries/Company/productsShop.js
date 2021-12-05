@@ -14,9 +14,9 @@ const productsShop = async (company, { limit, offset }, _, info) => {
     //get the products from mongodb if not cached
     const products = await Product.find({ shopID: company._id }, filter)
       .skip(offset)
-      .limit(limit);
+      .limit(limit)
+      .lean();
 
-    //return product
     return products;
   } catch (e) {
     console.log("error while fetching the productsCompany");
