@@ -22,14 +22,7 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 //=========jsonwebtoken=========
 const expressJwt = require("express-jwt");
-app.use(
-  express.json()
-  // expressJwt({
-  //   secret: process.env.SECRET_ACCESS_TOKEN,
-  //   credentialsRequired: false,
-  //   algorithms: ["HS256"],
-  // })
-);
+app.use(express.json());
 
 //=====misc=====
 const chalk = require("chalk"); //console.log colors
@@ -47,12 +40,6 @@ const typeDefs = require("../GraphQL/typeDefs");
 const PORT = process.env.SERVER_PORT;
 const numCpus = os.cpus().length;
 
-if (process.env.NODE_ENV != "production") {
-  var maxRequests = 10000;
-} else {
-  var maxRequests = 75;
-}
-
 //limit the graphql query size
 app.use("*", (req, res, next) => {
   const query = req.query.query || req.body.query || "";
@@ -67,7 +54,7 @@ app.set("trust proxy", 1);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // every 15 minutes
-  max: maxRequests, // limit each IP to 50 requests per windowMs
+  max: process.env.NODE_ENV != "production" ? 10000 : 1, // limit each IP to 50 requests per windowMs
   message: "Too many requests to the server, try again later",
 });
 
