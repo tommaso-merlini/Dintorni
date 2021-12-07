@@ -3,11 +3,17 @@ const { GraphQLError } = require("graphql");
 const paymentIntent = async (
   _,
   { accountId, firebaseUserId, companyId },
-  { stripe, db }
+  { stripe, db, resolvers }
 ) => {
   try {
     //getting the right payment details from firebse
     const cart = [];
+
+    //get the company
+    const shop = await resolvers.Query.shop(null, { id: companyId });
+    const fee = shop.cashbackInfo.fee;
+    const cashBack = shop.cashbackInfo.cashBack;
+    const minPayment = shop.cashbackInfo.minPayment;
 
     const cartCollection = await db
       .collection(`Cart/${firebaseUserId}/${companyId}`)
@@ -25,6 +31,21 @@ const paymentIntent = async (
     });
 
     console.log(`total: ${total}`);
+
+    //TODO: GET THE CASHBACK FROM FIREBASE
+    var cbUser = 10;
+
+    var totalToPay = total - cbUser;
+    if (totalToPay < 0) {
+      cbUser = Math.abs(totalToPay);
+
+      totalToPay = 0;
+    }
+
+    if (total >= minPayment) {
+      cbUser += (total * fee) / 100;
+      //TODO: UPDATE THE CBUSER
+    }
 
     //creating the payment intent
     const paymentIntent = await stripe.paymentIntents.create(
