@@ -179,6 +179,7 @@ const typeDefs = gql`
     shop(id: ID!): Shop
     shops(ids: [ID!]!): [Shop!]
     shopByFirebaseID(firebaseID: String!): Shop
+    shopsByFirebaseCompanyID(firebaseCompanyID: String!): [Shop!]
     closeShops(
       location: locationInput!
       category: String

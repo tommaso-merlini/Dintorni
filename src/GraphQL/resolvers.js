@@ -26,6 +26,7 @@ const createStripeAccount = require("./Functions/Mutations/Stripe/createStripeAc
 const accountLink = require("./Functions/Mutations/Stripe/accountLink");
 const account = require("./Functions/Queries/Stripe/account");
 const paymentIntent = require("./Functions/Mutations/Stripe/paymentIntent");
+const shopsByFirebaseCompanyID = require("./Functions/Queries/Company/shopsByFirebaseCompanyID");
 
 require("dotenv").config();
 
@@ -42,6 +43,7 @@ const resolvers = {
     favouriteShops: favouriteShops,
     login: login,
     account: account,
+    shopsByFirebaseCompanyID: shopsByFirebaseCompanyID,
   },
 
   Mutation: {
