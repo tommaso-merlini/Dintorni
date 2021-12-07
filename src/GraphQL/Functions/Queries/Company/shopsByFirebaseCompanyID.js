@@ -15,9 +15,9 @@ const shopsByFirebaseCompanyID = async (_, { firebaseCompanyID }, __, info) => {
     console.log(
       "something went wrong while searching for the shops by company firebase id"
     );
-    console.log(e.message);
     throw new GraphQLError(e.message);
     return null;
   }
 };
+
 module.exports = shopsByFirebaseCompanyID;
