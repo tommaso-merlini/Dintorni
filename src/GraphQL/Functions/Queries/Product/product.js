@@ -11,7 +11,7 @@ const product = async (_, { id }, { client }) => {
         //if the product is cached return it
         if (redisProducts) {
             if (!redisProducts.isActive) throw new Error("product is not active");
-            return redisProducts; 
+            return redisProducts;
         }
 
         //get the product from mongodb if not cached
