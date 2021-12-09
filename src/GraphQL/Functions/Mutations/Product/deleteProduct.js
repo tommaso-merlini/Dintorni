@@ -14,7 +14,8 @@ const deleteProduct = async (_, { id, firebaseCompanyID }, { req, admin, client 
         }
 
         //delete product in mongofn and in redis
-        await Product.findByIdAndDelete(id);
+        const deletedProduct = await Product.findByIdAndDelete(id);
+        if (!deletedProduct) throw new Error("could not find the product");
         await useDel(`product/${id}`, client);
 
         return true;
