@@ -22,7 +22,6 @@ const deleteProduct = async (_, { id, firebaseCompanyID }, { req, admin, client 
     } catch (e) {
         console.log("error while trying to delete the product");
         throw new GraphQLError(e.message);
-        return false;
     }
 };
 
