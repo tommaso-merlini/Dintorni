@@ -11,8 +11,8 @@ const paymentIntent = async (
 
         //get the company
         const shop = await resolvers.Query.shop(null, { id: shopID }, { client });
-        const fee = shop.cashbackInfo.fee;
-        const cashBack = shop.cashbackInfo.cashBack;
+        const feeShop = shop.cashbackInfo.fee;
+        const cashBackShop = shop.cashbackInfo.cashBack;
         const minPayment = shop.cashbackInfo.minPayment;
 
         const cartCollection = await db
@@ -53,23 +53,30 @@ const paymentIntent = async (
         var cbUser = total < cbUser ? cbUser - total : 0;
         console.log(`total to pay =>`, totalToPay);
 
+        const cashBack = total >= minPayment ? total * cashBackShop / 100 : 0;
 
         //get the new cashbackuser based on the cashback of the shop
-        total >= minPayment ? cbUser += (total * cashBack) / 100 : cbUser = cbUser;
-        console.log(`new cashback user =>`, cbUser);
-        db.collection("Cashback").doc(firebaseUserID).update({ cb: cbUser });
+        const newCashBackUser = cbUser + cashBack;
+        console.log(`new cashback user =>`, newCashBackUser);
+        //db.collection("Cashback").doc(firebaseUserID).update({ cb: cbUser });
 
 
         //get the dintorni fee
+        const dintorniFee = (total * feeShop) / 100;
+
+
+        //calculate the total fee
+        var application_fee_amount = dintorniFee + cashBack;
+
 
 
         //creating the payment intent
         const paymentIntent = await stripe.paymentIntents.create(
             {
                 payment_method_types: ["card"],
-                amount: 1000,
+                amount: totalToPay,
                 currency: "eur",
-                application_fee_amount: 10,
+                application_fee_amount: application_fee_amount,
             },
             {
                 stripeAccount: accountID,

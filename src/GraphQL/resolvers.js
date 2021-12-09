@@ -27,51 +27,53 @@ const accountLink = require("./Functions/Mutations/Stripe/accountLink");
 const account = require("./Functions/Queries/Stripe/account");
 const paymentIntent = require("./Functions/Mutations/Stripe/paymentIntent");
 const shopsByFirebaseCompanyID = require("./Functions/Queries/Company/shopsByFirebaseCompanyID");
+const changeProductStatus = require("./Functions/Mutations/Product/changeProductStatus.js");
 
 require("dotenv").config();
 
 const resolvers = {
-  Query: {
-    shop: shop,
-    shops: shops,
-    shopByFirebaseID: shopByFirebaseID,
-    // companyProducts: companyProducts,
-    product: product,
-    products: products,
-    closeProductsTitle: closeProductsTitle,
-    closeShops: closeShops,
-    favouriteShops: favouriteShops,
-    login: login,
-    account: account,
-    shopsByFirebaseCompanyID: shopsByFirebaseCompanyID,
-  },
+    Query: {
+        shop: shop,
+        shops: shops,
+        shopByFirebaseID: shopByFirebaseID,
+        // companyProducts: companyProducts,
+        product: product,
+        products: products,
+        closeProductsTitle: closeProductsTitle,
+        closeShops: closeShops,
+        favouriteShops: favouriteShops,
+        login: login,
+        account: account,
+        shopsByFirebaseCompanyID: shopsByFirebaseCompanyID,
+    },
 
-  Mutation: {
-    createProduct: createProduct,
-    deleProduct: deleteProduct,
-    updateProduct: updateProduct,
-    createShop: createShop,
-    activateShop: activateShop,
-    disactivateShop: disactivateShop,
-    updateShop: updateShop,
-    addLike: addLike,
-    removeLike: removeLike,
-    addFavourite: addFavourite,
-    removeFavourite: removeFavourite,
-    stripePayment: stripePayment,
-    createOrder: createOrder,
-    createStripeAccount: createStripeAccount,
-    accountLink: accountLink,
-    paymentIntent: paymentIntent,
-  },
+    Mutation: {
+        createProduct: createProduct,
+        deleProduct: deleteProduct,
+        updateProduct: updateProduct,
+        changeProductStatus: changeProductStatus,
+        createShop: createShop,
+        activateShop: activateShop,
+        disactivateShop: disactivateShop,
+        updateShop: updateShop,
+        addLike: addLike,
+        removeLike: removeLike,
+        addFavourite: addFavourite,
+        removeFavourite: removeFavourite,
+        stripePayment: stripePayment,
+        createOrder: createOrder,
+        createStripeAccount: createStripeAccount,
+        accountLink: accountLink,
+        paymentIntent: paymentIntent,
+    },
 
-  Shop: {
-    products: productsShop,
-  },
+    Shop: {
+        products: productsShop,
+    },
 
-  Product: {
-    shop: shopProduct,
-  },
+    Product: {
+        shop: shopProduct,
+    },
 };
 
 module.exports = resolvers;

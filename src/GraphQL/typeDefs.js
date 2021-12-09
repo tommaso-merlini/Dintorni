@@ -14,7 +14,7 @@ const typeDefs = gql`
     shopName: String!
     shop: Shop!
     likes: Int!
-    isActive: Boolean!
+    status: String!
   }
 
   type LightProduct {
@@ -25,7 +25,7 @@ const typeDefs = gql`
     shopID: ID!
     productID: ID!
     shop: Shop!
-    isActive: Boolean!
+    status: String!
     shopName: String!
   }
 
@@ -197,11 +197,12 @@ const typeDefs = gql`
 
   type Mutation {
     #======products======
-    createProduct(input: productInput!): Product
+    createProduct(input: productInput!, firebaseCompanyID: String!): Product
     deleProduct(id: ID!, shopID: ID!): Boolean!
     updateProduct(id: ID!, input: updateProductInput!): Boolean!
     addFavourite(id: ID!): Boolean!
     removeFavourite(id: ID!): Boolean!
+    changeProductStatus(id: ID!, status: String!, firebaseCompanyID: String!): Boolean!
 
     #======shop======
     createShop(input: shopInput!): ID

@@ -10,7 +10,7 @@ const product = async (_, { id }, { client }) => {
 
         //if the product is cached return it
         if (redisProducts) {
-            if (!redisProducts.isActive) throw new Error("product is not active");
+            if (redisProducts.isActive === "not_active") throw new Error("product is not active");
             return redisProducts;
         }
 
@@ -18,7 +18,7 @@ const product = async (_, { id }, { client }) => {
         const product = await Product.findById(id);
 
         if (!product) throw new Error(`product with id ${id} does not exist`);
-        if (!product.isActive) throw new Error("product is not active");
+        if (product.isActive === "not_active") throw new Error("product is not active");
 
         if (product) {
             await useSet(`product/${id}`, product, client);
