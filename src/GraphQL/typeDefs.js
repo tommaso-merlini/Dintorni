@@ -47,7 +47,7 @@ const typeDefs = gql`
     cashbackInfo: CashbackInfo!
     likes: Int!
     favourites: Int!
-    products(limit: Int!, offset: Int!): [Product!]!
+    products(limit: Int!, offset: Int!, auth: String!): [Product!]!
   }
 
   type LightShop {
