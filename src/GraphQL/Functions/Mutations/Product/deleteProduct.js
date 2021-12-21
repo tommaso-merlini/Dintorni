@@ -2,7 +2,6 @@ const Product = require("../../../../Schema/Product/Product.model");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const useDel = require("../../../../Redis/useDel/useDel");
 require("dotenv").config();
-
 const authenticateToken = require("../../../../JWT/AuthenticateToken");
 const { GraphQLError } = require("graphql");
 
@@ -14,7 +13,7 @@ const deleteProduct = async (_, { id, firebaseCompanyID }, { req, admin, client 
         }
 
         //delete product in mongofn and in redis
-        const deletedProduct = await Product.findByIdAndDelete(id);
+        const deletedProduct = await Product.updateOne({ _id: id }, { status: "deleted" });
         if (!deletedProduct) throw new Error("could not find the product");
         await useDel(`product/${id}`, client);
 
