@@ -59,6 +59,7 @@ const typeDefs = gql`
     isActive: Boolean!
     location: Location!
     cashbackInfo: CashbackInfo!
+    image: String!
     likes: Int!
   }
 
