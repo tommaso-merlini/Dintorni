@@ -30,5 +30,26 @@ const ProductSchema = new mongoose.Schema({
     shopID: { type: mongoose.Types.ObjectId, required: true },
 });
 
+ProductSchema.index(
+    {
+        "name": "search",
+
+        "mappings": {
+            "dynamic": false,
+            "fields": {
+                "location": {
+                    "type": "geo"
+                },
+                "name": {
+                    "type": "string",
+                    "analyzer": "lucene.italian"
+                }
+            }
+        }
+
+    }
+)
+
+
 const Product = mongoose.model("product", ProductSchema);
 module.exports = Product;
