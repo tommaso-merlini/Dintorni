@@ -212,8 +212,7 @@ const typeDefs = gql`
     updateShop(id: ID!, input: updateShopInput!): Boolean!
 
     #======like======
-    addLike(id: ID!, type: String!): Boolean!
-    removeLike(id: ID!, type: String!): Boolean!
+    like(id: ID!, to: String!, action: String!): Boolean!
 
     #======stripe======
     stripePayment(productIDs: [ID!]!): String

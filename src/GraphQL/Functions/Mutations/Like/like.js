@@ -3,11 +3,27 @@ const useDel = require("../../../../Redis/useDel/useDel");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const Product = require("../../../../Schema/Product/Product.model");
 
-const addLike = async (_, { id, type }, { client }) => {
+const like = async (_, { id, to, action }, { client }) => {
     try {
-        switch (type) {
+        var likeAction = 0;
+        switch (action) {
+            case "increment":
+                likeAction = 1;
+                break;
+            case "decrement":
+                likeAction = -1;
+                break;
+            default:
+                throw new Error(
+                    `${action} is not a valid action, try with increment or decrement`
+                );
+
+        }
+
+
+        switch (to) {
             case "shop":
-                const shop = await Shop.updateOne({ _id: id }, { $inc: { likes: 1 } });
+                const shop = await Shop.updateOne({ _id: id }, { $inc: { likes: likeAction } });
                 if (shop.n === 0) {
                     throw new Error(`shop with id ${id} does not exist`);
                 }
@@ -16,7 +32,7 @@ const addLike = async (_, { id, type }, { client }) => {
 
             case "product":
                 //like on mongodb
-                const product = await Product.updateOne({ _id: id }, { $inc: { likes: 1 } });
+                const product = await Product.updateOne({ _id: id }, { $inc: { likes: likeAction } });
                 if (product.n === 0) {
                     throw new Error(`Product with id ${id} does not exist`);
                 }
@@ -25,7 +41,7 @@ const addLike = async (_, { id, type }, { client }) => {
 
             default:
                 throw new Error(
-                    `type ${type} does not exists, try with shop or product`
+                    `"to" variable can not be ${to}, try with shop or product`
                 );
         }
         return true;
@@ -34,4 +50,4 @@ const addLike = async (_, { id, type }, { client }) => {
     }
 };
 
-module.exports = addLike;
+module.exports = like;
