@@ -1,52 +1,37 @@
 const { GraphQLError } = require("graphql");
-const useGet = require("../../../../Redis/useGet/useGet");
-const useSet = require("../../../../Redis/useSet/useSet");
+const useDel = require("../../../../Redis/useDel/useDel");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const Product = require("../../../../Schema/Product/Product.model");
 
 const addLike = async (_, { id, type }, { client }) => {
-  try {
-    switch (type) {
-      case "shop":
-        //like on mongodb
-        await Shop.updateOne({ _id: id }, { $inc: { likes: 1 } });
+    try {
+        switch (type) {
+            case "shop":
+                const shop = await Shop.updateOne({ _id: id }, { $inc: { likes: 1 } });
+                if (shop.n === 0) {
+                    throw new Error(`shop with id ${id} does not exist`);
+                }
+                await useDel(`shop/${id}`, client);
+                break;
 
-        /*
-                check if the shop is stored in redis,
-                if it is then update it with like + 1 
-                */
-        var redisShop = await useGet(`shop/${id}`, client);
-        if (redisShop) {
-          redisShop.likes = redisShop.likes + 1;
-          useSet(`shop/${id}`, redisShop, client);
+            case "product":
+                //like on mongodb
+                const product = await Product.updateOne({ _id: id }, { $inc: { likes: 1 } });
+                if (product.n === 0) {
+                    throw new Error(`Product with id ${id} does not exist`);
+                }
+                await useDel(`product/${id}`, client);
+                break;
+
+            default:
+                throw new Error(
+                    `type ${type} does not exists, try with shop or product`
+                );
         }
-        break;
-
-      case "product":
-        //like on mongodb
-        await Product.updateOne({ _id: id }, { $inc: { likes: 1 } });
-
-        /*
-                check if the product is stored in redis,
-                if it is then update it with like + 1 
-                */
-        var productRedis = await useGet(`product/${id}`, client);
-        if (productRedis) {
-          productRedis.likes = productRedis.likes + 1;
-          useSet(`product/${id}`, productRedis, client);
-        }
-
-        break;
-      default:
-        throw new Error(
-          `type ${type} does not exists, try with shop or product`
-        );
+        return true;
+    } catch (e) {
+        throw new GraphQLError(e.message);
     }
-    return true;
-  } catch (e) {
-    throw new GraphQLError(e.message);
-    return false;
-  }
 };
 
 module.exports = addLike;
