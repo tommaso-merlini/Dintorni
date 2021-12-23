@@ -201,8 +201,6 @@ const typeDefs = gql`
     createProduct(input: productInput!, firebaseCompanyID: String!): Product
     deleProduct(id: ID!, firebaseCompanyID: String!): Boolean!
     updateProduct(id: ID!, input: updateProductInput!): Boolean!
-    addFavourite(id: ID!): Boolean!
-    removeFavourite(id: ID!): Boolean!
     changeProductStatus(id: ID!, status: String!, firebaseCompanyID: String!): Boolean!
 
     #======shop======

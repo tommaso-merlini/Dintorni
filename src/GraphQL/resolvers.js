@@ -15,9 +15,7 @@ const closeProductsTitle = require("./Functions/Queries/Product/closeProductsTit
 const updateShop = require("./Functions/Mutations/Company/updateShop");
 const updateProduct = require("./Functions/Mutations/Product/updateProduct");
 const shopByFirebaseID = require("./Functions/Queries/Company/shopByFirebaseID");
-const like = require("./Functions/Mutations/Like/like");
-const addFavourite = require("./Functions/Mutations/Company/addFavourite");
-const removeFavourite = require("./Functions/Mutations/Company/removeFavourite");
+const like = require("./Functions/Mutations/Action/like");
 const favouriteShops = require("./Functions/Queries/Company/favouriteShops");
 const stripePayment = require("./Functions/Mutations/Stripe/stripePayment");
 const createOrder = require("./Functions/Mutations/Stripe/createOrder");
@@ -56,8 +54,6 @@ const resolvers = {
         disactivateShop: disactivateShop,
         updateShop: updateShop,
         like: like,
-        addFavourite: addFavourite,
-        removeFavourite: removeFavourite,
         stripePayment: stripePayment,
         createOrder: createOrder,
         createStripeAccount: createStripeAccount,
