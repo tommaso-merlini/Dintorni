@@ -92,6 +92,8 @@ const typeDefs = gql`
     orderCode: String!
   }
 
+  
+
   ########### inputs ###########
 
   input productInput {
@@ -163,6 +165,11 @@ const typeDefs = gql`
     products: [ID!]!
   }
 
+  input PaymentIntentProduct {
+    id: ID!
+    quantity: Int!
+  }
+
   ########### mutations and queries ###########
   type Query {
     #======products queries======
@@ -224,9 +231,9 @@ const typeDefs = gql`
     accountLink(accountID: ID!): String #//TODO: change the input variables in the client (accountId => accountID)
     paymentIntent( #//TODO: change the input variables in the client (accountId => accountID)
       accountID: ID!
-      firebaseUserID: ID!
       shopID: ID!
-    ): PaymentIntent
+      firebaseUserID: String!
+    ): String 
   }
 `;
 
