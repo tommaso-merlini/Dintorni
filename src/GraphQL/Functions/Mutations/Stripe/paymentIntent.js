@@ -23,13 +23,19 @@ const paymentIntent = async (
             return cart;
         }
 
-        async function setCartPricesFromMongodb(cart) {
+        const neededFields = {
+            price: 1,
+            weight: 1,
+            name: 1
+        }
+        async function getCartFromMongodb(cart) {
             const temporaryCart = cart;
             await Promise.all(temporaryCart.map(async (item, index) => {
-                const product = await Product.findById(item.id, { price: 1 });
+                const product = await Product.findById(item.id, neededFields);
                 temporaryCart[index].price = product.price;
+                temporaryCart[index].weight = product.weight;
+                temporaryCart[index].name = product.name;
             }));
-            console.log(temporaryCart)
             return temporaryCart;
         }
 
@@ -54,10 +60,6 @@ const paymentIntent = async (
             return cb;
         }
 
-
-
-
-
         //get the company from mongodb
         const shop = await resolvers.Query.shop(null, { id: shopID }, { client });
         const feeShop = shop.cashbackInfo.fee;
@@ -68,7 +70,7 @@ const paymentIntent = async (
         cart = await getCartFromFirebase(firebaseUserID, shopID);
 
         //set the price for each product off mongodb
-        cart = await setCartPricesFromMongodb(cart);
+        cart = await getCartFromMongodb(cart);
         console.log(`cart =>`, cart);
 
         //get the total off the cart
@@ -90,27 +92,43 @@ const paymentIntent = async (
         const newCashBackUser = cbUser + cashBack;
         console.log(`new cashback user =>`, newCashBackUser);
         //db.collection("Cashback").doc(firebaseUserID).update({ cb: cbUser });
+        console.log(`cashback: ${cashBack}`);
 
         //get the dintorni fee
         const dintorniFee = (total * feeShop) / 100;
+        console.log(`dintorniFee: ${dintorniFee}`);
 
         //calculate the total fee
-        var application_fee_amount = dintorniFee + cashBack;
+        const application_fee_amount = dintorniFee + cashBack;
+        console.log(`application_fee_amount: ${application_fee_amount}`);
+
+        //const prova = Number((totalToPay * 100).toFixed(0));
+        //const prova1 = Number((application_fee_amount * 100).toFixed(0));
+
+        //console.log(prova);
+        //console.log(prova1);
 
         //creating the payment intent
         const paymentIntent = await stripe.paymentIntents.create(
             {
                 payment_method_types: ["card"],
-                amount: totalToPay * 100,
+                amount: Number((totalToPay * 100).toFixed(0)),
                 currency: "eur",
-                application_fee_amount: application_fee_amount * 100,
+                application_fee_amount: Number((application_fee_amount * 100).toFixed(0)),
+                metadata: {
+                    newCashBackUser: newCashBackUser, //initial cashback user
+                    cashBack: cashBack //accumulated cashback
+                }
             },
             {
                 stripeAccount: accountID,
             }
         );
 
-        return paymentIntent.client_secret;
+        return {
+            clientSecret: paymentIntent.client_secret,
+            products: cart
+        };
     } catch (e) {
         console.log(`error while initializing the payment intent`);
         throw new GraphQLError(e.message);

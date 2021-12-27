@@ -81,15 +81,17 @@ const typeDefs = gql`
     charges_enabled: Boolean!
   }
 
+  type PaymentIntentProducts {
+    id: ID!
+    name: String!
+    quantity: Int!
+    price: Float!
+    weight: Float!
+  }
+
   type PaymentIntent {
     clientSecret: String!
-    total: Float!
-    totalToPay: Float!
-    accumulatedCashback: Float!
-    usedCb: Float!
-    JWTCb: String!
-    accumulatedCb: Float!
-    orderCode: String!
+    products: [PaymentIntentProducts!]!
   }
 
   
@@ -233,7 +235,7 @@ const typeDefs = gql`
       accountID: ID!
       shopID: ID!
       firebaseUserID: String!
-    ): String 
+    ): PaymentIntent 
   }
 `;
 
