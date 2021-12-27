@@ -232,7 +232,6 @@ const typeDefs = gql`
     createStripeAccount(email: String!): ID
     accountLink(accountID: ID!): String #//TODO: change the input variables in the client (accountId => accountID)
     paymentIntent( #//TODO: change the input variables in the client (accountId => accountID)
-      accountID: ID!
       shopID: ID!
       firebaseUserID: String!
     ): PaymentIntent 

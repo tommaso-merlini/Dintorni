@@ -5,12 +5,25 @@ const Product = require("../../../../Schema/Product/Product.model.js");
 
 const paymentIntent = async (
     _,
-    { accountID, shopID, firebaseUserID },
+    { shopID, firebaseUserID },
     { stripe, db, resolvers, client }
 ) => {
     try {
         var cart = [];
         var cbUser = 0;
+        async function getStripeAccountID(firebaseCompanyID) {
+            var accountID = 0;
+            await db
+                .collection("Impresa")
+                .doc(`${firebaseCompanyID}`)
+                .get()
+                .then((snapshot) => {
+                    const data = snapshot.data();
+                    accountID = data.stripeId;
+                });
+            return accountID;
+
+        }
 
         async function getCartFromFirebase(firebaseUserID, shopID) {
             const cart = [];
@@ -65,6 +78,11 @@ const paymentIntent = async (
         const feeShop = shop.cashbackInfo.fee;
         const cashBackShop = shop.cashbackInfo.cashBack;
         const minPayment = shop.cashbackInfo.minPayment;
+        const firebaseCompanyID = shop.firebaseCompanyID;
+
+        //get the stripe accountID
+        const accountID = await getStripeAccountID(firebaseCompanyID);
+        console.log(`accountID: ${accountID}`);
 
         //get the cart from firebase
         cart = await getCartFromFirebase(firebaseUserID, shopID);
@@ -117,7 +135,11 @@ const paymentIntent = async (
                 application_fee_amount: Number((application_fee_amount * 100).toFixed(0)),
                 metadata: {
                     newCashBackUser: newCashBackUser, //initial cashback user
-                    cashBack: cashBack //accumulated cashback
+                    cashBack: cashBack, //accumulated cashback
+                    shopID: shopID,
+                    firebaseCompanyID: firebaseCompanyID
+
+
                 }
             },
             {
