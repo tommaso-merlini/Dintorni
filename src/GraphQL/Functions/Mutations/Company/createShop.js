@@ -2,6 +2,14 @@ const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const { GraphQLError } = require("graphql");
 require("dotenv").config();
 
+/**
+ * @title Create A Shop
+ * @author Tommaso Merlini
+ *
+ * @param input all the shop fields 
+ *
+ *
+*/
 const createShop = async (
     _,
     { input },
@@ -15,8 +23,9 @@ const createShop = async (
         //   company: true,
         // });
 
-        var email = "";
 
+        //dummy email if the env is in production
+        var email = "";
         if (process.env.NODE_ENV != "production") {
             email = "prova@gmail.com";
         } else {

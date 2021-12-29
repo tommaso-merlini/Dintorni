@@ -81,7 +81,7 @@ const typeDefs = gql`
     charges_enabled: Boolean!
   }
 
-  type PaymentIntentProducts {
+  type PaymentIntentProduct {
     id: ID!
     name: String!
     quantity: Int!
@@ -91,7 +91,7 @@ const typeDefs = gql`
 
   type PaymentIntent {
     clientSecret: String!
-    products: [PaymentIntentProducts!]!
+    products: [PaymentIntentProduct!]!
   }
 
   
@@ -167,9 +167,12 @@ const typeDefs = gql`
     products: [ID!]!
   }
 
-  input PaymentIntentProduct {
+  input PaymentIntentProductInput {
     id: ID!
+    name: String!
     quantity: Int!
+    price: Float!
+    weight: Float!
   }
 
   ########### mutations and queries ###########
@@ -223,11 +226,17 @@ const typeDefs = gql`
 
     #======stripe======
     stripePayment(productIDs: [ID!]!): String
-    createOrder( #//TODO: change the input variables in the client (userId => userID)
-      userID: ID!
-      shopID: ID!
-      dateLimit: Int!
-      pickUpHour: String!
+    createOrder(      
+        clientSecret: String!
+        products: [PaymentIntentProductInput!]
+        firebaseUserID: String
+        firebaseCompanyID: String
+        shopID: ID
+        fee: Float
+        amount: Int
+        timeStamp: String
+        pickUpDate: String
+        companyAccumulatedCashBack: Int
     ): Boolean! #all firebase vars
     createStripeAccount(email: String!): ID
     accountLink(accountID: ID!): String #//TODO: change the input variables in the client (accountId => accountID)

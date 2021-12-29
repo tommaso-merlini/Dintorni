@@ -3,9 +3,32 @@ const useDel = require("../../../../Redis/useDel/useDel");
 const Shop = require("../../../../Schema/Company/Shop/Shop.model");
 const Product = require("../../../../Schema/Product/Product.model");
 
+/**
+ * @title Add Like or Remove Like
+ * @author Tommaso Merlini
+ *
+ * @param id the id of the product/shop
+ * 
+ * @param to if the action is directed to product or shop
+ * @example
+ * to = "product"
+ * to = "shop"
+ *
+ * @param action
+ * @example
+ * action = "increment" => likeAction = 1 (+1)
+ * action = "decrement" => likeAction = -1
+ *
+ * @return Boolean!
+ * @example
+ * return true if everything was ok
+ * return false if there was an error
+*/
+
 const like = async (_, { id, to, action }, { client }) => {
     try {
         var likeAction = 0;
+
         switch (action) {
             case "increment":
                 likeAction = 1;
@@ -17,7 +40,6 @@ const like = async (_, { id, to, action }, { client }) => {
                 throw new Error(
                     `${action} is not a valid action, try with increment or decrement`
                 );
-
         }
 
 
