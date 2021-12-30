@@ -92,6 +92,8 @@ const typeDefs = gql`
   type PaymentIntent {
     clientSecret: String!
     accountID: ID!
+    total: Float!
+    cashBack: Float!
     products: [PaymentIntentProduct!]!
   }
 

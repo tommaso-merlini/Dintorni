@@ -166,6 +166,8 @@ const paymentIntent = async (
     return {
       clientSecret: paymentIntent.client_secret,
       accountID: accountID,
+      total: Number(totalToPay.toFixed(2)),
+      cashBack: Number(cashBack.toFixed(2)),
       products: cart,
     };
   } catch (e) {
