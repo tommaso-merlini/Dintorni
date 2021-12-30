@@ -1,8 +1,6 @@
 const { GraphQLError } = require("graphql");
 const Product = require("../../../../Schema/Product/Product.model.js");
 
-
-
 const paymentIntent = async (
     _,
     { shopID, firebaseUserID },

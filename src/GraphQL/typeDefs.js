@@ -228,6 +228,7 @@ const typeDefs = gql`
     stripePayment(productIDs: [ID!]!): String
     createOrder(      
         clientSecret: String!
+        accountID: ID!
         products: [PaymentIntentProductInput!]
         firebaseUserID: String
         firebaseCompanyID: String

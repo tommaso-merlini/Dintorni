@@ -1,12 +1,26 @@
 const { GraphQLError } = require("graphql");
+
+/**
+ * @title Create The Order
+ * @author Tommaso Merlini
+ * @param clientSecret the id of the paymentIntent
+ * @param accountID the id of the stripe company account 
+ * @returns true
+ */
+
 const createOrder = async (
     _,
-    { clientSecret },
-    { stripe }
+    { clientSecret, accountID, firebaseUserID },
+    { stripe, db }
 ) => {
     try {
-        const paymentIntent = await stripe.paymentIntents.retrieve('pi_3KBILb2cRuCU3fXB0nYl5Mcq');
-        console.log(paymentIntent);
+        //retrieve the payment intent
+        const paymentIntent = await stripe.paymentIntents.retrieve(clientSecret, { stripeAccount: accountID });
+        const metadata = paymentIntent.metadata;
+        const newCashbackUser = metadata.newCashBackUser;
+
+        //set the new newCashbackUser
+        await db.collection('CashbackUser').doc(firebaseUserID).set({cashback: Number(newCashbackUser)});
 
         //creating order code
         const alphabet = "abcdefghilmnopqrstuvxz";
@@ -15,6 +29,7 @@ const createOrder = async (
             alphabet[Math.floor(Math.random() * alphabet.length)];
         const numericCode = Math.floor(Math.random() * (999 - 100 + 1) + 100);
         const code = alphabeticCode + numericCode;
+        console.log(`code: ${code}`);
 
         return true;
     } catch (e) {
