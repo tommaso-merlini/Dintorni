@@ -6,7 +6,7 @@ const Product = require("../../../../Schema/Product/Product.model.js");
  * @author Tommaso Merlini
  * @param  shopID the mongoDB id of the shop_
  * @param firebaseUserID the id from firebase of the user
- * @returns {clientSecret, [products]}
+ * @returns {clientSecret, accountID, [products]}
  */
 
 const paymentIntent = async (
@@ -77,7 +77,6 @@ const paymentIntent = async (
           const data = snapshot.data();
           cb = data.cb;
         });
-      if (cb === undefined || cb === null) cb = 0; //if the user don't have cashback
       return cb;
     }
 
@@ -104,13 +103,16 @@ const paymentIntent = async (
     console.log(`total: ${total}`);
 
     //get the cashback user
-    var cbUser = await getCbUser(firebaseUserID);
-    console.log(`cbuser =>`, cbUser);
+    const cbUserInitial = await getCbUser(firebaseUserID);
+    console.log(`cbuserInitial =>`, cbUserInitial);
 
     //calculate the total to pay
-    const totalToPay = total < cbUser ? 0 : total - cbUser;
-    var cbUser = total < cbUser ? cbUser - total : 0;
+    const totalToPay = total < cbUserInitial ? 0 : total - cbUserInitial;
+    cbUser = total < cbUserInitial ? total : cbUserInitial;
+    let cbCompany = cbUser;
+    console.log(`cbUser: ${cbUser}`);
     console.log(`total to pay =>`, totalToPay);
+    console.log(`cbCompany(before): ${cbCompany}`);
 
     //get the new cashbackuser based on the cashback of the shop
     const cashBack = total >= minPayment ? (total * cashBackShop) / 100 : 0;
@@ -123,14 +125,20 @@ const paymentIntent = async (
     console.log(`dintorniFee: ${dintorniFee}`);
 
     //calculate the total fee
-    const application_fee_amount = dintorniFee + cashBack;
-    console.log(`application_fee_amount: ${application_fee_amount}`);
+    let application_fee_amount = dintorniFee + cashBack;
+    console.log(`application_fee_amount(before): ${application_fee_amount}`);
 
-    //const prova = Number((totalToPay * 100).toFixed(0));
-    //const prova1 = Number((application_fee_amount * 100).toFixed(0));
-
-    //console.log(prova);
-    //console.log(prova1);
+    //calculate the cbCompany using cbUser for reducign the application_fee_amount
+    if (cbUser > 0) {
+      cbCompany = cbUser - application_fee_amount;
+      application_fee_amount = 0;
+      if (cbCompany < 0) {
+        application_fee_amount = Math.abs(cbCompany);
+        cbCompany = 0;
+      }
+    }
+    console.log(`application_fee_amount(after): ${application_fee_amount}`);
+    console.log(`cbCompany(after): ${cbCompany}`);
 
     //creating the payment intent
     const paymentIntent = await stripe.paymentIntents.create(
@@ -142,10 +150,12 @@ const paymentIntent = async (
           (application_fee_amount * 100).toFixed(0)
         ),
         metadata: {
-          newCashBackUser: newCashBackUser, //initial cashback user
+          cbUser: newCashBackUser, //cashback user
+          cbCompany: cbCompany,
           cashBack: cashBack, //accumulated cashback
           shopID: shopID,
           firebaseCompanyID: firebaseCompanyID,
+          dintorniFee: dintorniFee.toFixed(2),
         },
       },
       {
@@ -155,6 +165,7 @@ const paymentIntent = async (
 
     return {
       clientSecret: paymentIntent.client_secret,
+      accountID: accountID,
       products: cart,
     };
   } catch (e) {

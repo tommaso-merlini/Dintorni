@@ -25,7 +25,7 @@ const createOrder = async (
     await db
       .collection("CashbackUser")
       .doc(firebaseUserID)
-      .set({ cashback: Number(newCashbackUser) });
+      .set({ cashback: Number(newCashbackUser.toFixed(2)) });
 
     //creating order code
     const alphabet = "abcdefghilmnopqrstuvxz";
@@ -39,7 +39,7 @@ const createOrder = async (
     //create the order on firebase
     db.collection("Orders").doc(code).set({
       shopID: metadata.shopID,
-      status: "not_used" /** @params (used, not_used) */,
+      status: "not_collected" /** @params (collected, not_collected, ) */,
       //TODO: add the other params
     });
 

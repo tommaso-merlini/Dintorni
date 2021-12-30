@@ -91,10 +91,9 @@ const typeDefs = gql`
 
   type PaymentIntent {
     clientSecret: String!
+    accountID: ID!
     products: [PaymentIntentProduct!]!
   }
-
-  
 
   ########### inputs ###########
 
@@ -213,7 +212,11 @@ const typeDefs = gql`
     createProduct(input: productInput!, firebaseCompanyID: String!): Product
     deleProduct(id: ID!, firebaseCompanyID: String!): Boolean!
     updateProduct(id: ID!, input: updateProductInput!): Boolean!
-    changeProductStatus(id: ID!, status: String!, firebaseCompanyID: String!): Boolean!
+    changeProductStatus(
+      id: ID!
+      status: String!
+      firebaseCompanyID: String!
+    ): Boolean!
 
     #======shop======
     createShop(input: shopInput!): ID
@@ -226,25 +229,22 @@ const typeDefs = gql`
 
     #======stripe======
     stripePayment(productIDs: [ID!]!): String
-    createOrder(      
-        clientSecret: String!
-        accountID: ID!
-        products: [PaymentIntentProductInput!]
-        firebaseUserID: String
-        firebaseCompanyID: String
-        shopID: ID
-        fee: Float
-        amount: Int
-        timeStamp: String
-        pickUpDate: String
-        companyAccumulatedCashBack: Int
+    createOrder(
+      clientSecret: String!
+      accountID: ID!
+      products: [PaymentIntentProductInput!]
+      firebaseUserID: String
+      firebaseCompanyID: String
+      shopID: ID
+      fee: Float
+      amount: Int
+      timeStamp: String
+      pickUpDate: String
+      companyAccumulatedCashBack: Int
     ): Boolean! #all firebase vars
     createStripeAccount(email: String!): ID
     accountLink(accountID: ID!): String #//TODO: change the input variables in the client (accountId => accountID)
-    paymentIntent( #//TODO: change the input variables in the client (accountId => accountID)
-      shopID: ID!
-      firebaseUserID: String!
-    ): PaymentIntent 
+    paymentIntent(shopID: ID!, firebaseUserID: String!): PaymentIntent #//TODO: change the input variables in the client (accountId => accountID)
   }
 `;
 
