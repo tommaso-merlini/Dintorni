@@ -38,6 +38,9 @@ const paymentIntent = async (
       cartCollection.forEach((doc) => {
         cart.push({ id: doc.id, ...doc.data() });
       });
+      if (cart.length === 0) {
+        throw new Error("This cart is empty or non-existing");
+      }
       return cart;
     }
 
@@ -150,12 +153,12 @@ const paymentIntent = async (
           (application_fee_amount * 100).toFixed(0)
         ),
         metadata: {
-          cbUser: newCashBackUser, //cashback user
-          cbCompany: cbCompany,
-          cashBack: cashBack, //accumulated cashback
+          cbUser: Number(newCashBackUser).toFixed(2), //cashback user
+          cbCompany: Number(cbCompany).toFixed(2),
+          cashBack: Number(cashBack).toFixed(2), //accumulated cashback
           shopID: shopID,
           firebaseCompanyID: firebaseCompanyID,
-          dintorniFee: dintorniFee.toFixed(2),
+          dintorniFee: Number(dintorniFee).toFixed(2),
         },
       },
       {
@@ -168,6 +171,7 @@ const paymentIntent = async (
       accountID: accountID,
       total: Number(totalToPay.toFixed(2)),
       cashBack: Number(cashBack.toFixed(2)),
+      cbUsed: Number(total - totalToPay).toFixed(2),
       products: cart,
     };
   } catch (e) {

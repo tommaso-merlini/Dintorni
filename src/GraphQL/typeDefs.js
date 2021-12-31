@@ -94,6 +94,7 @@ const typeDefs = gql`
     accountID: ID!
     total: Float!
     cashBack: Float!
+    cbUsed: Float!
     products: [PaymentIntentProduct!]!
   }
 
