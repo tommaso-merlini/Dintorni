@@ -6,7 +6,7 @@ const Product = require("../../../../Schema/Product/Product.model.js");
  * @author Tommaso Merlini
  * @param  shopID the mongoDB id of the shop_
  * @param firebaseUserID the id from firebase of the user
- * @returns {clientSecret, accountID, [products]}
+ * @returns {clientSecret, accountID, total, cashBack, cbUsed, [products]}
  */
 
 const paymentIntent = async (
@@ -15,6 +15,7 @@ const paymentIntent = async (
   { stripe, db, resolvers, client }
 ) => {
   try {
+    console.log("-----------");
     var cart = [];
     var cbUser = 0;
     async function getStripeAccountID(firebaseCompanyID) {
@@ -72,14 +73,23 @@ const paymentIntent = async (
 
     async function getCbUser(firebaseUserID) {
       var cb = 0;
-      await db
-        .collection("CashbackUser")
-        .doc(`${firebaseUserID}`)
-        .get()
-        .then((snapshot) => {
-          const data = snapshot.data();
-          cb = data.cb;
-        });
+      try {
+        await db
+          .collection("CashbackUser")
+          .doc(`${firebaseUserID}`)
+          .get()
+          .then((snapshot) => {
+            const data = snapshot.data();
+            cb = data.cb;
+          });
+      } catch (e) {
+        //if the cb is not inserted in firebase => create document in firebase
+        if (e.message == "Cannot read property 'cb' of undefined") {
+          await db.collection("CashbackUser").doc(firebaseUserID).set({
+            cb: 0,
+          });
+        }
+      }
       return cb;
     }
 
@@ -165,6 +175,7 @@ const paymentIntent = async (
         stripeAccount: accountID,
       }
     );
+    console.log("-----------");
 
     return {
       clientSecret: paymentIntent.client_secret,

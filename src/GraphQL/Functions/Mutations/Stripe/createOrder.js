@@ -37,7 +37,7 @@ const createOrder = async (
     console.log(`code: ${code}`);
 
     //create the order on firebase
-    db.collection("Orders").doc(code).set({
+    await db.collection("Orders").doc(code).set({
       shopID: metadata.shopID,
       status: "not_collected" /** @params (collected, not_collected, ) */,
       //TODO: add the other params
