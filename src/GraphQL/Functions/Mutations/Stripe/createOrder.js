@@ -25,11 +25,11 @@ const createOrder = async (
   { stripe, db, req, admin, FieldValue }
 ) => {
   try {
-    //authorize the user
-    if (process.env.NODE_ENV === "production") {
-      const token = await admin.auth().verifyIdToken(req.headers.authorization);
-      console.log(token);
-    }
+    //?authorize the user?
+    // if (process.env.NODE_ENV === "production") {
+    //   const token = await admin.auth().verifyIdToken(req.headers.authorization);
+    //   console.log(token);
+    // }
 
     //retrieve the payment intent from mongodb
     const paymentIntent = await PaymentIntent.findById(paymentIntentID);
@@ -56,16 +56,6 @@ const createOrder = async (
     //   }
     // );
 
-    //increment the cashback by the accumulated cashback
-    await db
-      .collection("CashbackUser")
-      .doc(paymentIntent.firebaseUserID)
-      .update({
-        cb: FieldValue.increment(
-          Number(paymentIntent.cashbackAccumulated.toFixed(2))
-        ),
-      });
-
     //creating order code
     const alphabet = "abcdefghilmnopqrstuvxz";
     const alphabeticCode =
@@ -82,7 +72,22 @@ const createOrder = async (
       total: paymentIntent.total,
     });
 
-    //disactivate teh paymentIntent
+    //increment the user cashback by the accumulated cashback
+    await db
+      .collection("CashbackUser")
+      .doc(paymentIntent.firebaseUserID)
+      .update(
+        {
+          cb: FieldValue.increment(
+            Number(paymentIntent.cashbackAccumulated.toFixed(2))
+          ),
+        },
+        { merge: true } //create document if it does not exist
+      );
+
+    //TODO: increment the company cashback
+
+    //disactivate the paymentIntent
     await PaymentIntent.updateOne(
       { _id: paymentIntentID },
       { isActive: false }
