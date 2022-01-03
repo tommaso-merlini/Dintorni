@@ -29,45 +29,45 @@ const changeProductStatus = require("./Functions/Mutations/Product/changeProduct
 require("dotenv").config();
 
 const resolvers = {
-    Query: {
-        shop: shop,
-        shops: shops,
-        shopByFirebaseID: shopByFirebaseID,
-        // companyProducts: companyProducts,
-        product: product,
-        products: products,
-        closeProductsTitle: closeProductsTitle,
-        closeShops: closeShops,
-        favouriteShops: favouriteShops,
-        login: login,
-        account: account,
-        shopsByFirebaseCompanyID: shopsByFirebaseCompanyID,
-    },
+  Query: {
+    shop: shop,
+    shops: shops,
+    shopByFirebaseID: shopByFirebaseID,
+    // companyProducts: companyProducts,
+    product: product,
+    products: products,
+    closeProductsTitle: closeProductsTitle,
+    closeShops: closeShops,
+    favouriteShops: favouriteShops,
+    login: login,
+    account: account,
+    shopsByFirebaseCompanyID: shopsByFirebaseCompanyID,
+  },
 
-    Mutation: {
-        createProduct: createProduct,
-        deleProduct: deleteProduct,
-        updateProduct: updateProduct,
-        changeProductStatus: changeProductStatus,
-        createShop: createShop,
-        activateShop: activateShop,
-        disactivateShop: disactivateShop,
-        updateShop: updateShop,
-        like: like,
-        stripePayment: stripePayment,
-        createOrder: createOrder,
-        createStripeAccount: createStripeAccount,
-        accountLink: accountLink,
-        paymentIntent: paymentIntent,
-    },
+  Mutation: {
+    createProduct: createProduct,
+    deleProduct: deleteProduct,
+    updateProduct: updateProduct,
+    changeProductStatus: changeProductStatus,
+    createShop: createShop,
+    activateShop: activateShop,
+    disactivateShop: disactivateShop,
+    updateShop: updateShop,
+    like: like,
+    stripePayment: stripePayment,
+    createOrder: createOrder,
+    createStripeAccount: createStripeAccount,
+    accountLink: accountLink,
+    paymentIntent: paymentIntent,
+  },
 
-    Shop: {
-        products: productsShop,
-    },
+  Shop: {
+    products: productsShop,
+  },
 
-    Product: {
-        shop: shopProduct,
-    },
+  Product: {
+    shop: shopProduct,
+  },
 };
 
 module.exports = resolvers;

@@ -90,7 +90,9 @@ const typeDefs = gql`
   }
 
   type PaymentIntent {
-    clientSecret: String!
+    paymentType: String!
+    paymentIntentID: ID!
+    clientSecret: String
     accountID: ID!
     total: Float!
     cashBack: Float!
@@ -162,11 +164,17 @@ const typeDefs = gql`
     minPayment: Int!
   }
 
-  #//TODO: change the input variables in the client (shopId => shopID)
-  input orderInput {
+  #//TODO: parametri cashBack
+  input OrderInput {
+    paymentIntentID: ID!
+    accountID: ID
+    firebaseCompanyID: String
+    firebaseUserID: String!
     shopID: ID!
-    userID: ID!
-    products: [ID!]!
+    total: Float!
+    totalToPay: Float!
+    pickUpHour: Int!
+    timestamp: Int!
   }
 
   input PaymentIntentProductInput {
@@ -232,19 +240,7 @@ const typeDefs = gql`
 
     #======stripe======
     stripePayment(productIDs: [ID!]!): String
-    createOrder(
-      clientSecret: String!
-      accountID: ID!
-      products: [PaymentIntentProductInput!]
-      firebaseUserID: String
-      firebaseCompanyID: String
-      shopID: ID
-      fee: Float
-      amount: Int
-      timeStamp: String
-      pickUpDate: String
-      companyAccumulatedCashBack: Int
-    ): Boolean! #all firebase vars
+    createOrder(input: OrderInput!): Boolean! #all firebase vars
     createStripeAccount(email: String!): ID
     accountLink(accountID: ID!): String #//TODO: change the input variables in the client (accountId => accountID)
     paymentIntent(shopID: ID!, firebaseUserID: String!): PaymentIntent #//TODO: change the input variables in the client (accountId => accountID)

@@ -1,23 +1,46 @@
 const { GraphQLError } = require("graphql");
+const PaymentIntent = require("../../../../Schema/Stripe/PaymentIntent.model");
+require("dotenv").config();
 
 /**
  * @title Create The Order
- * @author Tommaso Merlini
- * @param clientSecret the id of the paymentIntent
+ * @author Tommaso Merlini | Nicolo Merlini
+ *
+ * @param paymentIntentID the id of the paymentIntent
  * @param accountID the id of the stripe company account
- * @returns true
+ * @param firebaseCompanyID
+ * @param firebaseUserID
+ * param shopID
+ * param totalh
+ * param totalToPay
+ * param newCashback
+ * param cbCompany
+ * @param pickUpHour (Int)
+ * @param TimeStamp (Int)
+ * @param returns code
  */
 
+//TODO: fare orderProducts =>
 const createOrder = async (
   _,
-  { clientSecret, accountID, firebaseUserID },
-  { stripe, db }
+  { paymentIntentID, accountID, firebaseUserID },
+  { stripe, db, req }
 ) => {
   try {
+    //authorize the user
+    if (process.env.NODE_ENV === "production") {
+      const token = await admin.auth().verifyIdToken(req.headers.authorization);
+      console.log(token);
+    }
+
     //retrieve the payment intent
-    const paymentIntent = await stripe.paymentIntents.retrieve(clientSecret, {
-      stripeAccount: accountID,
-    });
+    const paymentIntent = await stripe.paymentIntents.retrieve(
+      paymentIntentID,
+      {
+        stripeAccount: accountID,
+      }
+    );
+    console.log(paymentIntent);
     const metadata = paymentIntent.metadata;
     const newCashbackUser = metadata.newCashBackUser;
 
@@ -41,6 +64,7 @@ const createOrder = async (
       shopID: metadata.shopID,
       status: "not_collected" /** @params (collected, not_collected, ) */,
       //TODO: add the other params
+      total: paymentIntent.amount,
     });
 
     return true;

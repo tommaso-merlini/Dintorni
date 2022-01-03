@@ -1,9 +1,10 @@
-const { GraphQLError, NoUndefinedVariablesRule } = require("graphql");
+const { GraphQLError } = require("graphql");
 const Product = require("../../../../Schema/Product/Product.model.js");
+const PaymentIntent = require("../../../../Schema/Stripe/PaymentIntent.model.js");
 
 /**
  * @title Create The Payment Intent
- * @author Tommaso Merlini
+ * @author Tommaso Merlini | Nicolo Merlini
  * @param  shopID the mongoDB id of the shop_
  * @param firebaseUserID the id from firebase of the user
  * @returns {clientSecret, accountID, total, cashBack, cbUsed, [products]}
@@ -154,31 +155,63 @@ const paymentIntent = async (
     console.log(`cbCompany(after): ${cbCompany}`);
 
     //creating the payment intent
-    const paymentIntent = await stripe.paymentIntents.create(
-      {
-        payment_method_types: ["card"],
-        amount: Number((totalToPay * 100).toFixed(0)),
-        currency: "eur",
-        application_fee_amount: Number(
-          (application_fee_amount * 100).toFixed(0)
-        ),
-        metadata: {
-          cbUser: Number(newCashBackUser).toFixed(2), //cashback user
-          cbCompany: Number(cbCompany).toFixed(2),
-          cashBack: Number(cashBack).toFixed(2), //accumulated cashback
-          shopID: shopID,
-          firebaseCompanyID: firebaseCompanyID,
-          dintorniFee: Number(dintorniFee).toFixed(2),
+    //? if the user pays (<100 cent)?
+    let newPaymentIntent = null;
+    if (totalToPay > 0) {
+      newPaymentIntent = await stripe.paymentIntents.create(
+        {
+          payment_method_types: ["card"],
+          amount: Number((totalToPay * 100).toFixed(0)),
+          currency: "eur",
+          application_fee_amount: Number(
+            (application_fee_amount * 100).toFixed(0)
+          ),
+          metadata: {
+            cbUser: Number(newCashBackUser).toFixed(2), //cashback user
+            cbCompany: Number(cbCompany).toFixed(2),
+            cashBack: Number(cashBack).toFixed(2), //accumulated cashback
+            shopID: shopID,
+            firebaseCompanyID: firebaseCompanyID,
+            dintorniFee: Number(dintorniFee).toFixed(2),
+          },
         },
+        {
+          stripeAccount: accountID,
+        }
+      );
+    }
+
+    //create the paymentIntent in mongodb
+    // * one cart per shop => one paymentIntent per shop
+    const mongoPaymentIntent = await PaymentIntent.findOneAndUpdate(
+      {
+        firebaseUserID: firebaseUserID,
+        shopID: shopID,
+        isAvailable: true,
       },
       {
-        stripeAccount: accountID,
-      }
+        accountID: accountID,
+        shopID: shopID,
+        clientSecret:
+          newPaymentIntent != null ? newPaymentIntent.client_secret : null,
+        paymentType: newPaymentIntent != null ? "stripe" : "free",
+        firebaseCompanyID: firebaseCompanyID,
+        fee: dintorniFee,
+        total: totalToPay,
+        newCashback: newCashBackUser,
+        cashbackCompany: cbCompany,
+        cashbackAccumulated: cashBack,
+        isAvailable: true,
+      },
+      { upsert: true, new: true } //create a new one if it does not exist
     );
-    console.log("-----------");
 
+    console.log("-----------");
     return {
-      clientSecret: paymentIntent.client_secret,
+      paymentType: totalToPay > 0 ? "stripe" : "free",
+      paymentIntentID: mongoPaymentIntent._id,
+      clientSecret:
+        newPaymentIntent != null ? newPaymentIntent.client_secret : null,
       accountID: accountID,
       total: Number(totalToPay.toFixed(2)),
       cashBack: Number(cashBack.toFixed(2)),
