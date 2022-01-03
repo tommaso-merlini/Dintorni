@@ -40,4 +40,4 @@ admin.initializeApp({
 const db = getFirestore();
 
 firebase.initializeApp(firebaseConfig);
-module.exports = { admin, firebase, db };
+module.exports = { admin, firebase, db, FieldValue };

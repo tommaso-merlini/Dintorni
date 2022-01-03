@@ -17,10 +17,6 @@ const PaymentIntentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  newCashback: {
-    type: Number,
-    required: true,
-  },
   cashbackCompany: {
     type: Number,
     required: true,
@@ -45,7 +41,7 @@ const PaymentIntentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  isAvailable: {
+  isActive: {
     type: Boolean,
     required: true,
   },

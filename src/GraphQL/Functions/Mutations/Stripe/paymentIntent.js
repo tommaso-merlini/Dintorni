@@ -187,7 +187,7 @@ const paymentIntent = async (
       {
         firebaseUserID: firebaseUserID,
         shopID: shopID,
-        isAvailable: true,
+        isActive: true,
       },
       {
         accountID: accountID,
@@ -198,10 +198,9 @@ const paymentIntent = async (
         firebaseCompanyID: firebaseCompanyID,
         fee: dintorniFee,
         total: totalToPay,
-        newCashback: newCashBackUser,
         cashbackCompany: cbCompany,
         cashbackAccumulated: cashBack,
-        isAvailable: true,
+        isActive: true,
       },
       { upsert: true, new: true } //create a new one if it does not exist
     );
