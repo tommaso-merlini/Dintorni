@@ -13,7 +13,7 @@ const PaymentIntentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  paymentType: {
+  type: {
     type: String,
     required: true,
   },
@@ -45,6 +45,27 @@ const PaymentIntentSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  products: [
+    {
+      id: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      price: { type: Number, required: true },
+      weight: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
 });
 
 PaymentIntentSchema.index({ firebaseUserID: 1, shopID: 1 });

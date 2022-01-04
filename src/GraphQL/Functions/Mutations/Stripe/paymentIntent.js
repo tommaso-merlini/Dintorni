@@ -194,20 +194,21 @@ const paymentIntent = async (
         shopID: shopID,
         clientSecret:
           newPaymentIntent != null ? newPaymentIntent.client_secret : null,
-        paymentType: newPaymentIntent != null ? "stripe" : "free",
+        type: newPaymentIntent != null ? "stripe" : "free",
         firebaseCompanyID: firebaseCompanyID,
         fee: dintorniFee,
         total: totalToPay,
         cashbackCompany: cbCompany,
         cashbackAccumulated: cashBack,
         isActive: true,
+        products: cart,
       },
       { upsert: true, new: true } //create a new one if it does not exist
     );
 
     console.log("-----------");
     return {
-      paymentType: totalToPay > 0 ? "stripe" : "free",
+      type: totalToPay > 0 ? "stripe" : "free",
       paymentIntentID: mongoPaymentIntent._id,
       clientSecret:
         newPaymentIntent != null ? newPaymentIntent.client_secret : null,

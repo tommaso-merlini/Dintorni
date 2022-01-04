@@ -21,16 +21,10 @@ require("dotenv").config();
  */
 const createOrder = async (
   _,
-  { paymentIntentID },
+  { paymentIntentID, options },
   { stripe, db, req, admin, FieldValue }
 ) => {
   try {
-    //?authorize the user?
-    // if (process.env.NODE_ENV === "production") {
-    //   const token = await admin.auth().verifyIdToken(req.headers.authorization);
-    //   console.log(token);
-    // }
-
     //retrieve the payment intent from mongodb
     const paymentIntent = await PaymentIntent.findById(paymentIntentID);
 
@@ -41,20 +35,43 @@ const createOrder = async (
       );
     }
 
+    //authorize the user
+    if (process.env.NODE_ENV != "development") {
+      const token = await admin.auth().verifyIdToken(req.headers.authorization);
+      if (token.uid != paymentIntent.firebaseUserID) {
+        throw new Error("User not authorized");
+      }
+    }
+
+    //check the paymentIntent status on stripe
+    if (paymentIntent.type === "stripe") {
+      const PAYMENTINTENT_ID_LENGHT = 27;
+      //retrieve the payment intent
+      const stripePaymentIntent = await stripe.paymentIntents.retrieve(
+        paymentIntent.clientSecret.substring(0, PAYMENTINTENT_ID_LENGHT),
+        {
+          stripeAccount: paymentIntent.accountID,
+        }
+      );
+      if (stripePaymentIntent && stripePaymentIntent.status != "succeeded") {
+        throw new Error(
+          `Payment Intent with id: ${paymentIntent.clientSecret.substring(
+            0,
+            PAYMENTINTENT_ID_LENGHT
+          )} hasn't been paid yet`
+        );
+      }
+    }
+
     //check if the payment intent is active
-    if (paymentIntent.isActive === false) {
+    if (
+      paymentIntent.isActive === false &&
+      process.env.NODE_ENV != "development" //! check the paymentIntent status only outside of development
+    ) {
       throw new Error(
         "the payment intent has already been redeemed. (isActive: false)"
       );
     }
-
-    //retrieve the payment intent
-    // const paymentIntent = await stripe.paymentIntents.retrieve(
-    //   paymentIntentID,
-    //   {
-    //     stripeAccount: accountID,
-    //   }
-    // );
 
     //creating order code
     const alphabet = "abcdefghilmnopqrstuvxz";
@@ -65,12 +82,19 @@ const createOrder = async (
     const code = alphabeticCode.toUpperCase() + numericCode;
 
     //create the order on firebase
-    await db.collection("Orders").doc(code).set({
-      shopID: paymentIntent.shopID.toString(),
-      status: "not_redeemed" /** @params (redeemed, not_redeemed, ) */,
-      //TODO: add the other params
-      total: paymentIntent.total,
-    });
+    await db
+      .collection("Orders")
+      .doc(code)
+      .set({
+        code: code,
+        shopID: paymentIntent.shopID.toString(),
+        status: "not_redeemed" /** @params (redeemed, not_redeemed, ) */,
+        total: paymentIntent.total,
+        pickUpHour: options.pickUpHour,
+        timeStamp: options.timeStamp,
+        products: JSON.stringify(paymentIntent.products),
+        cashbackAccumulated: paymentIntent.cashbackAccumulated,
+      });
 
     //increment the user cashback by the accumulated cashback
     await db
