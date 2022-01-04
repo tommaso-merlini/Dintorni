@@ -44,7 +44,7 @@ const createOrder = async (
     }
 
     //check the paymentIntent status on stripe
-    if (paymentIntent.type != "stripe") {
+    if (paymentIntent.type === "stripe") {
       const PAYMENTINTENT_ID_LENGHT = 27;
       //retrieve the payment intent
       const stripePaymentIntent = await stripe.paymentIntents.retrieve(
