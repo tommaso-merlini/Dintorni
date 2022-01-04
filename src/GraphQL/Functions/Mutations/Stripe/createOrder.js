@@ -81,6 +81,8 @@ const createOrder = async (
     const numericCode = Math.floor(Math.random() * (999 - 100 + 1) + 100);
     const code = alphabeticCode.toUpperCase() + numericCode;
 
+    console.log(paymentIntent.products);
+
     //create the order on firebase
     await db
       .collection("Orders")
@@ -92,8 +94,10 @@ const createOrder = async (
         total: paymentIntent.total,
         pickUpHour: options.pickUpHour,
         timeStamp: options.timeStamp,
-        products: JSON.stringify(paymentIntent.products),
         cashbackAccumulated: paymentIntent.cashbackAccumulated,
+        products: JSON.parse(JSON.stringify(paymentIntent.products)),
+        firebaseUserID: paymentIntent.firebaseUserID,
+        firebaseCompanyID: paymentIntent.firebaseCompanyID,
       });
 
     //get the cashbackUser

@@ -41,6 +41,10 @@ const PaymentIntentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  firebaseCompanyID: {
+    type: String,
+    required: true,
+  },
   fee: {
     type: Number,
     required: true,

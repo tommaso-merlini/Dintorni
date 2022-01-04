@@ -203,6 +203,7 @@ const paymentIntent = async (
         cashbackUsed: Number(total - totalToPay).toFixed(2),
         isActive: true,
         products: cart,
+        firebaseCompanyID: firebaseCompanyID,
       },
       { upsert: true, new: true } //create a new one if it does not exist
     );
