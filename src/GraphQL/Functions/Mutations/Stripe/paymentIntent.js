@@ -200,6 +200,7 @@ const paymentIntent = async (
         total: totalToPay,
         cashbackCompany: cbCompany,
         cashbackAccumulated: cashBack,
+        cashbackUsed: Number(total - totalToPay).toFixed(2),
         isActive: true,
         products: cart,
       },

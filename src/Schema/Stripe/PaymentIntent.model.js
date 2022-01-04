@@ -25,6 +25,10 @@ const PaymentIntentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  cashbackUsed: {
+    type: Number,
+    required: true,
+  },
   shopID: {
     type: mongoose.Types.ObjectId,
     required: true,

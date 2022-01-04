@@ -44,7 +44,7 @@ const createOrder = async (
     }
 
     //check the paymentIntent status on stripe
-    if (paymentIntent.type === "stripe") {
+    if (paymentIntent.type != "stripe") {
       const PAYMENTINTENT_ID_LENGHT = 27;
       //retrieve the payment intent
       const stripePaymentIntent = await stripe.paymentIntents.retrieve(
@@ -96,15 +96,34 @@ const createOrder = async (
         cashbackAccumulated: paymentIntent.cashbackAccumulated,
       });
 
-    //increment the user cashback by the accumulated cashback
+    //get the cashbackUser
+    let cashbackUser = 0;
+    try {
+      await db
+        .collection("CashBackUser")
+        .doc(paymentIntent.firebaseUserID)
+        .get()
+        .then((snapshot) => {
+          const data = snapshot.data();
+          cashbackUser = data.cb;
+        });
+    } catch (e) {}
+
+    //increment the user cashback (cashbackUsed + cashbackAccumulated)
+    const incrementCashback = Number(
+      (
+        cashbackUser +
+        paymentIntent.cashbackAccumulated -
+        paymentIntent.cashbackUsed
+      ).toFixed(2)
+    );
+    console.log(incrementCashback);
     await db
       .collection("CashbackUser")
       .doc(paymentIntent.firebaseUserID)
       .update(
         {
-          cb: FieldValue.increment(
-            Number(paymentIntent.cashbackAccumulated.toFixed(2))
-          ),
+          cb: FieldValue.increment(incrementCashback),
         },
         { merge: true } //create document if it does not exist
       );
