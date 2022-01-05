@@ -95,9 +95,14 @@ const createOrder = async (
         pickUpHour: options.pickUpHour,
         timeStamp: options.timeStamp,
         cashbackAccumulated: paymentIntent.cashbackAccumulated,
+        cashbackUsed: paymentIntent.cashbackUsed,
         products: JSON.parse(JSON.stringify(paymentIntent.products)),
         firebaseUserID: paymentIntent.firebaseUserID,
         firebaseCompanyID: paymentIntent.firebaseCompanyID,
+        cashbackCompany: paymentIntent.cashbackCompany,
+        paymentType: paymentIntent.type,
+        clientSecret: paymentIntent.clientSecret,
+        shopName: paymentIntent.shopName,
       });
 
     //get the cashbackUser

@@ -94,7 +94,7 @@ const paymentIntent = async (
       return cb;
     }
 
-    //get the company from mongodb
+    //get the shop from mongodb
     const shop = await resolvers.Query.shop(null, { id: shopID }, { client });
     const feeShop = shop.cashbackInfo.fee;
     const cashBackShop = shop.cashbackInfo.cashBack;
@@ -204,6 +204,7 @@ const paymentIntent = async (
         isActive: true,
         products: cart,
         firebaseCompanyID: firebaseCompanyID,
+        shopName: shop.name,
       },
       { upsert: true, new: true } //create a new one if it does not exist
     );

@@ -33,6 +33,10 @@ const PaymentIntentSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     required: true,
   },
+  shopName: {
+    type: String,
+    required: true,
+  },
   firebaseCompanyID: {
     type: String,
     required: true,
