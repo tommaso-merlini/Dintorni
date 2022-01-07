@@ -2,12 +2,12 @@
 
 //=====node=====
 const cron = require("node-cron");
-const express = require("express");
-const app = express();
+import express, { Application } from "express";
+const app: Application = express();
 const rateLimit = require("express-rate-limit");
 
 //=====apollo=====
-const { ApolloServer } = require("apollo-server-express");
+import { ApolloServer } from "apollo-server-express";
 const depthLimit = require("graphql-depth-limit");
 
 //=====mongoose=====

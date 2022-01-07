@@ -1,6 +1,6 @@
-const redis = require("redis");
-const bluebird = require("bluebird");
-const chalk = require("chalk"); //console.log colors
+import redis from "redis";
+import bluebird from "bluebird";
+import chalk from "chalk"; //console.log colors
 
 const retry_strategy = function (options) {
   if (
@@ -38,7 +38,7 @@ const client = redis.createClient({
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-client.on("error", (err) => {
+client.on("error", (err: Error) => {
   console.log("redis error: " + err);
 });
 
