@@ -7,16 +7,8 @@ require("dotenv").config();
  * @author Tommaso Merlini | Nicolo Merlini
  *
  * @param {String} paymentIntentID the id of the paymentIntent
- * @param {String} accountID the id of the stripe company account
- * @param firebaseCompanyID
- * @param firebaseUserID
- * param shopID
- * param totalh
- * param totalToPay
- * param newCashback
- * param cbCompany
- * @param pickUpHour (Int)
- * @param TimeStamp (Int)
+ * @param pickUpHour
+ * @param timeStamp
  * @returns code
  */
 const createOrder = async (
