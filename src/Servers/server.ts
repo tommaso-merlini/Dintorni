@@ -1,39 +1,41 @@
 //IMPORTS
 
 //=====node=====
-const cron = require("node-cron");
-import express, { Application } from "express";
+import cron from "node-cron";
+import express, { Application, Request, Response } from "express";
 const app: Application = express();
-const rateLimit = require("express-rate-limit");
+import rateLimit from "express-rate-limit";
 
 //=====apollo=====
 import { ApolloServer } from "apollo-server-express";
-const depthLimit = require("graphql-depth-limit");
+import depthLimit from "graphql-depth-limit";
+import { GraphQLError } from "graphql";
 
 //=====mongoose=====
 require("../helpers/initMongoDB");
 
 //=========firebase=========
-const checkAuth = require("../firebase/checkAuth");
-const { firebase, db, admin, FieldValue } = require("../firebase/firebase");
+//import checkAuth from "../firebase/checkAuth";
+import { admin, firebase, db, FieldValue } from "../firebase/firebase";
 
 //=========stripe=========
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 //=========jsonwebtoken=========
-const expressJwt = require("express-jwt");
+//const expressJwt = require("express-jwt");
 app.use(express.json());
 
 //=====misc=====
-const chalk = require("chalk"); //console.log colors
-const cluster = require("cluster");
-const os = require("os");
+import chalk from "chalk"; //console.log colors
+import cluster from "cluster";
+import os from "os";
 require("dotenv").config();
-const cors = require("cors");
+import cors from "cors";
+import { request } from "http";
 app.use(cors());
 
 //require apollo typedefs and resolvers
-const resolvers = require("../GraphQL/resolvers");
+import resolvers from "../GraphQL/resolvers";
 const typeDefs = require("../GraphQL/typeDefs");
 
 //COSTANTS
@@ -72,7 +74,7 @@ async function startServer() {
   });
 
   //=========apollo server=========
-  const context = ({ req }) => {
+  const context = ({ req }: { req: Request }) => {
     return {
       req,
       stripe,
@@ -92,33 +94,29 @@ async function startServer() {
     introspection: process.env.NODE_ENV !== "production",
     validationRules: [depthLimit(3)],
     formatError: (err) => {
-      // Don't give the specific errors to the client
+      // Don't give the specific errors to the client (in production)
       if (
-        err.extensions.code.startsWith("INTERNAL_SERVER_ERROR") &&
+        err.extensions!.code.startsWith("INTERNAL_SERVER_ERROR") &&
         process.env.NODE_ENV === "production"
       ) {
-        return new Error("Internal server error");
-      }
-      if (
-        err.extensions.code.startsWith("INTERNAL_SERVER_ERROR") &&
-        process.env.NODE_ENV != "production"
-      ) {
-        return new Error(err.message);
+        return new Error("internal server error");
       }
 
       if (
-        err.extensions.code.startsWith("GRAPHQL_VALIDATION_FAILED") &&
+        err.extensions!.code.startsWith("GRAPHQL_VALIDATION_FAILED") &&
         process.env.NODE_ENV === "production"
       ) {
         return new Error("bad graphql fields");
       }
 
       if (
-        err.extensions.code.startsWith("GRAPHQL_VALIDATION_FAILED") &&
-        process.env.NODE_ENV != "production"
+        err.extensions!.code.startsWith("GRAPHQL_VALIDATION_FAILED") &&
+        process.env.NODE_ENV === "production"
       ) {
-        return new Error(err.message);
+        return new Error("graphql validation failed");
       }
+
+      return err;
     },
   });
   apolloserver.start();

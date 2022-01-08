@@ -2,7 +2,7 @@ import redis from "redis";
 import bluebird from "bluebird";
 import chalk from "chalk"; //console.log colors
 
-const retry_strategy = function (options) {
+const retry_strategy = function (options: any) {
   if (
     options.error &&
     (options.error.code === "ECONNREFUSED" ||

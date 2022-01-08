@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import useDel from "../../../../Redis/useDel/useDel.js";
+import useDel from "../../../../Redis/useDel/useDel";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import Product from "../../../../Schema/Product/Product.model";
 
