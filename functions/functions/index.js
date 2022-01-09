@@ -1,9 +1,22 @@
 const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+admin.initializeApp();
+//const User = require("../../src/Schema/User/User.model");
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", { structuredData: true });
-  response.send("Hello from Firebase!");
-});
+//const user = User.find();
+//console.log(user);
+
+exports.sendNotificationToTopic = functions.firestore
+  .document("orders/{uid}")
+  .onWrite(async (event) => {
+    let message = {
+      notification: {
+        title: "titolo",
+        body: "body",
+      },
+      topic: "boh",
+    };
+
+    let response = await admin.messaging().send(message);
+    console.log(response);
+  });
