@@ -21,7 +21,7 @@ interface createOrderParams {
 }
 
 const createOrder = async (
-  _,
+  _: any,
   { paymentIntentID, options }: createOrderParams,
   { stripe, db, req, admin, FieldValue }
 ) => {
