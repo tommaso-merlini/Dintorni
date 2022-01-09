@@ -146,6 +146,18 @@ const createOrder = async (
       { isActive: false }
     );
 
+    //send message
+    let message = {
+      notification: {
+        title: "ordine creato",
+        body: `un ordine con codice ${code} e' stato appena effettuauto`,
+      },
+      token:
+        "euRQ0hhoQaW-9tqecv3lTT:APA91bH4VnuRmaqrGs_aB0mbenLlh8yFRdP6EIS4ez3HgW58Oq3zTh7LciRtXahxryJufSKpDkouR_ZiBEH9mBq3wvblC6xuvmaI-K1nVB3oHN72UgxbjYfAaWM7IZyQJfLRWXrApB4X",
+    };
+
+    admin.messaging().send(message);
+
     return code;
   } catch (e: any) {
     console.log(`error while  creating the order`);

@@ -9,6 +9,7 @@ require("firebase/analytics");
 // Add the Firebase products that you want to use
 import "firebase/auth";
 import "firebase/firestore";
+import "@firebase/messaging";
 
 import admin from "firebase-admin";
 import { getFirestore, Timestamp, FieldValue } from "firebase-admin/firestore";
