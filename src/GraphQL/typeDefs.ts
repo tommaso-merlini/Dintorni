@@ -166,8 +166,8 @@ const typeDefs = gql`
 
   #//TODO: parametri cashBack
   input OrderInput {
-    pickUpHour: Int!
-    timeStamp: Int!
+    pickUpHour: String!
+    timeStamp: String!
   }
 
   input PaymentIntentProductInput {
