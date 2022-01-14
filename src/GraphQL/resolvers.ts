@@ -7,7 +7,6 @@ import shops from "./Functions/Queries/Company/shops";
 import productsShop from "./Functions/Queries/Company/productsShop";
 import product from "./Functions/Queries/Product/product";
 import products from "./Functions/Queries/Product/products";
-//import login from "./Functions/Queries/login/login";
 import shopProduct from "./Functions/Queries/Product/shopProduct";
 import activateShop from "./Functions/Mutations/Company/activateShop";
 import disactivateShop from "./Functions/Mutations/Company/disactivateShop";
@@ -35,13 +34,11 @@ const resolvers = {
     shop: shop,
     shops: shops,
     shopByFirebaseID: shopByFirebaseID,
-    // companyProducts: companyProducts,
     product: product,
     products: products,
     closeProductsTitle: closeProductsTitle,
     closeShops: closeShops,
     favouriteShops: favouriteShops,
-    //    login: login,
     account: account,
     shopsByFirebaseCompanyID: shopsByFirebaseCompanyID,
   },
