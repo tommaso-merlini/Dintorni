@@ -63,6 +63,34 @@ const typeDefs = gql`
     likes: Int!
   }
 
+  type Order {
+    _id: ID!
+    code: String!
+    total: Float!
+    firebaseUserID: String!
+    firebaseCompanyID: String!
+    shopID: ID!
+    shopName: String!
+    clientSecret: String
+    paymentType: String!
+    cashbackAccumulated: Float!
+    cashbackCompany: Float!
+    cashbackUsed: Float!
+    pickUpHour: Int!
+    timeStamp: Int!
+    status: String!
+    products: [orderProduct!]!
+  }
+
+  type orderProduct {
+    _id: ID!
+    productID: ID!
+    name: String!
+    price: Float!
+    quantity: Int!
+    weight: Float!
+  }
+
   type Location {
     type: String!
     coordinates: [Float]!
@@ -237,6 +265,10 @@ const typeDefs = gql`
     createStripeAccount(email: String!): ID
     accountLink(accountID: ID!): String #//TODO: change the input variables in the client (accountId => accountID)
     paymentIntent(shopID: ID!, firebaseUserID: String!): PaymentIntent #//TODO: change the input variables in the client (accountId => accountID)
+  }
+
+  type Subscription {
+    orderCreated: Order
   }
 `;
 
