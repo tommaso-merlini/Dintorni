@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { GraphQLResolveInfo } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -12,14 +12,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: any;
 };
-
-export enum CacheControlScope {
-  Private = 'PRIVATE',
-  Public = 'PUBLIC'
-}
 
 export type CashbackInfo = {
   __typename?: 'CashbackInfo';
@@ -161,7 +154,6 @@ export type MutationUpdateShopArgs = {
 
 export type Order = {
   __typename?: 'Order';
-  _id: Scalars['ID'];
   cashbackAccumulated: Scalars['Float'];
   cashbackCompany: Scalars['Float'];
   cashbackUsed: Scalars['Float'];
@@ -171,7 +163,7 @@ export type Order = {
   firebaseUserID: Scalars['String'];
   paymentType: Scalars['String'];
   pickUpHour: Scalars['Int'];
-  products: Array<OrderProduct>;
+  products: Array<ProductOrder>;
   shopID: Scalars['ID'];
   shopName: Scalars['String'];
   status: Scalars['String'];
@@ -226,6 +218,16 @@ export type Product = {
   shopID: Scalars['ID'];
   shopName: Scalars['String'];
   status: Scalars['String'];
+  weight: Scalars['Float'];
+};
+
+export type ProductOrder = {
+  __typename?: 'ProductOrder';
+  _id: Scalars['ID'];
+  name: Scalars['String'];
+  price: Scalars['Float'];
+  productID: Scalars['ID'];
+  quantity: Scalars['Int'];
   weight: Scalars['Float'];
 };
 
@@ -348,7 +350,7 @@ export type StripeUser = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  orderCreated?: Maybe<Order>;
+  orderCreated: Order;
 };
 
 export type CashbackInfoInput = {
@@ -360,16 +362,6 @@ export type CashbackInfoInput = {
 export type LocationInput = {
   coordinates: Array<InputMaybe<Scalars['Float']>>;
   type: Scalars['String'];
-};
-
-export type OrderProduct = {
-  __typename?: 'orderProduct';
-  _id: Scalars['ID'];
-  name: Scalars['String'];
-  price: Scalars['Float'];
-  productID: Scalars['ID'];
-  quantity: Scalars['Int'];
-  weight: Scalars['Float'];
 };
 
 export type ProductInput = {
@@ -493,7 +485,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  CacheControlScope: CacheControlScope;
   CashbackInfo: ResolverTypeWrapper<CashbackInfo>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
@@ -508,15 +499,14 @@ export type ResolversTypes = {
   PaymentIntentProduct: ResolverTypeWrapper<PaymentIntentProduct>;
   PaymentIntentProductInput: PaymentIntentProductInput;
   Product: ResolverTypeWrapper<Product>;
+  ProductOrder: ResolverTypeWrapper<ProductOrder>;
   Query: ResolverTypeWrapper<{}>;
   Shop: ResolverTypeWrapper<Shop>;
   String: ResolverTypeWrapper<Scalars['String']>;
   StripeUser: ResolverTypeWrapper<StripeUser>;
   Subscription: ResolverTypeWrapper<{}>;
-  Upload: ResolverTypeWrapper<Scalars['Upload']>;
   cashbackInfoInput: CashbackInfoInput;
   locationInput: LocationInput;
-  orderProduct: ResolverTypeWrapper<OrderProduct>;
   productInput: ProductInput;
   shopInput: ShopInput;
   updateProductInput: UpdateProductInput;
@@ -540,27 +530,19 @@ export type ResolversParentTypes = {
   PaymentIntentProduct: PaymentIntentProduct;
   PaymentIntentProductInput: PaymentIntentProductInput;
   Product: Product;
+  ProductOrder: ProductOrder;
   Query: {};
   Shop: Shop;
   String: Scalars['String'];
   StripeUser: StripeUser;
   Subscription: {};
-  Upload: Scalars['Upload'];
   cashbackInfoInput: CashbackInfoInput;
   locationInput: LocationInput;
-  orderProduct: OrderProduct;
   productInput: ProductInput;
   shopInput: ShopInput;
   updateProductInput: UpdateProductInput;
   updateShopInput: UpdateShopInput;
 };
-
-export type CacheControlDirectiveArgs = {
-  maxAge?: Maybe<Scalars['Int']>;
-  scope?: Maybe<CacheControlScope>;
-};
-
-export type CacheControlDirectiveResolver<Result, Parent, ContextType = any, Args = CacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type CashbackInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['CashbackInfo'] = ResolversParentTypes['CashbackInfo']> = {
   cashBack?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -620,7 +602,6 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
-  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   cashbackAccumulated?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   cashbackCompany?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   cashbackUsed?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -630,7 +611,7 @@ export type OrderResolvers<ContextType = any, ParentType extends ResolversParent
   firebaseUserID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   paymentType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   pickUpHour?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  products?: Resolver<Array<ResolversTypes['orderProduct']>, ParentType, ContextType>;
+  products?: Resolver<Array<ResolversTypes['ProductOrder']>, ParentType, ContextType>;
   shopID?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   shopName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -672,6 +653,16 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   shopID?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   shopName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProductOrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductOrder'] = ResolversParentTypes['ProductOrder']> = {
+  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  productID?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   weight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -721,21 +712,7 @@ export type StripeUserResolvers<ContextType = any, ParentType extends ResolversP
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  orderCreated?: SubscriptionResolver<Maybe<ResolversTypes['Order']>, "orderCreated", ParentType, ContextType>;
-};
-
-export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
-  name: 'Upload';
-}
-
-export type OrderProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['orderProduct'] = ResolversParentTypes['orderProduct']> = {
-  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  productID?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  orderCreated?: SubscriptionResolver<ResolversTypes['Order'], "orderCreated", ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
@@ -748,14 +725,10 @@ export type Resolvers<ContextType = any> = {
   PaymentIntent?: PaymentIntentResolvers<ContextType>;
   PaymentIntentProduct?: PaymentIntentProductResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
+  ProductOrder?: ProductOrderResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Shop?: ShopResolvers<ContextType>;
   StripeUser?: StripeUserResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
-  Upload?: GraphQLScalarType;
-  orderProduct?: OrderProductResolvers<ContextType>;
 };
 
-export type DirectiveResolvers<ContextType = any> = {
-  cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
-};

@@ -26,6 +26,8 @@ import paymentIntent from "./Functions/Mutations/Stripe/paymentIntent";
 import shopsByFirebaseCompanyID from "./Functions/Queries/Company/shopsByFirebaseCompanyID";
 import changeProductStatus from "./Functions/Mutations/Product/changeProductStatus";
 
+import { RedisPubSub } from "graphql-redis-subscriptions";
+const pubsub = new RedisPubSub();
 require("dotenv").config();
 
 const resolvers = {
@@ -59,6 +61,15 @@ const resolvers = {
     createStripeAccount: createStripeAccount,
     accountLink: accountLink,
     paymentIntent: paymentIntent,
+  },
+
+  Subscription: {
+    orderCreated: {
+      subscribe: () => {
+        const order = pubsub.asyncIterator(["ORDER_CREATED"]);
+        return order;
+      },
+    },
   },
 
   Shop: {

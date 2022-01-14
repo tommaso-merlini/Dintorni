@@ -64,7 +64,6 @@ const typeDefs = gql`
   }
 
   type Order {
-    _id: ID!
     code: String!
     total: Float!
     firebaseUserID: String!
@@ -79,10 +78,10 @@ const typeDefs = gql`
     pickUpHour: Int!
     timeStamp: Int!
     status: String!
-    products: [orderProduct!]!
+    products: [ProductOrder!]!
   }
 
-  type orderProduct {
+  type ProductOrder {
     _id: ID!
     productID: ID!
     name: String!
@@ -268,7 +267,7 @@ const typeDefs = gql`
   }
 
   type Subscription {
-    orderCreated: Order
+    orderCreated: Order!
   }
 `;
 

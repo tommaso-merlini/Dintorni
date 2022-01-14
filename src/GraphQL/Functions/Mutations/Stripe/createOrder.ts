@@ -16,7 +16,7 @@ require("dotenv").config();
 const createOrder = async (
   _: any,
   { paymentIntentID, options }: MutationCreateOrderArgs,
-  { stripe, db, req, admin, FieldValue }
+  { stripe, db, req, admin, FieldValue, pubsub }
 ) => {
   try {
     //retrieve the payment intent from mongodb
@@ -59,8 +59,7 @@ const createOrder = async (
 
     //check if the payment intent is active
     if (
-      paymentIntent.isActive === false &&
-      process.env.NODE_ENV != "development" //! check the paymentIntent status only outside of development
+      paymentIntent.isActive === false //! check the paymentIntent status only outside of development
     ) {
       throw new Error(
         "the payment intent has already been redeemed. (isActive: false)"
@@ -77,27 +76,26 @@ const createOrder = async (
 
     console.log(paymentIntent.products);
 
+    const order = {
+      code: code,
+      shopID: paymentIntent.shopID.toString(),
+      status: "not_redeemed" /** @params (redeemed, not_redeemed, ) */,
+      total: paymentIntent.total,
+      pickUpHour: parseInt(options.pickUpHour),
+      timeStamp: parseInt(options.timeStamp),
+      cashbackAccumulated: paymentIntent.cashbackAccumulated,
+      cashbackUsed: paymentIntent.cashbackUsed,
+      products: JSON.parse(JSON.stringify(paymentIntent.products)),
+      firebaseUserID: paymentIntent.firebaseUserID,
+      firebaseCompanyID: paymentIntent.firebaseCompanyID,
+      cashbackCompany: paymentIntent.cashbackCompany,
+      paymentType: paymentIntent.type,
+      clientSecret: paymentIntent.clientSecret,
+      shopName: paymentIntent.shopName,
+    };
+
     //create the order on firebase
-    await db
-      .collection("Orders")
-      .doc(code)
-      .set({
-        code: code,
-        shopID: paymentIntent.shopID.toString(),
-        status: "not_redeemed" /** @params (redeemed, not_redeemed, ) */,
-        total: paymentIntent.total,
-        pickUpHour: parseInt(options.pickUpHour),
-        timeStamp: parseInt(options.timeStamp),
-        cashbackAccumulated: paymentIntent.cashbackAccumulated,
-        cashbackUsed: paymentIntent.cashbackUsed,
-        products: JSON.parse(JSON.stringify(paymentIntent.products)),
-        firebaseUserID: paymentIntent.firebaseUserID,
-        firebaseCompanyID: paymentIntent.firebaseCompanyID,
-        cashbackCompany: paymentIntent.cashbackCompany,
-        paymentType: paymentIntent.type,
-        clientSecret: paymentIntent.clientSecret,
-        shopName: paymentIntent.shopName,
-      });
+    await db.collection("Orders").doc(code).set(order);
 
     //get the cashbackUser
     let cashbackUser = 0;
@@ -148,8 +146,10 @@ const createOrder = async (
       token:
         "euRQ0hhoQaW-9tqecv3lTT:APA91bH4VnuRmaqrGs_aB0mbenLlh8yFRdP6EIS4ez3HgW58Oq3zTh7LciRtXahxryJufSKpDkouR_ZiBEH9mBq3wvblC6xuvmaI-K1nVB3oHN72UgxbjYfAaWM7IZyQJfLRWXrApB4X",
     };
-
     admin.messaging().send(message);
+
+    //send order to graphql subscription
+    pubsub.publish("ORDER_CREATED", { orderCreated: order });
 
     return code;
   } catch (e: any) {

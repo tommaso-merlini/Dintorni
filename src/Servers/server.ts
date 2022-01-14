@@ -3,13 +3,18 @@
 //=====node=====
 import cron from "node-cron";
 import express, { Application, Request, Response } from "express";
+import { createServer } from "http";
 const app: Application = express();
+const httpServer = createServer(app);
 import rateLimit from "express-rate-limit";
 
 //=====apollo=====
 import { ApolloServer } from "apollo-server-express";
 import depthLimit from "graphql-depth-limit";
 import { GraphQLError } from "graphql";
+import { execute, subscribe } from "graphql";
+import { SubscriptionServer } from "subscriptions-transport-ws";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
 //=====mongoose=====
 require("../helpers/initMongoDB");
@@ -24,6 +29,10 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 //=========jsonwebtoken=========
 //const expressJwt = require("express-jwt");
 app.use(express.json());
+
+//=========RedisPubSub=========
+import { RedisPubSub } from "graphql-redis-subscriptions";
+const pubsub = new RedisPubSub();
 
 //=====misc=====
 import chalk from "chalk"; //console.log colors
@@ -84,12 +93,41 @@ async function startServer() {
       admin,
       FieldValue,
       client,
+      pubsub,
     }; //* context variables for apollo
   };
 
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+  const subscriptionServer = SubscriptionServer.create(
+    {
+      schema,
+      // These are imported from `graphql`.
+      execute,
+      subscribe,
+    },
+    {
+      // This is the `httpServer` we created in a previous step.
+      server: httpServer,
+      // Pass a different path here if your ApolloServer serves at
+      // a different path.
+      path: "/graphql",
+    }
+  );
+
   const apolloserver = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
+    plugins: [
+      {
+        async serverWillStart(): Promise<any> {
+          return {
+            async drainServer() {
+              subscriptionServer.close();
+            },
+          };
+        },
+      },
+    ],
     context: context,
     introspection: process.env.NODE_ENV !== "production",
     validationRules: [depthLimit(3)],
@@ -143,7 +181,7 @@ async function startServer() {
   //     );
   //   });
   // }
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(
       chalk.bgGreen.black(
         `server ${process.pid} running on http://localhost:${PORT} :D`
