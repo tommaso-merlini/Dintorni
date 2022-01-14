@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   redis:
-    image: redis
+    image: redis:alpine
     volumes:
       - ./redis/redis.conf:/path/to/redis.conf
     command:
