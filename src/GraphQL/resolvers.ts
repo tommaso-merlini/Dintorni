@@ -25,8 +25,7 @@ import paymentIntent from "./Functions/Mutations/Stripe/paymentIntent";
 import shopsByFirebaseCompanyID from "./Functions/Queries/Company/shopsByFirebaseCompanyID";
 import changeProductStatus from "./Functions/Mutations/Product/changeProductStatus";
 
-import { RedisPubSub } from "graphql-redis-subscriptions";
-const pubsub = new RedisPubSub();
+import pubsub from "../helpers/initPubSub";
 require("dotenv").config();
 
 const resolvers = {
