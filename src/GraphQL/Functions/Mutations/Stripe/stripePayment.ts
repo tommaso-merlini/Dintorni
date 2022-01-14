@@ -1,13 +1,10 @@
 import { GraphQLError } from "graphql";
 import Product from "../../../../Schema/Product/Product.model";
-
-interface stripePaymentParams {
-  productIDs: string[];
-}
+import { MutationStripePaymentArgs } from "../../../Types/types";
 
 const stripePayment = async (
   _: any,
-  { productIDs }: stripePaymentParams,
+  { productIDs }: MutationStripePaymentArgs,
   { stripe }
 ) => {
   try {

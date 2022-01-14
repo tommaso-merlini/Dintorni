@@ -2,22 +2,11 @@ import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import MongoFilter from "../../../MongoFilter/MongoFilter";
 import { GraphQLError } from "graphql";
 import { LargeNumberLike } from "crypto";
-
-interface closeShopsParams {
-  location: {
-    type: string;
-    coordinates: number[];
-  };
-  category: string;
-  cashBack: number;
-  range: number;
-  limit: number;
-  offset: number;
-}
+import { QueryCloseShopsArgs } from "../../../Types/types";
 
 const closeShops = async (
   _: any,
-  { location, category, cashBack, range, limit, offset }: closeShopsParams,
+  { location, category, cashBack, range, limit, offset }: QueryCloseShopsArgs,
   __: any,
   info
 ) => {

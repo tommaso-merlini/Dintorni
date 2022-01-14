@@ -1,9 +1,6 @@
 import { GraphQLError } from "graphql";
 import { Stripe } from "stripe";
-
-interface accountParams {
-  id: string;
-}
+import { QueryAccountArgs } from "../../../Types/types";
 
 interface accountContext {
   stripe: Stripe;
@@ -11,7 +8,7 @@ interface accountContext {
 
 const account = async (
   _: any,
-  { id }: accountParams,
+  { id }: QueryAccountArgs,
   { stripe }: accountContext
 ) => {
   try {

@@ -1,5 +1,6 @@
 import { GraphQLError } from "graphql";
 import PaymentIntent from "../../../../Schema/Stripe/PaymentIntent.model";
+import { MutationCreateOrderArgs } from "../../../Types/types";
 require("dotenv").config();
 
 /**
@@ -12,17 +13,9 @@ require("dotenv").config();
  * @returns code
  */
 
-interface createOrderParams {
-  paymentIntentID: string;
-  options: {
-    pickUpHour: string;
-    timeStamp: string;
-  };
-}
-
 const createOrder = async (
   _: any,
-  { paymentIntentID, options }: createOrderParams,
+  { paymentIntentID, options }: MutationCreateOrderArgs,
   { stripe, db, req, admin, FieldValue }
 ) => {
   try {

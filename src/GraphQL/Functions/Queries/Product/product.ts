@@ -2,18 +2,9 @@ import Product from "../../../../Schema/Product/Product.model";
 import useGet from "../../../../Redis/useGet/useGet";
 import useSet from "../../../../Redis/useSet/useSet";
 import { GraphQLError } from "graphql";
+import { QueryProductArgs } from "../../../Types/types";
 
-// interface productParams {
-//   id: string;
-// }
-
-// type product = (
-//   _: any,
-//   { id }: productParams,
-//   { client }: { client: any }
-// ) => any;
-
-const product = async (_, { id }, { client }) => {
+const product = async (_, { id }: QueryProductArgs, { client }) => {
   try {
     //check if the product is cached
     const redisProduct = await useGet(`product/${id}`, client);

@@ -1,12 +1,9 @@
 import { GraphQLError } from "graphql";
-
-interface accountLinkParams {
-  accountID: string;
-}
+import { MutationAccountLinkArgs } from "../../../Types/types";
 
 const accountLink = async (
   _: any,
-  { accountID }: accountLinkParams,
+  { accountID }: MutationAccountLinkArgs,
   { stripe }
 ) => {
   try {

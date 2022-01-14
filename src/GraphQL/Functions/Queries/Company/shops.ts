@@ -1,12 +1,9 @@
 import { GraphQLError } from "graphql";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 const MongoFilter = require("../../../MongoFilter/MongoFilter");
+import { QueryShopsArgs } from "../../../Types/types";
 
-interface shopsParams {
-  ids: string[];
-}
-
-const shops = async (_: any, { ids }: shopsParams, __: any, info) => {
+const shops = async (_: any, { ids }: QueryShopsArgs, __: any, info) => {
   try {
     //filter the query
     const filter = MongoFilter(info);

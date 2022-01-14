@@ -1,12 +1,9 @@
 import Product from "../../../../Schema/Product/Product.model";
 import { GraphQLError, TypeInfo } from "graphql";
 import MongoFilter from "../../../MongoFilter/MongoFilter";
+import { QueryProductsArgs } from "../../../Types/types";
 
-interface productsParams {
-  ids: string[];
-}
-
-const products = async (_: any, { ids }: productsParams, __: any, info) => {
+const products = async (_: any, { ids }: QueryProductsArgs, __: any, info) => {
   console.log("caio");
 
   try {

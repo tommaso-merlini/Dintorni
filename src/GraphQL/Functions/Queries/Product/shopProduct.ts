@@ -7,14 +7,10 @@ interface shopProductParams {
   shopID: string;
 }
 
-interface shopProductContext {
-  client: any;
-}
-
 const shopProduct = async (
   { shopID }: shopProductParams,
   _: any,
-  { client }: shopProductContext
+  { client }: any
 ) => {
   try {
     const redisQuery = `shop/${shopID}`;

@@ -2,6 +2,7 @@ import { GraphQLError } from "graphql";
 import useDel from "../../../../Redis/useDel/useDel";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import Product from "../../../../Schema/Product/Product.model";
+import { MutationLikeArgs } from "../../../Types/types";
 
 /**
  * @title Add Like or Remove Like
@@ -15,13 +16,11 @@ import Product from "../../../../Schema/Product/Product.model";
  * @returns Boolean!
  */
 
-interface Like {
-  id: string;
-  to: string;
-  action: string;
-}
-
-const like = async (_: any, { id, to, action }: Like, { client }) => {
+const like = async (
+  _: any,
+  { action, id, to }: MutationLikeArgs,
+  { client }
+) => {
   try {
     var likeAction = 0;
 

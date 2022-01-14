@@ -2,12 +2,9 @@ import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import useGet from "../../../../Redis/useGet/useGet";
 import useSet from "../../../../Redis/useSet/useSet";
 import { GraphQLError } from "graphql";
+import { QueryShopArgs } from "../../../Types/types";
 
-interface shopParams {
-  id: string;
-}
-
-const shop = async (_: any, { id }: shopParams, { client }) => {
+const shop = async (_: any, { id }: QueryShopArgs, { client }) => {
   try {
     //check if the shop is cached than return it
     const redisShop = await useGet(`shop/${id}`, client);

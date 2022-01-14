@@ -1,14 +1,11 @@
 import { GraphQLError } from "graphql";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import MongoFilter from "../../../MongoFilter/MongoFilter";
-
-interface shopsByFirebaseCompanyIDParams {
-  firebaseCompanyID: string;
-}
+import { QueryShopsByFirebaseCompanyIdArgs } from "../../../Types/types";
 
 const shopsByFirebaseCompanyID = async (
   _: any,
-  { firebaseCompanyID }: shopsByFirebaseCompanyIDParams,
+  { firebaseCompanyID }: QueryShopsByFirebaseCompanyIdArgs,
   __: any,
   info
 ) => {

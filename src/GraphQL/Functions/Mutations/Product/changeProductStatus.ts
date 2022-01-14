@@ -2,17 +2,12 @@ import authenticateToken from "../../../../JWT/AuthenticateToken";
 import { GraphQLError } from "graphql";
 import Product from "../../../../Schema/Product/Product.model";
 import useDel from "../../../../Redis/useDel/useDel";
+import { MutationChangeProductStatusArgs } from "../../../Types/types";
 require("dotenv").config();
-
-interface changeProductStatusParams {
-  id: string;
-  status: string;
-  firebaseCompanyID: string;
-}
 
 const changeProductStatus = async (
   _,
-  { id, status, firebaseCompanyID }: changeProductStatusParams,
+  { id, status, firebaseCompanyID }: MutationChangeProductStatusArgs,
   { req, admin, client }
 ) => {
   try {

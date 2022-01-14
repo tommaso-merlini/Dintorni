@@ -3,18 +3,11 @@ import Product from "../../../../Schema/Product/Product.model";
 import useGet from "../../../../Redis/useGet/useGet";
 import useSet from "../../../../Redis/useSet/useSet";
 import merge from "merge";
+import { UpdateProductInput } from "../../../Types/types";
 
 interface updateProductParams {
   id: string;
-  input: {
-    name: string;
-    price: number;
-    weight: number;
-    images: string[];
-    description?: string;
-    shopID: string;
-    shopName: string;
-  };
+  input: UpdateProductInput;
 }
 
 const updateProduct = async (

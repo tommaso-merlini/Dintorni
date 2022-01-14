@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 import Product from "../../../../Schema/Product/Product.model";
 import PaymentIntent from "../../../../Schema/Stripe/PaymentIntent.model";
+import { MutationPaymentIntentArgs } from "../../../Types/types";
 
 /**
  * @title Create The Payment Intent
@@ -10,14 +11,9 @@ import PaymentIntent from "../../../../Schema/Stripe/PaymentIntent.model";
  * @returns {clientSecret, accountID, total, cashBack, cbUsed, [products]}
  */
 
-interface paymentIntentParams {
-  shopID: string;
-  firebaseUserID: string;
-}
-
 const paymentIntent = async (
   _: any,
-  { shopID, firebaseUserID }: paymentIntentParams,
+  { shopID, firebaseUserID }: MutationPaymentIntentArgs,
   { stripe, db, resolvers, client }
 ) => {
   try {

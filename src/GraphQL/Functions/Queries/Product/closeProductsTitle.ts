@@ -1,21 +1,11 @@
 import { GraphQLError } from "graphql";
 import Product from "../../../../Schema/Product/Product.model";
 import MongoFilter from "../../../MongoFilter/MongoFilter";
-
-interface closeProductsTitleParams {
-  name: string;
-  location: {
-    type: string;
-    coordinates: number[];
-  };
-  range: number;
-  limit: number;
-  offset: number;
-}
+import { QueryCloseProductsTitleArgs } from "../../../Types/types";
 
 const closeProductsTitle = async (
   _: any,
-  { name, location, range, limit, offset }: closeProductsTitleParams,
+  { name, location, range, limit, offset }: QueryCloseProductsTitleArgs,
   __: any,
   info
 ) => {

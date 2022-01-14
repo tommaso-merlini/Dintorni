@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import Product from "../../../../Schema/Product/Product.model";
+import { MutationActivateShopArgs } from "../../../Types/types";
 
 /**
  * @title Active Shop
@@ -14,11 +15,7 @@ import Product from "../../../../Schema/Product/Product.model";
  * return false if there was an error
  */
 
-interface activateShopParams {
-  id: string;
-}
-
-const activateShop = async (_: any, { id }: activateShopParams) => {
+const activateShop = async (_: any, { id }: MutationActivateShopArgs) => {
   try {
     //update the shop
     await Shop.updateOne({ _id: id }, { isActive: true }, { upsert: false });

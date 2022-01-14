@@ -3,6 +3,7 @@ import Product from "../../../../Schema/Product/Product.model";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import useDel from "../../../../Redis/useDel/useDel";
 import authenticateToken from "../../../../JWT/AuthenticateToken";
+import { MutationDeleProductArgs } from "../../../Types/types";
 require("dotenv").config();
 
 interface deletedProductParams {
@@ -12,7 +13,7 @@ interface deletedProductParams {
 
 const deleteProduct = async (
   _,
-  { id, firebaseCompanyID }: deletedProductParams,
+  { id, firebaseCompanyID }: MutationDeleProductArgs,
   { req, admin, client }
 ) => {
   try {

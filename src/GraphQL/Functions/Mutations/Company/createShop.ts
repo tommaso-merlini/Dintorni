@@ -1,5 +1,6 @@
 import { GraphQLError } from "graphql";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
+import { MutationCreateShopArgs } from "../../../Types/types";
 require("dotenv").config();
 
 /**
@@ -11,34 +12,9 @@ require("dotenv").config();
  *
  */
 
-interface createShopParams {
-  input: {
-    name: string;
-    address: string;
-    categories: string[];
-    openDays: string;
-    image: string;
-    openHours: string;
-    orderHours: string;
-    pickUpHours: string;
-    isActive: boolean;
-    phone: string;
-    location: {
-      type: string;
-      coordinates: number[];
-    };
-    cashbackInfo: {
-      cashBack: number;
-      fee: number;
-      minPayment: number;
-    };
-    firebaseCompanyID: string;
-  };
-}
-
 const createShop = async (
   _: any,
-  { input }: createShopParams,
+  { input }: MutationCreateShopArgs,
   { resolvers, stripe, req, admin }
 ) => {
   try {

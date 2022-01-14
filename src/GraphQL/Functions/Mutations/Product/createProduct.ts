@@ -2,18 +2,11 @@ import { GraphQLError } from "graphql";
 import Product from "../../../../Schema/Product/Product.model";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import authenticateToken from "../../../../JWT/AuthenticateToken";
+import { MutationCreateProductArgs } from "../../../Types/types";
 require("dotenv").config();
 
 interface createProductParams {
-  input: {
-    name: string;
-    price: number;
-    weight: number;
-    images: string[];
-    description: string;
-    shopID: string;
-    shopName: string;
-  };
+  input: MutationCreateProductArgs;
   firebaseShopID: string;
 }
 

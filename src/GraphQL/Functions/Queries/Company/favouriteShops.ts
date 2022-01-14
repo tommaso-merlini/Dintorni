@@ -1,14 +1,11 @@
 import { GraphQLError } from "graphql";
 import MongoFilter from "../../../MongoFilter/MongoFilter";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
-
-interface favouriteShopsParams {
-  ids: string[];
-}
+import { QueryFavouriteShopsArgs } from "../../../Types/types";
 
 const favouriteShops = async (
   _: any,
-  { ids }: favouriteShopsParams,
+  { ids }: QueryFavouriteShopsArgs,
   __: any,
   info
 ) => {

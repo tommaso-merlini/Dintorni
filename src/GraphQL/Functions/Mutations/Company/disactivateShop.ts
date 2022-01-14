@@ -2,6 +2,7 @@ import { GraphQLError } from "graphql";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import Product from "../../../../Schema/Product/Product.model";
 import useDel from "../../../../Redis/useDel/useDel";
+import { MutationDisactivateShopArgs } from "../../../Types/types";
 
 /**
  * @title Disactive The Shop
@@ -15,13 +16,9 @@ import useDel from "../../../../Redis/useDel/useDel";
  * return false if there was an error
  */
 
-interface disactivateShopParams {
-  id: string;
-}
-
 const disactivateShop = async (
   _: any,
-  { id }: disactivateShopParams,
+  { id }: MutationDisactivateShopArgs,
   { client }
 ) => {
   try {

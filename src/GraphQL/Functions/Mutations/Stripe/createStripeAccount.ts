@@ -1,13 +1,10 @@
 import { GraphQLError } from "graphql";
 import Stripe from "stripe";
-
-interface createStripeAccountParams {
-  email: string;
-}
+import { MutationCreateStripeAccountArgs } from "../../../Types/types";
 
 const createStripeAccount = async (
   _: any,
-  { email }: createStripeAccountParams,
+  { email }: MutationCreateStripeAccountArgs,
   { stripe }: { stripe: Stripe }
 ) => {
   try {

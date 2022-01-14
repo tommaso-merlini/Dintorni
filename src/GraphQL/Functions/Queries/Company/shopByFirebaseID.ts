@@ -1,13 +1,10 @@
 import { GraphQLError } from "graphql";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
-
-interface shopByFirebaseIDParams {
-  firebaseID: string;
-}
+import { QueryShopByFirebaseIdArgs } from "../../../Types/types";
 
 const shopByFirebaseID = async (
   _: any,
-  { firebaseID }: shopByFirebaseIDParams
+  { firebaseID }: QueryShopByFirebaseIdArgs
 ) => {
   try {
     //get the shop from mongodb if not cached

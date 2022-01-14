@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import useDel from "../../../../Redis/useDel/useDel";
+import { UpdateShopInput } from "../../../Types/types";
 
 /**
  * @title Update A Shop
@@ -18,30 +19,7 @@ import useDel from "../../../../Redis/useDel/useDel";
 
 interface updateShopParams {
   id: string;
-  input: {
-    input: {
-      name?: string;
-      address?: string;
-      categories?: string[];
-      openDays?: string;
-      image?: string;
-      openHours?: string;
-      orderHours?: string;
-      pickUpHours?: string;
-      isActive?: boolean;
-      phone?: string;
-      location?: {
-        type?: string;
-        coordinates?: number[];
-      };
-      cashbackInfo?: {
-        cashBack?: number;
-        fee?: number;
-        minPayment?: number;
-      };
-      firebaseCompanyID?: string;
-    };
-  };
+  input: UpdateShopInput;
 }
 
 const updateShop = async (
