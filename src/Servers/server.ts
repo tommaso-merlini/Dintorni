@@ -32,7 +32,21 @@ app.use(express.json());
 
 //=========RedisPubSub=========
 import { RedisPubSub } from "graphql-redis-subscriptions";
-const pubsub = new RedisPubSub();
+import Redis from "ioredis";
+
+const options = {
+  host: "127.0.0.1",
+  port: 6379,
+  retryStrategy: (times: any) => {
+    // reconnect after
+    return Math.min(times * 50, 2000);
+  },
+};
+
+const pubsub = new RedisPubSub({
+  publisher: new Redis(options),
+  subscriber: new Redis(options),
+});
 
 //=====misc=====
 import chalk from "chalk"; //console.log colors
