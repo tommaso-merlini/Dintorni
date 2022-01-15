@@ -4,11 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
     "dev": "ts-node-dev --respawn --transpile-only ./src/Servers/server.ts",
-    "build": "tsc",
-    "dev2": "nodemon -l src/Servers/authServer.js",
-    "generate": "graphql-codegen"
+    "build": "rimraf dist && tsc",
+    "start": "node ./dist/Servers/server.js",
+    "test": "jest",
+    "generate": "graphql-codegen",
+    "dev2": "nodemon -l src/Servers/authServer.js"
   },
   "jest": {
     "resolver": "jest-node-exports-resolver"
@@ -53,9 +54,13 @@
     "@types/node": "^17.0.8",
     "@types/redis": "^4.0.11",
     "@types/stripe-v3": "^3.1.26",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "eslint": "^8.6.0",
     "jest": "^27.0.6",
     "jest-node-exports-resolver": "^1.1.2",
     "nodemon": "^2.0.12",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.4"

@@ -27,7 +27,7 @@ const firebaseConfig = {
   measurementId: "G-0NHPMZSFT8",
 };
 
-const serviceAccount = require("./fbServiceAccountKey.json");
+import serviceAccount from "./fbServiceAccountKey";
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
