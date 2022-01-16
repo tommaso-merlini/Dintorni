@@ -12,7 +12,8 @@ import "firebase/firestore";
 import "@firebase/messaging";
 
 import admin from "firebase-admin";
-import { getFirestore, Timestamp, FieldValue } from "firebase-admin/firestore";
+const Timestamp = admin.firestore.Timestamp;
+const FieldValue = admin.firestore.FieldValue;
 
 // TODO: Replace the following with your app's Firebase project configuration
 // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
@@ -34,7 +35,7 @@ admin.initializeApp({
   databaseURL: "https://fir-demo-7884d.firebaseio.com",
 });
 
-const db = getFirestore();
+const db = admin.firestore();
 
 firebase.initializeApp(firebaseConfig);
 export { admin, firebase, db, FieldValue };
