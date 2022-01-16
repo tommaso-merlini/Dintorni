@@ -10,4 +10,4 @@ COPY . .
 RUN npm run build
 
 EXPOSE 5000 6379
-CMD node dist/src/Servers/server.js
+CMD ["npm", "run", "start"]
