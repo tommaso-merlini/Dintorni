@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only ./src/Servers/server.ts",
-    "build": "tsc -b",
+    "build": "rimraf dist && tsc",
     "test": "jest",
     "generate": "graphql-codegen",
     "dev2": "nodemon -l src/Servers/authServer.js"

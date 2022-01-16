@@ -8,8 +8,6 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-COPY .env ./dist/
-WORKDIR ./dist
 
 EXPOSE 5000 6379
-CMD node src/Servers/server.js
+CMD node dist/src/Servers/server.js
