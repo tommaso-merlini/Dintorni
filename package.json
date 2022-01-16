@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only ./src/Servers/server.ts",
-    "build": "tsc -b",
-    "start": "node src/Servers/server.js",
+    "build": "tsc",
+    "start": "node dist/src/Servers/server.js",
     "test": "jest",
     "generate": "graphql-codegen",
     "dev2": "nodemon -l src/Servers/authServer.js"
