@@ -17,7 +17,8 @@ import { SubscriptionServer } from "subscriptions-transport-ws";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 
 //=====mongoose=====
-import "../helpers/initMongoDB";
+import initMongoDB from "../helpers/initMongoDB";
+initMongoDB();
 
 //=========firebase=========
 //import checkAuth from "../firebase/checkAuth";
