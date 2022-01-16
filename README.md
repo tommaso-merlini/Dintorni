@@ -1,5 +1,5 @@
 # server dell'app dintorni 
-> ip: 165.22.87.127
+> ip: 142.93.164.58
 > 
 > token: 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
 > 
