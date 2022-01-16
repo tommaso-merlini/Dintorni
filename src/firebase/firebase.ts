@@ -30,7 +30,7 @@ const firebaseConfig = {
 import serviceAccount from "./fbServiceAccountKey";
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(serviceAccount as any),
   databaseURL: "https://fir-demo-7884d.firebaseio.com",
 });
 

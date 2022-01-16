@@ -5,20 +5,15 @@ import authenticateToken from "../../../../JWT/AuthenticateToken";
 import { MutationCreateProductArgs } from "../../../Types/types";
 require("dotenv").config();
 
-interface createProductParams {
-  input: MutationCreateProductArgs;
-  firebaseShopID: string;
-}
-
 const createProduct = async (
   _: any,
-  { input, firebaseShopID }: createProductParams,
+  { input, firebaseCompanyID }: MutationCreateProductArgs,
   { req, admin }
 ) => {
   try {
     if (process.env.NODE_ENV === "production") {
       const token = await admin.auth().verifyIdToken(req.headers.authorization);
-      authenticateToken(token.uid, firebaseShopID);
+      authenticateToken(token.uid, firebaseCompanyID);
     }
 
     // const tokenID = token.uid;

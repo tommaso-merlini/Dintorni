@@ -28,7 +28,7 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 //=========jsonwebtoken=========
 //const expressJwt = require("express-jwt");
-app.use(express.json());
+app.use(express.json() as any);
 
 //=========RedisPubSub=========
 import pubsub from "../helpers/initPubSub";

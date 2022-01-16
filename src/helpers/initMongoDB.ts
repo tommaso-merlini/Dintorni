@@ -8,11 +8,11 @@ const initMongoDB = () => {
       useNewUrlParser: true,
       useFindAndModify: false,
     })
-    .catch((err) => {
+    .catch((err: any) => {
       console.log(err.message);
     });
 
-  mongoose.connection.on("error", (err) => {
+  mongoose.connection.on("error", (err: any) => {
     console.log(err.message);
   });
 
