@@ -3,7 +3,6 @@ import useGet from "../../../../Redis/useGet/useGet";
 import useSet from "../../../../Redis/useSet/useSet";
 import { GraphQLError } from "graphql";
 import { QueryProductArgs } from "../../../Types/types";
-
 const product = async (_, { id }: QueryProductArgs, { client }) => {
   try {
     //check if the product is cached

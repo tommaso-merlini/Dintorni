@@ -14,12 +14,10 @@ services:
     container_name: web-proxy
     restart: unless-stopped
     volumes:
-      - ./nginx/proxy.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "80:80"
-      - "8080:80"
-      - "8081:80"
-      - "27017:27017"
+      #- "27017:27017" linked to mongodb?
     depends_on:
       - node-app
   node-app:
@@ -27,8 +25,8 @@ services:
     depends_on:
       - redis
     build: .
-    ports:
-      - "5000:5000"
+    #ports:
+    #  - "5000:80" #localhost => localhost:5000
     volumes:
       - ./:/app
       - /app/node_modules

@@ -105,13 +105,22 @@ async function startServer() {
       // These are imported from `graphql`.
       execute,
       subscribe,
+      //onConnect: () => {
+      //  console.log("subscription server connected");
+      //},
+      //onOperation: (operation) => {
+      //  console.log(`${operation.payload.query}`);
+      //},
+      //onDisconnect: () => {
+      //  console.log("subscription server disconnected");
+      //},
     },
     {
       // This is the `httpServer` we created in a previous step.
       server: httpServer,
       // Pass a different path here if your ApolloServer serves at
       // a different path.
-      path: "/graphql",
+      //?path: "/graphql",
     }
   );
 
