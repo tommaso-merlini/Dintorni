@@ -8,19 +8,20 @@ const CartSchema = new mongoose.Schema({
     required: true,
   },
   shopID: {
-    type: String,
+    type: mongoose.Types.ObjectId,
     required: true,
   },
   products: [
     {
-      id: mongoose.Types.ObjectId,
-      quantity: Number,
-      required: true,
+      quantity: {
+        type: Number,
+        required: true,
+      },
     },
   ],
 });
 
-ShopSchema.createIndexes([{ firebaseUserID: 1, shopID: 1 }]);
+CartSchema.index([{ firebaseUserID: 1, shopID: 1 }]);
 
 const Cart = mongoose.model("cart", CartSchema);
-module.exports = Cart;
+export default Cart;

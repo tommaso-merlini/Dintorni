@@ -58,6 +58,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   accountLink?: Maybe<Scalars['String']>;
   activateShop: Scalars['Boolean'];
+  addToCart: Scalars['Boolean'];
   changeProductStatus: Scalars['Boolean'];
   createOrder: Scalars['String'];
   createProduct?: Maybe<Product>;
@@ -80,6 +81,13 @@ export type MutationAccountLinkArgs = {
 
 export type MutationActivateShopArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationAddToCartArgs = {
+  firebaseUserID: Scalars['String'];
+  productID: Scalars['ID'];
+  quantity: Scalars['Int'];
 };
 
 
@@ -587,6 +595,7 @@ export type LocationResolvers<ContextType = any, ParentType extends ResolversPar
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   accountLink?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationAccountLinkArgs, 'accountID'>>;
   activateShop?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationActivateShopArgs, 'id'>>;
+  addToCart?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddToCartArgs, 'firebaseUserID' | 'productID' | 'quantity'>>;
   changeProductStatus?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationChangeProductStatusArgs, 'firebaseCompanyID' | 'id' | 'status'>>;
   createOrder?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationCreateOrderArgs, 'options' | 'paymentIntentID'>>;
   createProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'firebaseCompanyID' | 'input'>>;
