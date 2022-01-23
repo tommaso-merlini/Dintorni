@@ -19,13 +19,14 @@ const addToCart = async (
 
     //get the cart
     const shopID = product.shopID;
-    const cart: MutationAddToCartArgs = await Cart.findOne({
+    const cart = await Cart.findOne({
       firebaseUserID,
       shopID,
     });
 
-    // if the cart does not exist create one
+    //check if the cart exists
     if (cart === null) {
+      //if it does not exists create one
       const newCart = await new Cart({
         firebaseUserID: firebaseUserID,
         shopID: shopID,
@@ -37,9 +38,26 @@ const addToCart = async (
         ],
       });
       await newCart.save();
+    } else {
+      cart.products.map(async (product, index) => {
+        if (product._id == productID) {
+          const newQuantity = product.quantity + quantity;
+          let newCart = cart;
+          newCart.products[index].quantity = newQuantity;
+          await Cart.updateOne({ _id: cart._id }, newCart);
+        }
+      });
     }
 
-    //if the cart exist add
+    // await Cart.findOneAndUpdate(
+    //   { firebaseUserID, shopID },
+    //   {
+    //     firebaseUserID: firebaseUserID,
+    //     shopID: shopID,
+    //     products:
+    //   },
+    //   { new: true, upsert: true }
+    // );
 
     return true;
   } catch (e) {
