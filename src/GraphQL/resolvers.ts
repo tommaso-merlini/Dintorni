@@ -25,7 +25,7 @@ import paymentIntent from "./Functions/Mutations/Stripe/paymentIntent";
 import shopsByFirebaseCompanyID from "./Functions/Queries/Company/shopsByFirebaseCompanyID";
 import changeProductStatus from "./Functions/Mutations/Product/changeProductStatus";
 import addToCart from "./Functions/Mutations/Cart/addToCart";
-import createUser from "./Functions/Mutations/User/CreateUser";
+import createUser from "./Functions/Mutations/User/createUser";
 import newFCM from "./Functions/Mutations/User/newFCM";
 
 import pubsub from "../helpers/initPubSub";
