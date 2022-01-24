@@ -138,6 +138,7 @@ const createOrder = async (
     );
 
     //send message
+    //TODO: query user on mongodb and get the user FCMs
     let message = {
       notification: {
         title: "ordine creato",

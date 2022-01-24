@@ -261,6 +261,10 @@ const typeDefs = gql`
     #======cart======
     addToCart(productID: ID!, quantity: Int!, firebaseUserID: String!): Boolean!
 
+    #======user======
+    createUser(firebaseUserID: String!): Boolean!
+    newFCM(firebaseUserID: String!, FCM: String!): Boolean!
+
     #======stripe======
     stripePayment(productIDs: [ID!]!): String
     createOrder(paymentIntentID: ID!, options: OrderInput!): String! #all firebase vars

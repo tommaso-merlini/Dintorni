@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  firebaseID: {
+  firebaseUserID: {
     type: String,
     required: true,
   },
@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     },
   ],
   cashback: {
-    type: String,
+    type: Number,
     required: true,
   },
   //cart:
