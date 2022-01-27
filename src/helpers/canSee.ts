@@ -1,13 +1,19 @@
-import { GraphQLError } from "graphql";
-
+import { admin } from "../firebase/firebase";
 require("dotenv").config();
 
-const canSee = (creator: string, watcher: string, environment: string) => {
+const canSee = async (creator: string, token: string, environment: string) => {
   if (process.env.NODE_ENV == environment) {
-    if (creator == watcher) {
-      throw new Error("User not authorized");
+    try {
+      const watcher = await admin.auth().verifyIdToken(token);
+
+      if (creator == watcher.uid) {
+        throw new Error("User not authorized");
+      }
+
+      return 0; //the user is authenticated
+    } catch (e) {
+      throw new Error(e);
     }
-    return 0; //the user is authenticated
   }
 
   return 1; //the environment does not match

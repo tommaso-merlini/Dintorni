@@ -10,8 +10,7 @@ const createUser = async (
 ) => {
   try {
     //authenticate the user the user
-    const token = await admin.auth().verifyIdToken(req.headers.authorization);
-    canSee(firebaseUserID, token.uid, "production");
+    await canSee(firebaseUserID, req.headers.authorization, "production");
 
     //check if exists an account with the same firebaseUserID
     const user = await User.findOne({ firebaseUserID: firebaseUserID });

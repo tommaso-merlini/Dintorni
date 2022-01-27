@@ -11,8 +11,8 @@ const addToCart = async (
 ) => {
   try {
     //authneitcate the user
-    const token = await admin.auth().verifyIdToken(req.headers.authorization);
-    canSee(userID, token.uid, "production");
+    //! this fucntion can't work because the mongoID is not placed intyo the firebase jwt
+    canSee(userID, req.headers.authorization, "production");
 
     //get the product => shopID
     const neededFields = {

@@ -11,8 +11,7 @@ const newFCM = async (
 ) => {
   try {
     //authenticate the user the user
-    const token = await admin.auth().verifyIdToken(req.headers.authorization);
-    canSee(firebaseUserID, token.uid, "production");
+    canSee(firebaseUserID, req.headers.authorization, "production");
 
     //get the fcms of the user
     await User.updateOne(
