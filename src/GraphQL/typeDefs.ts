@@ -259,7 +259,7 @@ const typeDefs = gql`
     like(id: ID!, to: String!, action: String!): Boolean!
 
     #======cart======
-    addToCart(productID: ID!, quantity: Int!, firebaseUserID: String!): Boolean!
+    addToCart(productID: ID!, quantity: Int!, userID: ID!): Boolean!
 
     #======user======
     createUser(firebaseUserID: String!): Boolean!

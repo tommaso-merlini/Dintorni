@@ -2,12 +2,18 @@ import { MutationAddToCartArgs } from "../../../Types/types";
 import Cart from "../../../../Schema/Cart/Cart.model";
 import Product from "../../../../Schema/Product/Product.model";
 import { GraphQLError } from "graphql";
+import canSee from "../../../../helpers/canSee";
 
 const addToCart = async (
   _,
-  { productID, quantity, firebaseUserID }: MutationAddToCartArgs
+  { productID, quantity, userID }: MutationAddToCartArgs,
+  { admin, req }
 ) => {
   try {
+    //authneitcate the user
+    const token = await admin.auth().verifyIdToken(req.headers.authorization);
+    canSee(userID, token.uid, "production");
+
     //get the product => shopID
     const neededFields = {
       shopID: 1,
@@ -20,7 +26,7 @@ const addToCart = async (
     //get the cart
     const shopID = product.shopID;
     const cart = await Cart.findOne({
-      firebaseUserID,
+      userID,
       shopID,
     });
 
@@ -28,7 +34,7 @@ const addToCart = async (
     if (cart === null) {
       //if it does not exists create one
       const newCart = await new Cart({
-        firebaseUserID: firebaseUserID,
+        userID: userID,
         shopID: shopID,
         products: [
           {

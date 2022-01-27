@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import Cart from "../Cart/Cart.model";
 
 const UserSchema = new mongoose.Schema({
   firebaseUserID: {
@@ -15,7 +16,22 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  //cart:
+  likes: [
+    {
+      productID: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+      },
+    },
+  ],
+  favourites: [
+    {
+      shopID: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+      },
+    },
+  ],
 });
 
 const User = mongoose.model("user", UserSchema);

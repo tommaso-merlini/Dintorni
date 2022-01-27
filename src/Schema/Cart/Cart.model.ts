@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 mongoose.set("useCreateIndex", true);
 
 const CartSchema = new mongoose.Schema({
-  firebaseUserID: {
+  userID: {
     type: String,
     required: true,
   },
@@ -21,7 +21,7 @@ const CartSchema = new mongoose.Schema({
   ],
 });
 
-CartSchema.index([{ firebaseUserID: 1, shopID: 1 }]);
+CartSchema.index([{ userID: 1, shopID: 1 }]);
 
 const Cart = mongoose.model("cart", CartSchema);
 export default Cart;
