@@ -10,5 +10,5 @@
 1. clone repo into server
 2. paste in the .env_sample file the real enviroment variables
 3. change the name from .env_sample to .env
-4. run docker
+4. run docker-compose up --scale node-app=3
 ```
