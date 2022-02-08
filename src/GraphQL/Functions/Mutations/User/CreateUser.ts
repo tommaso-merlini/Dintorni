@@ -5,7 +5,7 @@ import canSee from "../../../../helpers/canSee";
 
 const createUser = async (
   _,
-  { firebaseUserID }: MutationCreateUserArgs,
+  { firebaseUserID, input }: MutationCreateUserArgs,
   { admin, req }
 ) => {
   try {
@@ -24,8 +24,16 @@ const createUser = async (
     //create a new user related to the firebase user id
     const newUser = await new User({
       firebaseUserID: firebaseUserID,
+      ...input,
+      //----default values------
+      location: {
+        type: "Point",
+        coordinates: [null, null],
+        street: null,
+      },
       FCMs: [],
       cashback: 0,
+      allTimeCashback: 0,
       likes: [],
       favourites: [],
     });

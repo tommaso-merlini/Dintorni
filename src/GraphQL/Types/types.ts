@@ -124,6 +124,7 @@ export type MutationCreateStripeAccountArgs = {
 
 export type MutationCreateUserArgs = {
   firebaseUserID: Scalars['String'];
+  input?: InputMaybe<UserInput>;
 };
 
 
@@ -374,6 +375,12 @@ export type Subscription = {
   orderCreated: Order;
 };
 
+export type UserInput = {
+  FCMs: Array<Scalars['String']>;
+  email: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
+};
+
 export type CashbackInfoInput = {
   cashBack: Scalars['Int'];
   fee: Scalars['Int'];
@@ -382,6 +389,7 @@ export type CashbackInfoInput = {
 
 export type LocationInput = {
   coordinates: Array<InputMaybe<Scalars['Float']>>;
+  street?: InputMaybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -526,6 +534,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   StripeUser: ResolverTypeWrapper<StripeUser>;
   Subscription: ResolverTypeWrapper<{}>;
+  UserInput: UserInput;
   cashbackInfoInput: CashbackInfoInput;
   locationInput: LocationInput;
   productInput: ProductInput;
@@ -557,6 +566,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   StripeUser: StripeUser;
   Subscription: {};
+  UserInput: UserInput;
   cashbackInfoInput: CashbackInfoInput;
   locationInput: LocationInput;
   productInput: ProductInput;

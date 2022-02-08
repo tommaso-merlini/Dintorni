@@ -183,6 +183,7 @@ const typeDefs = gql`
   input locationInput {
     type: String!
     coordinates: [Float]!
+    street: String
   }
 
   input cashbackInfoInput {
@@ -203,6 +204,12 @@ const typeDefs = gql`
     quantity: Int!
     price: Float!
     weight: Float!
+  }
+
+  input UserInput {
+    email: String!
+    fullName: String
+    FCMs: [String!]!
   }
 
   ########### mutations and queries ###########
@@ -262,7 +269,7 @@ const typeDefs = gql`
     addToCart(productID: ID!, quantity: Int!, userID: ID!): Boolean!
 
     #======user======
-    createUser(firebaseUserID: String!): Boolean!
+    createUser(firebaseUserID: String!, input: UserInput!): Boolean!
     newFCM(firebaseUserID: String!, FCM: String!): Boolean!
 
     #======stripe======
