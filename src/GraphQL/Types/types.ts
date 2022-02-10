@@ -56,6 +56,7 @@ export type Location = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  FCM: Scalars['Boolean'];
   accountLink?: Maybe<Scalars['String']>;
   activateShop: Scalars['Boolean'];
   addToCart: Scalars['Boolean'];
@@ -68,11 +69,17 @@ export type Mutation = {
   deleProduct: Scalars['Boolean'];
   disactivateShop: Scalars['Boolean'];
   like: Scalars['Boolean'];
-  newFCM: Scalars['Boolean'];
   paymentIntent?: Maybe<PaymentIntent>;
   stripePayment?: Maybe<Scalars['String']>;
   updateProduct: Scalars['Boolean'];
   updateShop: Scalars['Boolean'];
+};
+
+
+export type MutationFcmArgs = {
+  FCM: Scalars['String'];
+  action: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
@@ -124,7 +131,7 @@ export type MutationCreateStripeAccountArgs = {
 
 export type MutationCreateUserArgs = {
   firebaseUserID: Scalars['String'];
-  input?: InputMaybe<UserInput>;
+  input: UserInput;
 };
 
 
@@ -143,12 +150,6 @@ export type MutationLikeArgs = {
   action: Scalars['String'];
   id: Scalars['ID'];
   to: Scalars['String'];
-};
-
-
-export type MutationNewFcmArgs = {
-  FCM: Scalars['String'];
-  firebaseUserID: Scalars['String'];
 };
 
 
@@ -378,7 +379,7 @@ export type Subscription = {
 export type UserInput = {
   FCMs: Array<Scalars['String']>;
   email: Scalars['String'];
-  name?: InputMaybe<Scalars['String']>;
+  fullName?: InputMaybe<Scalars['String']>;
 };
 
 export type CashbackInfoInput = {
@@ -616,6 +617,7 @@ export type LocationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  FCM?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationFcmArgs, 'FCM' | 'action' | 'id'>>;
   accountLink?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationAccountLinkArgs, 'accountID'>>;
   activateShop?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationActivateShopArgs, 'id'>>;
   addToCart?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddToCartArgs, 'productID' | 'quantity' | 'userID'>>;
@@ -624,11 +626,10 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'firebaseCompanyID' | 'input'>>;
   createShop?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationCreateShopArgs, 'input'>>;
   createStripeAccount?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationCreateStripeAccountArgs, 'email'>>;
-  createUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'firebaseUserID'>>;
+  createUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'firebaseUserID' | 'input'>>;
   deleProduct?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleProductArgs, 'firebaseCompanyID' | 'id'>>;
   disactivateShop?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDisactivateShopArgs, 'id'>>;
   like?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationLikeArgs, 'action' | 'id' | 'to'>>;
-  newFCM?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationNewFcmArgs, 'FCM' | 'firebaseUserID'>>;
   paymentIntent?: Resolver<Maybe<ResolversTypes['PaymentIntent']>, ParentType, ContextType, RequireFields<MutationPaymentIntentArgs, 'firebaseUserID' | 'shopID'>>;
   stripePayment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationStripePaymentArgs, 'productIDs'>>;
   updateProduct?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
