@@ -26,7 +26,7 @@ import shopsByFirebaseCompanyID from "./Functions/Queries/Company/shopsByFirebas
 import changeProductStatus from "./Functions/Mutations/Product/changeProductStatus";
 import addToCart from "./Functions/Mutations/Cart/addToCart";
 import createUser from "./Functions/Mutations/User/createUser";
-import newFCM from "./Functions/Mutations/User/newFCM";
+import FCM from "./Functions/Mutations/User/FCM";
 
 import pubsub from "../helpers/initPubSub";
 require("dotenv").config();
@@ -62,7 +62,7 @@ const resolvers = {
     paymentIntent: paymentIntent,
     addToCart: addToCart,
     createUser: createUser,
-    newFCM: newFCM,
+    FCM: FCM,
   },
 
   Subscription: {

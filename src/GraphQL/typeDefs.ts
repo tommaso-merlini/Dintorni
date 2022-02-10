@@ -270,7 +270,7 @@ const typeDefs = gql`
 
     #======user======
     createUser(firebaseUserID: String!, input: UserInput!): Boolean!
-    newFCM(firebaseUserID: String!, FCM: String!): Boolean!
+    FCM(id: ID!, FCM: String!, action: String!): Boolean!
 
     #======stripe======
     stripePayment(productIDs: [ID!]!): String
