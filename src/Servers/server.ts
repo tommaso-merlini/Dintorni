@@ -79,7 +79,7 @@ const client = require("../Redis/redis");
 
 async function startServer() {
   app.get("/", (req, res) => {
-    res.json({ serverstatus: "ok", id: process.pid });
+    res.json({ serverstatus: "ok", process_id: process.pid });
   });
 
   //=========apollo server=========

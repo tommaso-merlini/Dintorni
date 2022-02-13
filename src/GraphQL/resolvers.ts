@@ -26,6 +26,7 @@ import shopsByFirebaseCompanyID from "./Functions/Queries/Company/shopsByFirebas
 import changeProductStatus from "./Functions/Mutations/Product/changeProductStatus";
 import addToCart from "./Functions/Mutations/Cart/addToCart";
 import createUser from "./Functions/Mutations/User/createUser";
+import updateUser from "./Functions/Mutations/User/updateUser";
 import FCM from "./Functions/Mutations/User/FCM";
 
 import pubsub from "../helpers/initPubSub";
@@ -62,6 +63,7 @@ const resolvers = {
     paymentIntent: paymentIntent,
     addToCart: addToCart,
     createUser: createUser,
+    updateUser: updateUser,
     FCM: FCM,
   },
 

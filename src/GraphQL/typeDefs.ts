@@ -212,6 +212,17 @@ const typeDefs = gql`
     FCMs: [String!]!
   }
 
+  input updateUserInput {
+    fullName: String
+    location: updateUserLocationInput
+  }
+
+  input updateUserLocationInput {
+    coordinates: [Float!]!
+    type: String!
+    street: String!
+  }
+
   ########### mutations and queries ###########
   type Query {
     #======products queries======
@@ -270,6 +281,7 @@ const typeDefs = gql`
 
     #======user======
     createUser(firebaseUserID: String!, input: UserInput!): Boolean!
+    updateUser(firebaseUserID: ID!, input: updateUserInput!): Boolean!
     FCM(id: ID!, FCM: String!, action: String!): Boolean!
 
     #======stripe======

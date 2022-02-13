@@ -73,6 +73,7 @@ export type Mutation = {
   stripePayment?: Maybe<Scalars['String']>;
   updateProduct: Scalars['Boolean'];
   updateShop: Scalars['Boolean'];
+  updateUser: Scalars['Boolean'];
 };
 
 
@@ -173,6 +174,12 @@ export type MutationUpdateProductArgs = {
 export type MutationUpdateShopArgs = {
   id: Scalars['ID'];
   input: UpdateShopInput;
+};
+
+
+export type MutationUpdateUserArgs = {
+  firebaseUserID: Scalars['ID'];
+  input: UpdateUserInput;
 };
 
 export type Order = {
@@ -445,6 +452,17 @@ export type UpdateShopInput = {
   pickUpHours?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateUserInput = {
+  fullName?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<UpdateUserLocationInput>;
+};
+
+export type UpdateUserLocationInput = {
+  coordinates: Array<Scalars['Float']>;
+  street: Scalars['String'];
+  type: Scalars['String'];
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -542,6 +560,8 @@ export type ResolversTypes = {
   shopInput: ShopInput;
   updateProductInput: UpdateProductInput;
   updateShopInput: UpdateShopInput;
+  updateUserInput: UpdateUserInput;
+  updateUserLocationInput: UpdateUserLocationInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -574,6 +594,8 @@ export type ResolversParentTypes = {
   shopInput: ShopInput;
   updateProductInput: UpdateProductInput;
   updateShopInput: UpdateShopInput;
+  updateUserInput: UpdateUserInput;
+  updateUserLocationInput: UpdateUserLocationInput;
 };
 
 export type CashbackInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['CashbackInfo'] = ResolversParentTypes['CashbackInfo']> = {
@@ -634,6 +656,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   stripePayment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationStripePaymentArgs, 'productIDs'>>;
   updateProduct?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
   updateShop?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'id' | 'input'>>;
+  updateUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'firebaseUserID' | 'input'>>;
 };
 
 export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {

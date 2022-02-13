@@ -57,5 +57,7 @@ const UserSchema = new mongoose.Schema({
   ],
 });
 
+UserSchema.index({ firebaseUserID: 1 });
+
 const User = mongoose.model("user", UserSchema);
 export default User;
