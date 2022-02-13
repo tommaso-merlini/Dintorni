@@ -1,7 +1,7 @@
 # server dell'app dintorni 
 > ip: 142.93.164.58
 > 
-> token: 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
+> token: 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
 > 
 `.env_sample` is not the real .env file, just a sample :D
 
