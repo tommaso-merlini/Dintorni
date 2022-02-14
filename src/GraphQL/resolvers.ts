@@ -27,6 +27,7 @@ import changeProductStatus from "./Functions/Mutations/Product/changeProductStat
 import addToCart from "./Functions/Mutations/Cart/addToCart";
 import createUser from "./Functions/Mutations/User/createUser";
 import updateUser from "./Functions/Mutations/User/updateUser";
+import user from "./Functions/Queries/User/user";
 import FCM from "./Functions/Mutations/User/FCM";
 
 import pubsub from "../helpers/initPubSub";
@@ -44,6 +45,7 @@ const resolvers = {
     favouriteShops: favouriteShops,
     account: account,
     shopsByFirebaseCompanyID: shopsByFirebaseCompanyID,
+    user: user,
   },
 
   Mutation: {

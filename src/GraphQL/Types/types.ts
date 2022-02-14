@@ -267,13 +267,13 @@ export type Query = {
   closeProductsTitle?: Maybe<Array<Maybe<Product>>>;
   closeShops?: Maybe<Array<LightShop>>;
   favouriteShops?: Maybe<Array<LightShop>>;
-  login?: Maybe<Scalars['String']>;
   product?: Maybe<Product>;
   products?: Maybe<Array<Product>>;
   shop?: Maybe<Shop>;
   shopByFirebaseID?: Maybe<Shop>;
   shops?: Maybe<Array<Shop>>;
   shopsByFirebaseCompanyID?: Maybe<Array<Shop>>;
+  user?: Maybe<User>;
 };
 
 
@@ -306,12 +306,6 @@ export type QueryFavouriteShopsArgs = {
 };
 
 
-export type QueryLoginArgs = {
-  firebaseToken: Scalars['String'];
-  id: Scalars['ID'];
-};
-
-
 export type QueryProductArgs = {
   id: Scalars['ID'];
 };
@@ -339,6 +333,11 @@ export type QueryShopsArgs = {
 
 export type QueryShopsByFirebaseCompanyIdArgs = {
   firebaseCompanyID: Scalars['String'];
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['ID'];
 };
 
 export type Shop = {
@@ -383,10 +382,32 @@ export type Subscription = {
   orderCreated: Order;
 };
 
+export type User = {
+  __typename?: 'User';
+  FCMs: Array<Scalars['String']>;
+  allTimeCashback: Scalars['Float'];
+  cashBack: Scalars['Float'];
+  createdAt: Scalars['String'];
+  email: Scalars['String'];
+  favourites?: Maybe<Array<Scalars['ID']>>;
+  firebaseUserID: Scalars['String'];
+  fullName: Scalars['String'];
+  id: Scalars['ID'];
+  likes?: Maybe<Array<Scalars['ID']>>;
+  location: UserLocation;
+};
+
 export type UserInput = {
   FCMs: Array<Scalars['String']>;
   email: Scalars['String'];
   fullName?: InputMaybe<Scalars['String']>;
+};
+
+export type UserLocation = {
+  __typename?: 'UserLocation';
+  coordinates: Array<Scalars['Float']>;
+  street: Scalars['String'];
+  type: Scalars['String'];
 };
 
 export type CashbackInfoInput = {
@@ -553,7 +574,9 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   StripeUser: ResolverTypeWrapper<StripeUser>;
   Subscription: ResolverTypeWrapper<{}>;
+  User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
+  UserLocation: ResolverTypeWrapper<UserLocation>;
   cashbackInfoInput: CashbackInfoInput;
   locationInput: LocationInput;
   productInput: ProductInput;
@@ -587,7 +610,9 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   StripeUser: StripeUser;
   Subscription: {};
+  User: User;
   UserInput: UserInput;
+  UserLocation: UserLocation;
   cashbackInfoInput: CashbackInfoInput;
   locationInput: LocationInput;
   productInput: ProductInput;
@@ -730,13 +755,13 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   closeProductsTitle?: Resolver<Maybe<Array<Maybe<ResolversTypes['Product']>>>, ParentType, ContextType, RequireFields<QueryCloseProductsTitleArgs, 'limit' | 'location' | 'name' | 'offset' | 'range'>>;
   closeShops?: Resolver<Maybe<Array<ResolversTypes['LightShop']>>, ParentType, ContextType, RequireFields<QueryCloseShopsArgs, 'limit' | 'location' | 'offset' | 'range'>>;
   favouriteShops?: Resolver<Maybe<Array<ResolversTypes['LightShop']>>, ParentType, ContextType, RequireFields<QueryFavouriteShopsArgs, 'ids'>>;
-  login?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryLoginArgs, 'firebaseToken' | 'id'>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   products?: Resolver<Maybe<Array<ResolversTypes['Product']>>, ParentType, ContextType, RequireFields<QueryProductsArgs, 'ids'>>;
   shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'id'>>;
   shopByFirebaseID?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopByFirebaseIdArgs, 'firebaseID'>>;
   shops?: Resolver<Maybe<Array<ResolversTypes['Shop']>>, ParentType, ContextType, RequireFields<QueryShopsArgs, 'ids'>>;
   shopsByFirebaseCompanyID?: Resolver<Maybe<Array<ResolversTypes['Shop']>>, ParentType, ContextType, RequireFields<QueryShopsByFirebaseCompanyIdArgs, 'firebaseCompanyID'>>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
 };
 
 export type ShopResolvers<ContextType = any, ParentType extends ResolversParentTypes['Shop'] = ResolversParentTypes['Shop']> = {
@@ -773,6 +798,28 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
   orderCreated?: SubscriptionResolver<ResolversTypes['Order'], "orderCreated", ParentType, ContextType>;
 };
 
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  FCMs?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  allTimeCashback?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  cashBack?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  favourites?: Resolver<Maybe<Array<ResolversTypes['ID']>>, ParentType, ContextType>;
+  firebaseUserID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  fullName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  likes?: Resolver<Maybe<Array<ResolversTypes['ID']>>, ParentType, ContextType>;
+  location?: Resolver<ResolversTypes['UserLocation'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UserLocationResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserLocation'] = ResolversParentTypes['UserLocation']> = {
+  coordinates?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
+  street?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   CashbackInfo?: CashbackInfoResolvers<ContextType>;
   LightProduct?: LightProductResolvers<ContextType>;
@@ -788,5 +835,7 @@ export type Resolvers<ContextType = any> = {
   Shop?: ShopResolvers<ContextType>;
   StripeUser?: StripeUserResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
+  UserLocation?: UserLocationResolvers<ContextType>;
 };
 

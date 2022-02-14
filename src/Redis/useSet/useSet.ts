@@ -1,4 +1,4 @@
-const useSet = async (key: string, value: string, client: any) => {
+const useSet = async (key: string, value: any, client: any) => {
   try {
     await client.setAsync(key, JSON.stringify(value));
     // console.log(`SET cache | ${key}`);

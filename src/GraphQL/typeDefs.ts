@@ -127,6 +127,26 @@ const typeDefs = gql`
     products: [PaymentIntentProduct!]!
   }
 
+  type UserLocation { #//TODO: combine type Location adn UserLocation
+    coordinates: [Float!]!
+    type: String!
+    street: String!
+  }
+
+  type User {
+    id: ID!
+    firebaseUserID: String!
+    email: String!
+    fullName: String!
+    cashBack: Float!
+    allTimeCashback: Float!
+    location: UserLocation!
+    FCMs: [String!]!
+    likes: [ID!] #array of productIDs
+    favourites: [ID!] #array of shopIDs
+    createdAt: String!
+  }
+
   ########### inputs ###########
 
   input productInput {
@@ -251,7 +271,8 @@ const typeDefs = gql`
     ): [LightShop!]
     favouriteShops(ids: [ID!]!): [LightShop!] #//TODO: change the function name in the client (favouritesShops => favouriteShops)
     #======user queries======
-    login(firebaseToken: String!, id: ID!): String #jwt
+    user(id: ID!): User
+
     #======stripe queries======
     account(id: ID!): StripeUser
   }
