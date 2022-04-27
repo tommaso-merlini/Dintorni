@@ -16,7 +16,7 @@ const closeShops = async (
     }
 
     //get the requested fields and store them in a filter const
-    const filter = getRequestedFields(info);
+    const requestedFields = getRequestedFields(info);
 
     const setCategories = () => {
       if (category === null) {
@@ -32,7 +32,7 @@ const closeShops = async (
       return cashBack;
     };
 
-    var closeShops = await Shop.aggregate([
+    const closeShops = await Shop.aggregate([
       {
         $geoNear: {
           near: {
@@ -57,9 +57,8 @@ const closeShops = async (
           isActive: true,
         },
       },
-      { $project: filter },
+      { $project: requestedFields },
     ]);
-    console.log(closeShops);
 
     return closeShops;
   } catch (e: any) {

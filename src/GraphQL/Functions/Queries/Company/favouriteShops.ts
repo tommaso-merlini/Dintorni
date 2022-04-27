@@ -10,11 +10,14 @@ const favouriteShops = async (
   info
 ) => {
   try {
-    //get the requested fields and store them in a filter const
-    const filter = getRequestedFields(info);
+    const requestedFields = getRequestedFields(info);
 
-    var favouriteShops = await Shop.find({ _id: ids, isActive: true }, filter);
+    var favouriteShops = await Shop.find(
+      { _id: ids, isActive: true },
+      requestedFields
+    );
 
+    //! ???
     favouriteShops.map((shop: any) => {
       if (!shop) {
         favouriteShops.splice(favouriteShops.indexOf(shop), 1);

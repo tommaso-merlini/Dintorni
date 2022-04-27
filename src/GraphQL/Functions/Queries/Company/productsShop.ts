@@ -19,9 +19,7 @@ const productsShop = async (
       throw new Error("limit and offset cannot be negative");
     }
 
-    //filter the query
-    const filter = getRequestedFields(info);
-
+    //! ???
     const setAuth = () => {
       if (auth === "shop") {
         return { $exists: true }; //all categories
@@ -32,10 +30,10 @@ const productsShop = async (
       throw new Error("auth must be shop or user");
     };
 
-    //get the products from mongodb if not cached
+    const requestedFields = getRequestedFields(info);
     const products = await Product.find(
       { shopID: shop._id, status: setAuth() },
-      filter
+      requestedFields
     )
       .skip(offset)
       .limit(limit)

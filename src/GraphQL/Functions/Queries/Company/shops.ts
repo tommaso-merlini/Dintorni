@@ -5,7 +5,6 @@ import { QueryShopsArgs } from "../../../Types/types";
 
 const shops = async (_: any, { ids }: QueryShopsArgs, __: any, info) => {
   try {
-    //filter the query
     const requestedFields = getRequestedFields(info);
     const shops = await Shop.find({ _id: { $in: ids } }, requestedFields);
     return shops;

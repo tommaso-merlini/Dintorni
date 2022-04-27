@@ -6,7 +6,7 @@ import { QueryShopArgs } from "../../../Types/types";
 
 const shop = async (_: any, { id }: QueryShopArgs, { client }) => {
   try {
-    //check if the shop is cached than return it
+    //check if the shop is cached
     const redisShop = await useGet(`shop/${id}`, client);
     if (redisShop) {
       if (!redisShop.isActive) throw new Error(`shop is not active`);
