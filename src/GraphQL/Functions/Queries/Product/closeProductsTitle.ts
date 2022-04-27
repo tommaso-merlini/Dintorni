@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import Product from "../../../../Schema/Product/Product.model";
-import MongoFilter from "../../../MongoFilter/MongoFilter";
+import getRequestedFields from "../../../../helpers/getRequestedFields";
 import { QueryCloseProductsTitleArgs } from "../../../Types/types";
 
 const closeProductsTitle = async (
@@ -14,7 +14,7 @@ const closeProductsTitle = async (
       throw new Error("limit and offset cannot be negative");
     }
 
-    var filter = MongoFilter(info);
+    var filter = getRequestedFields(info);
 
     const closeProducts = await Product.aggregate([
       {

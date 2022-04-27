@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import MongoFilter from "../../../MongoFilter/MongoFilter";
+import getRequestedFields from "../../../../helpers/getRequestedFields";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import { QueryFavouriteShopsArgs } from "../../../Types/types";
 
@@ -11,7 +11,7 @@ const favouriteShops = async (
 ) => {
   try {
     //get the requested fields and store them in a filter const
-    const filter = MongoFilter(info);
+    const filter = getRequestedFields(info);
 
     var favouriteShops = await Shop.find({ _id: ids, isActive: true }, filter);
 

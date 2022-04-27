@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
-import MongoFilter from "../../../MongoFilter/MongoFilter";
+import getRequestedFields from "../../../../helpers/getRequestedFields";
 import { QueryShopsByFirebaseCompanyIdArgs } from "../../../Types/types";
 
 const shopsByFirebaseCompanyID = async (
@@ -10,7 +10,7 @@ const shopsByFirebaseCompanyID = async (
   info
 ) => {
   try {
-    const filter = MongoFilter(info);
+    const filter = getRequestedFields(info);
     const shops = await Shop.find(
       { firebaseCompanyID: firebaseCompanyID },
       filter

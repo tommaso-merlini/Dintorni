@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import Product from "../../../../Schema/Product/Product.model";
-import MongoFilter from "../../../MongoFilter/MongoFilter";
+import getRequestedFields from "../../../../helpers/getRequestedFields";
 
 interface productsShopParams {
   limit: number;
@@ -20,7 +20,7 @@ const productsShop = async (
     }
 
     //filter the query
-    const filter = MongoFilter(info);
+    const filter = getRequestedFields(info);
 
     const setAuth = () => {
       if (auth === "shop") {

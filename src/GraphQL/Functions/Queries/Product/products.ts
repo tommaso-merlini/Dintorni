@@ -1,6 +1,6 @@
 import Product from "../../../../Schema/Product/Product.model";
 import { GraphQLError, TypeInfo } from "graphql";
-import MongoFilter from "../../../MongoFilter/MongoFilter";
+import getRequestedFields from "../../../../helpers/getRequestedFields";
 import { QueryProductsArgs } from "../../../Types/types";
 
 const products = async (_: any, { ids }: QueryProductsArgs, __: any, info) => {
@@ -9,7 +9,7 @@ const products = async (_: any, { ids }: QueryProductsArgs, __: any, info) => {
   try {
     const returnedIDs: string[] = [];
     const unkownIDs = [];
-    const filter = MongoFilter(info);
+    const filter = getRequestedFields(info);
     const products = await Product.find({ _id: { $in: ids } }, filter);
     products.map((product: { _id: string }) => {
       returnedIDs.push(JSON.stringify(product._id));

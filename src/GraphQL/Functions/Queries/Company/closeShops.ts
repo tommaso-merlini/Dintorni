@@ -1,5 +1,5 @@
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
-import MongoFilter from "../../../MongoFilter/MongoFilter";
+import getRequestedFields from "../../../../helpers/getRequestedFields";
 import { GraphQLError } from "graphql";
 import { LargeNumberLike } from "crypto";
 import { QueryCloseShopsArgs } from "../../../Types/types";
@@ -16,7 +16,7 @@ const closeShops = async (
     }
 
     //get the requested fields and store them in a filter const
-    const filter = MongoFilter(info);
+    const filter = getRequestedFields(info);
 
     const setCategories = () => {
       if (category === null) {
