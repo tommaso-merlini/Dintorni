@@ -23,7 +23,6 @@ const account = async (
   } catch (e: any) {
     console.log(`error while retrieving the stripe account`);
     throw new GraphQLError(e.message);
-    return null;
   }
 };
 

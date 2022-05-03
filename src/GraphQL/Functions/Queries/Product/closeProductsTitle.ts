@@ -14,8 +14,6 @@ const closeProductsTitle = async (
       throw new Error("limit and offset cannot be negative");
     }
 
-    var filter = getRequestedFields(info);
-
     const closeProducts = await Product.aggregate([
       {
         $search: {
@@ -53,7 +51,7 @@ const closeProductsTitle = async (
       },
       {
         $project: {
-          ...filter,
+          ...getRequestedFields(info),
           shopID: 1,
           score: {
             $meta: "searchScore",

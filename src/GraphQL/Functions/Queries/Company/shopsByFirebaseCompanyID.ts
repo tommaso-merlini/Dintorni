@@ -10,10 +10,9 @@ const shopsByFirebaseCompanyID = async (
   info
 ) => {
   try {
-    const filter = getRequestedFields(info);
     const shops = await Shop.find(
       { firebaseCompanyID: firebaseCompanyID },
-      filter
+      getRequestedFields(info)
     );
     return shops;
   } catch (e: any) {
@@ -21,7 +20,6 @@ const shopsByFirebaseCompanyID = async (
       "something went wrong while searching for the shops by company firebase id"
     );
     throw new GraphQLError(e.message);
-    return null;
   }
 };
 

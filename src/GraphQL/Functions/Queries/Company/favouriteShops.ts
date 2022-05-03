@@ -17,7 +17,7 @@ const favouriteShops = async (
       requestedFields
     );
 
-    //! ???
+    //! ??? maybe delete the empty shop from the array?
     favouriteShops.map((shop: any) => {
       if (!shop) {
         favouriteShops.splice(favouriteShops.indexOf(shop), 1);

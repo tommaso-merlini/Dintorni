@@ -1,7 +1,6 @@
 import Shop from "../../../../Schema/Company/Shop/Shop.model";
 import getRequestedFields from "../../../../helpers/getRequestedFields";
 import { GraphQLError } from "graphql";
-import { LargeNumberLike } from "crypto";
 import { QueryCloseShopsArgs } from "../../../Types/types";
 
 const closeShops = async (
@@ -18,14 +17,14 @@ const closeShops = async (
     //get the requested fields and store them in a filter const
     const requestedFields = getRequestedFields(info);
 
-    const setCategories = () => {
+    const filterCategories = () => {
       if (category === null) {
         return { $exists: true }; //all categories
       }
       return category;
     };
 
-    const setCashBack = () => {
+    const filterCashback = () => {
       if (cashBack === null) {
         return 0; //all types of cashback
       }
@@ -40,7 +39,7 @@ const closeShops = async (
             coordinates: [location.coordinates[0], location.coordinates[1]],
           },
           spherical: true,
-          query: { categories: setCategories() },
+          query: { categories: filterCategories() },
           distanceField: "coordinates",
           minDistance: 0,
           maxDistance: range,
@@ -53,7 +52,7 @@ const closeShops = async (
       {
         $match: {
           // Filter documents that don't have balance > 0
-          "cashbackInfo.cashBack": { $gte: setCashBack() },
+          "cashbackInfo.cashBack": { $gte: filterCashback() },
           isActive: true,
         },
       },
@@ -64,7 +63,6 @@ const closeShops = async (
   } catch (e: any) {
     console.log("error while fetching the close shops");
     throw new GraphQLError(e.message);
-    return null;
   }
 };
 

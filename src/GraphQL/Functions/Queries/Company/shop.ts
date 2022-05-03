@@ -25,7 +25,6 @@ const shop = async (_: any, { id }: QueryShopArgs, { client }) => {
   } catch (e: any) {
     console.log("error while fetching the shop");
     throw new GraphQLError(e.message);
-    return null;
   }
 };
 

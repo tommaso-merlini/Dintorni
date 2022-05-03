@@ -18,7 +18,6 @@ const shopByFirebaseID = async (
   } catch (e: any) {
     console.log("error while fetching the shop by firebase id");
     throw new GraphQLError(e.message);
-    return null;
   }
 };
 

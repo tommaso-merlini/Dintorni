@@ -14,7 +14,6 @@ const shopProduct = async (
 ) => {
   try {
     const redisQuery = `shop/${shopID}`;
-
     // check if the shop are cached
     const redisShop = await useGet(redisQuery, client);
 
@@ -25,7 +24,6 @@ const shopProduct = async (
     }
 
     const shop = await Shop.findById(shopID);
-
     if (!shop) throw new Error(`shop with id ${shopID} does not exist`);
     if (!shop.isActive) throw new Error("shop is not active");
 

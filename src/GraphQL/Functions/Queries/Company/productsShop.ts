@@ -5,12 +5,12 @@ import getRequestedFields from "../../../../helpers/getRequestedFields";
 interface productsShopParams {
   limit: number;
   offset: number;
-  auth: string; //TODO: change from auth to iAm
+  iAm: string; //TODO: change from iAm to auth and take the id, if it's equal to the _id then we can view all the products
 }
 
 const productsShop = async (
   shop: { _id: string },
-  { limit, offset, auth }: productsShopParams,
+  { limit, offset, iAm }: productsShopParams,
   _: any,
   info
 ) => {
@@ -19,21 +19,17 @@ const productsShop = async (
       throw new Error("limit and offset cannot be negative");
     }
 
-    //! ???
-    const setAuth = () => {
-      if (auth === "shop") {
-        return { $exists: true }; //all categories
-      }
-      if (auth === "user") {
-        return "active";
-      }
-      throw new Error("auth must be shop or user");
-    };
+    //check the iAm
+    if (iAm != "shop" && iAm != "user") {
+      throw new Error("iAm must be shop or user");
+    }
 
-    const requestedFields = getRequestedFields(info);
     const products = await Product.find(
-      { shopID: shop._id, status: setAuth() },
-      requestedFields
+      {
+        shopID: shop._id,
+        status: iAm === "shop" ? { $exists: true } : "active",
+      },
+      getRequestedFields(info)
     )
       .skip(offset)
       .limit(limit)
@@ -43,7 +39,6 @@ const productsShop = async (
   } catch (e: any) {
     console.log("error while fetching the productsCompany");
     throw new GraphQLError(e.message);
-    return null;
   }
 };
 

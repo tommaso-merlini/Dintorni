@@ -9,8 +9,10 @@ const products = async (_: any, { ids }: QueryProductsArgs, __: any, info) => {
   try {
     const returnedIDs: string[] = [];
     const unkownIDs = [];
-    const filter = getRequestedFields(info);
-    const products = await Product.find({ _id: { $in: ids } }, filter);
+    const products = await Product.find(
+      { _id: { $in: ids } },
+      getRequestedFields(info)
+    );
     products.map((product: { _id: string }) => {
       returnedIDs.push(JSON.stringify(product._id));
     });
