@@ -25,7 +25,7 @@ const createShop = async (
     //   company: true,
     // });
 
-    //dummy email if the env is in production
+    //dummy email if the env is not in production
     //TODO: authorize user
     var email = "";
     if (process.env.NODE_ENV != "production") {
@@ -35,7 +35,6 @@ const createShop = async (
       email = token.email;
     }
 
-    //create shop in mongoDB
     const shop = await new Shop({
       ...input,
       favourites: 0,

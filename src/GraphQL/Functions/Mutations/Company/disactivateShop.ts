@@ -11,9 +11,6 @@ import { MutationDisactivateShopArgs } from "../../../Types/types";
  * @param id the id of the shop
  *
  * @return Boolean!
- * @example
- * return true if everything was ok
- * return false if there was an error
  */
 
 const disactivateShop = async (
@@ -22,7 +19,6 @@ const disactivateShop = async (
   { client }
 ) => {
   try {
-    //update the shop
     await Shop.updateOne({ _id: id }, { isActive: false }, { upsert: false });
 
     //update the products of the shop
@@ -32,7 +28,7 @@ const disactivateShop = async (
       { upsert: false }
     );
 
-    //delete all the products form the cache where the shopID is equal to the id
+    //delete all the shop's products form the cache 
     const products = await Product.find({ shopID: id });
     for (let i = 0; i < products.length; i++) {
       useDel(`product/${products[i]._id}`, client);
@@ -45,7 +41,6 @@ const disactivateShop = async (
   } catch (e: any) {
     console.log("error while disactivating the shop");
     throw new GraphQLError(e.message);
-    return false;
   }
 };
 
