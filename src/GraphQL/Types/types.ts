@@ -70,6 +70,7 @@ export type Mutation = {
   disactivateShop: Scalars['Boolean'];
   like: Scalars['Boolean'];
   paymentIntent?: Maybe<PaymentIntent>;
+  step1?: Maybe<Scalars['Boolean']>;
   stripePayment?: Maybe<Scalars['String']>;
   updateProduct: Scalars['Boolean'];
   updateShop: Scalars['Boolean'];
@@ -157,6 +158,14 @@ export type MutationLikeArgs = {
 export type MutationPaymentIntentArgs = {
   firebaseUserID: Scalars['String'];
   shopID: Scalars['ID'];
+};
+
+
+export type MutationStep1Args = {
+  address: Scalars['String'];
+  categories: Array<Scalars['String']>;
+  image?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
 };
 
 
@@ -364,7 +373,7 @@ export type Shop = {
 
 
 export type ShopProductsArgs = {
-  auth: Scalars['String'];
+  iAm: Scalars['String'];
   limit: Scalars['Int'];
   offset: Scalars['Int'];
 };
@@ -446,6 +455,13 @@ export type ShopInput = {
   orderHours: Scalars['String'];
   phone: Scalars['String'];
   pickUpHours: Scalars['String'];
+};
+
+export type Step1Options = {
+  address: Scalars['String'];
+  categories: Array<Scalars['String']>;
+  image?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
 };
 
 export type UpdateProductInput = {
@@ -581,6 +597,7 @@ export type ResolversTypes = {
   locationInput: LocationInput;
   productInput: ProductInput;
   shopInput: ShopInput;
+  step1Options: Step1Options;
   updateProductInput: UpdateProductInput;
   updateShopInput: UpdateShopInput;
   updateUserInput: UpdateUserInput;
@@ -617,6 +634,7 @@ export type ResolversParentTypes = {
   locationInput: LocationInput;
   productInput: ProductInput;
   shopInput: ShopInput;
+  step1Options: Step1Options;
   updateProductInput: UpdateProductInput;
   updateShopInput: UpdateShopInput;
   updateUserInput: UpdateUserInput;
@@ -678,6 +696,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   disactivateShop?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDisactivateShopArgs, 'id'>>;
   like?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationLikeArgs, 'action' | 'id' | 'to'>>;
   paymentIntent?: Resolver<Maybe<ResolversTypes['PaymentIntent']>, ParentType, ContextType, RequireFields<MutationPaymentIntentArgs, 'firebaseUserID' | 'shopID'>>;
+  step1?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationStep1Args, 'address' | 'categories' | 'name'>>;
   stripePayment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationStripePaymentArgs, 'productIDs'>>;
   updateProduct?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
   updateShop?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'id' | 'input'>>;
@@ -782,7 +801,7 @@ export type ShopResolvers<ContextType = any, ParentType extends ResolversParentT
   orderHours?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phone?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   pickUpHours?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<ShopProductsArgs, 'auth' | 'limit' | 'offset'>>;
+  products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<ShopProductsArgs, 'iAm' | 'limit' | 'offset'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

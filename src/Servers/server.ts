@@ -65,7 +65,7 @@ app.set("trust proxy", 1);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // every 15 minutes
-  max: process.env.NODE_ENV != "production" ? 10000 : 1, // limit each IP to 50 requests per windowMs
+  max: process.env.NODE_ENV != "production" ? 10000 : 50, // limit each IP to 50 requests per windowMs
   message: "Too many requests to the server, try again later",
 });
 
@@ -146,7 +146,14 @@ async function startServer() {
         err.extensions!.code.startsWith("INTERNAL_SERVER_ERROR") &&
         process.env.NODE_ENV === "production"
       ) {
-        return new Error("internal server error");
+        return new Error(`internal server error`);
+      }
+
+      if (
+        err.extensions!.code.startsWith("INTERNAL_SERVER_ERROR") &&
+        process.env.NODE_ENV === "testing"
+      ) {
+        return new Error(`internal server error -> ${err.message}`);
       }
 
       if (

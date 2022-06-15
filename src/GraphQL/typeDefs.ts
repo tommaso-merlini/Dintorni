@@ -243,6 +243,13 @@ const typeDefs = gql`
     street: String!
   }
 
+  input step1Options {
+    image: String
+    name: String!
+    address: String!
+    categories: [String!]!
+  }
+
   ########### mutations and queries ###########
   type Query {
     #======products queries======
@@ -293,6 +300,12 @@ const typeDefs = gql`
     activateShop(id: ID!): Boolean!
     disactivateShop(id: ID!): Boolean!
     updateShop(id: ID!, input: updateShopInput!): Boolean!
+    step1(
+      image: String
+      name: String!
+      address: String!
+      categories: [String!]!
+    ): Boolean
 
     #======like======
     like(id: ID!, to: String!, action: String!): Boolean!

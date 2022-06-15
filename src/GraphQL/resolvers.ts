@@ -29,6 +29,7 @@ import createUser from "./Functions/Mutations/User/createUser";
 import updateUser from "./Functions/Mutations/User/updateUser";
 import user from "./Functions/Queries/User/user";
 import FCM from "./Functions/Mutations/User/FCM";
+import step1 from "./Functions/Mutations/Shop/Steps/step1";
 
 import pubsub from "../helpers/initPubSub";
 require("dotenv").config();
@@ -67,6 +68,7 @@ const resolvers = {
     createUser: createUser,
     updateUser: updateUser,
     FCM: FCM,
+    step1: step1,
   },
 
   Subscription: {

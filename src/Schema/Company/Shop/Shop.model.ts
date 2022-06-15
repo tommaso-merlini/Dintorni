@@ -8,34 +8,35 @@ const ShopSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  firebaseShopID: { type: String, required: true, index: true },
+  stripeID: {
+    type: String,
+    required: false,
+  },
+  categories: [{ type: String, required: true }],
+  isActive: { type: Boolean, required: true },
+  phone: { type: String, required: false },
+  favourites: { type: Number, require: true },
+  likes: { type: Number, required: true },
+  image: { type: String, required: false },
+  openDays: [{ type: Number, required: false }],
+  openHours: { type: String, required: false },
+  orderHours: { type: String, required: false },
+  location: {
+    type: {
+      type: String,
+      required: false,
+    },
+    coordinates: [],
+  },
   address: {
     type: String,
     required: true,
   },
-  categories: [{ type: String, required: true }],
-  email: { type: String, required: true },
-  openDays: { type: String, required: true },
-  image: { type: String, required: true },
-  openHours: { type: String, required: true },
-  orderHours: { type: String, required: true },
-  pickUpHours: { type: String, required: true },
-  isActive: { type: Boolean, required: true },
-  phone: { type: String, required: true },
-  likes: { type: Number, required: true },
-  favourites: { type: Number, require: true },
-  location: {
-    type: {
-      type: String,
-      required: true,
-    },
-    coordinates: [],
+  stepsCompleted: {
+    type: Number,
+    required: true,
   },
-  cashbackInfo: {
-    cashBack: { type: Number, required: true },
-    fee: { type: Number, required: true },
-    minPayment: { type: Number, required: true },
-  },
-  firebaseCompanyID: { type: String, required: true, index: true },
 });
 
 // ShopSchema.index({ firebaseID: 1 });
