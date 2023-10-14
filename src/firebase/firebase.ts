@@ -18,14 +18,13 @@ const FieldValue = admin.firestore.FieldValue;
 // TODO: Replace the following with your app's Firebase project configuration
 // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
 const firebaseConfig = {
-  apiKey: "AIzaSyAWes5EYHZXsum0MfGz-Dl9-bVbxgA4dU0",
-  authDomain: "fir-demo-7884d.firebaseapp.com",
-  databaseURL: "https://fir-demo-7884d.firebaseio.com",
-  projectId: "fir-demo-7884d",
-  storageBucket: "fir-demo-7884d.appspot.com",
-  messagingSenderId: "580322015075",
-  appId: "1:580322015075:web:a58589848f3a5f7ecfc556",
-  measurementId: "G-0NHPMZSFT8",
+  apiKey: "<your-api-key>",
+  authDomain: "<your-auth-domain>",
+  projectId: "<your-project-id>",
+  storageBucket: "<your-storage-bucket-id>",
+  messagingSenderId: "<your-message-sender-id>",
+  appId: "<your-app-id>",
+  measurementId: "<your-measurement-id>",
 };
 
 import serviceAccount from "./fbServiceAccountKey";
