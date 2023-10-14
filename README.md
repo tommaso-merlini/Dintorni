@@ -1,7 +1,7 @@
 # server dell'app dintorni 
 
 `.env_sample` is not the real .env file, just a sample :D
-`.firebase.ts` has to be edited :D
+`firebase.ts` has to be edited :D
 
 ### instructions for production
 ```
